@@ -1,0 +1,653 @@
+{
+    "Structure of the original Website": 
+    {
+        "website": "www.evionex.com",
+        "navigation_menu": [
+            {
+            "item": "Home",
+            "type": "link"
+            },
+            {
+            "item": "Who We Are",
+            "type": "link"
+            },
+            {
+            "item": "Products",
+            "type": "link"
+            },
+            {
+            "item": "Team",
+            "type": "link"
+            },
+            {
+            "item": "Careers",
+            "type": "link"
+            },
+            {
+            "item": "Contact",
+            "type": "link"
+            },
+            {
+            "item": "Get Started",
+            "type": "button",
+            "links_to": "Contact page"
+            }
+        ],
+        "pages": [
+            {
+            "page_number": 1,
+            "page_title": "Home",
+            "url": "https://www.evionex.com/",
+            "purpose": "Landing page and company overview",
+            "main_sections": [
+                {
+                "section": "Hero",
+                "content": "Tagline: Transforming Research & Education"
+                },
+                {
+                "section": "Value Proposition",
+                "content": "AI-powered digital transformation for institutions"
+                },
+                {
+                "section": "Call-to-Action",
+                "content": "Two buttons: Explore Our Products, Partner With Us"
+                },
+                {
+                "section": "The Evionex Advantage",
+                "content": "Three key benefits",
+                "benefits": [
+                    "AI-Powered Insights",
+                    "Regulatory Compliance",
+                    "Unified Management"
+                ]
+                },
+                {
+                "section": "Footer",
+                "content": "Company info, product links, and contact details"
+                }
+            ]
+            },
+            {
+            "page_number": 2,
+            "page_title": "Who We Are",
+            "url": "https://www.evionex.com/#/who-we-are",
+            "purpose": "Company mission, vision, and background",
+            "main_sections": [
+                {
+                "section": "Vision and Mission",
+                "content": "Democratizing AI for Scientific Progress"
+                },
+                {
+                "section": "Who We Are",
+                "content": "Company description as a technology startup"
+                },
+                {
+                "section": "Our Mission",
+                "content": "Empowerment of research and education communities"
+                },
+                {
+                "section": "Our Goals",
+                "content": "Three main objectives for research, learning, and digital accessibility"
+                },
+                {
+                "section": "Company Statistics",
+                "content": "2+ Flagship Products, 100% Indian Compliance"
+                },
+                {
+                "section": "Footer",
+                "content": "Standard links"
+                }
+            ]
+            },
+            {
+            "page_number": 3,
+            "page_title": "Products",
+            "url": "https://www.evionex.com/#/products",
+            "purpose": "Showcase two main product offerings",
+            "main_sections": [
+                {
+                "section": "Page Header",
+                "content": "Our Products with tagline"
+                },
+                {
+                "section": "Product 1: Evinote",
+                "product_type": "Research Solution",
+                "description": "Electronic lab notebook solution",
+                "media": "Demo video embedded",
+                "action_buttons": ["Watch Demo", "Request Demo"],
+                "features": [
+                    "Electronic Lab Notebook",
+                    "Budget Tracking",
+                    "Lab Calendar",
+                    "Resource Booking",
+                    "Lab Chat",
+                    "Data Security"
+                ]
+                },
+                {
+                "section": "Product 2: Luminary",
+                "product_type": "Education Solution",
+                "description": "AI-powered learning platform",
+                "media": "Demo video embedded",
+                "action_buttons": ["Watch Demo", "Request Demo"],
+                "features": [
+                    "Digital Journals",
+                    "AI-Driven Quizzes",
+                    "Interview Practice",
+                    "Assignment Management",
+                    "Performance Analytics",
+                    "Collaboration Tools"
+                ]
+                },
+                {
+                "section": "Pricing Comparison",
+                "title": "Choose the Right Solution",
+                "pricing_cards": [
+                    {
+                    "product": "Evinote",
+                    "target": "Research labs",
+                    "cta_button": "Contact Sales"
+                    },
+                    {
+                    "product": "Luminary",
+                    "target": "Educational institutions",
+                    "cta_button": "Get Started"
+                    }
+                ]
+                },
+                {
+                "section": "Footer",
+                "content": "Standard links"
+                }
+            ]
+            },
+            {
+            "page_number": 4,
+            "page_title": "Team",
+            "url": "https://www.evionex.com/#/team",
+            "purpose": "Leadership team profiles",
+            "main_sections": [
+                {
+                "section": "Page Header",
+                "content": "Meet The Visionaries"
+                },
+                {
+                "section": "Team Members",
+                "profiles": [
+                    {
+                    "name": "Atharva Shinde",
+                    "title": "Director & Co-Founder",
+                    "includes": "Photo, name, title, brief bio"
+                    },
+                    {
+                    "name": "Kedar Navsariwala",
+                    "title": "Director & Co-Founder",
+                    "includes": "Photo, name, title, brief bio"
+                    },
+                    {
+                    "name": "Mrunal Samant",
+                    "title": "Director & Co-Founder",
+                    "includes": "Photo, name, title, brief bio"
+                    }
+                ]
+                },
+                {
+                "section": "Footer",
+                "content": "Standard links"
+                }
+            ]
+            },
+            {
+            "page_number": 5,
+            "page_title": "Careers",
+            "url": "https://www.evionex.com/#/careers",
+            "purpose": "Job opportunities and recruitment",
+            "main_sections": [
+                {
+                "section": "Page Header",
+                "content": "Join Our Journey"
+                },
+                {
+                "section": "Current Status",
+                "content": "No Current Openings"
+                },
+                {
+                "section": "Message",
+                "content": "Company is always looking for talent"
+                },
+                {
+                "section": "Action Button",
+                "content": "Send Us Your Resume"
+                },
+                {
+                "section": "Footer",
+                "content": "Standard links"
+                }
+            ]
+            },
+            {
+            "page_number": 6,
+            "page_title": "Contact",
+            "url": "https://www.evionex.com/#/contact",
+            "purpose": "Contact information and inquiry form",
+            "main_sections": [
+                {
+                "section": "Page Header",
+                "content": "Get in Touch"
+                },
+                {
+                "section": "Company Contact Information",
+                "details": {
+                    "registered_office": "Full address provided",
+                    "email": "evionex.info@gmail.com",
+                    "business_hours": "Mon-Fri 9:00 AM - 6:00 PM"
+                }
+                },
+                {
+                "section": "Contact Form",
+                "form_fields": [
+                    "First Name",
+                    "Last Name",
+                    "Email Address",
+                    {
+                    "field": "Interest",
+                    "type": "dropdown",
+                    "options": [
+                        "EviNote Research",
+                        "Luminary Education",
+                        "Partnership/Other"
+                    ]
+                    },
+                    "Message text area",
+                    "Send Message submit button"
+                ]
+                },
+                {
+                "section": "Footer",
+                "content": "Standard links"
+                }
+            ]
+            }
+        ],
+        "common_elements": {
+            "header": {
+            "logo": true,
+            "navigation_menu": true,
+            "theme_toggle": "Light/Dark mode button"
+            },
+            "footer": {
+            "company_tagline": true,
+            "social_media_links": ["LinkedIn", "Twitter", "Instagram"],
+            "footer_sections": {
+                "company": ["About Us", "Leadership", "Careers", "News & Press"],
+                "products": ["EviNote", "Luminary"],
+                "contact": ["Address", "Email"]
+            },
+            "copyright": "© 2026 Evionex Private Limited"
+            }
+        }
+    },
+    
+    "Prompt": "Generate a blank website for Evionex Private Limited based on the provided structure and content. The website should include all specified pages, sections, and common elements, ensuring a cohesive design and user experience. Use the details from the original website structure to create accurate and engaging content for each page. Implement responsive design principles to ensure the website is accessible on various devices. Include appropriate navigation and interactive elements as outlined in the structure. Follow the design section below this section. There I will define and give you what elements to use throughout the build in this project and also the designing guidelines to follow, like colour themes, typography and font",
+    "Designing Guidelines":
+    {
+        "Colour Theme":{
+                "evionex_color_theme": 
+                {
+                    "primary_colours": 
+                    {
+                        "primary_cyan": 
+                        {
+                            "hex": "#00D4C8",
+                            "rgb": "rgb(0, 212, 200)",
+                            "usage": "Primary brand color, CTAs, accent text, icons"
+                        },
+                
+                    "cyan_hover":
+                        {
+                            "hex": "#00BDB3",
+                            "rgb": "rgb(0, 189, 179)",
+                            "usage": "Hover states for primary buttons"
+                        },
+
+                    "accent_teal": 
+                        {
+                            "hex": "#1FC7BE",
+                            "rgb": "rgb(31, 199, 190)",
+                            "usage": "Secondary accents, highlights"
+                        }
+                    },
+
+                    "background_colours": 
+                    {
+
+                    "dark_navy": 
+                        {
+                            "rgb": "rgb(10, 22, 40)",
+                            "usage": "Primary background, hero sections"
+                        },
+
+                    "deep_navy": 
+                        {
+                            "hex": "#0D1B2E",
+                            "rgb": "rgb(13, 27, 46)",
+                            "usage": "Card backgrounds, elevated surfaces"
+                        },
+
+                    "slate_blue": 
+                        {
+                            "hex": "#1A2942",
+                            "rgb": "rgb(26, 41, 66)",
+                            "usage": "Secondary button backgrounds, hover states"
+                        },
+
+                    "card_surface": 
+                        {
+                            "hex": "#15243D",
+                            "rgb": "rgb(21, 36, 61)",
+                            "usage": "Feature cards, content panels"
+                        }
+                    }
+                },
+
+            "text_colours": 
+                {
+                    "primary_white": 
+                        {
+                            "hex": "#FFFFFF",
+                            "rgb": "rgb(255, 255, 255)",
+                            "usage": "Main headings, emphasis text"
+                        },
+                    "secondary_light":
+                        {
+                            "hex": "#B8C5D6",
+                            "rgb": "rgb(184, 197, 214)",
+                            "usage": "Body text, descriptions, paragraphs"
+                        },
+                    "muted_blue_grey":
+                        {
+                            "hex": "#8B9DB5",
+                            "rgb": "rgb(139, 157, 181)",
+                            "usage": "Supporting text, metadata, captions"
+                        },
+                    "link_cyan":
+                        {
+                            "hex": "#00D4C8",
+                            "rgb": "rgb(0, 212, 200)",
+                            "usage": "Links, interactive text elements"
+                        }                
+                }
+            },
+            "Typography":
+                        {
+            "evionex_typography_system": {
+                "current_typography": {
+                "font_family": {
+                    "primary": "System default sans-serif stack",
+                    "likely_fonts": [
+                    "-apple-system",
+                    "BlinkMacSystemFont",
+                    "Segoe UI",
+                    "Helvetica Neue",
+                    "Arial"
+                    ]
+                },
+                "hero_heading": {
+                    "element": "H1 - 'Transforming'",
+                    "size": "~72px (4.5rem)",
+                    "weight": "800-900 (Extra Bold/Black)",
+                    "color": "#FFFFFF",
+                    "line_height": "1.1"
+                },
+                "hero_subheading": {
+                    "element": "H1 - 'Research & Education'",
+                    "size": "~72px (4.5rem)",
+                    "weight": "800-900 (Extra Bold/Black)",
+                    "color": "#00D4C8",
+                    "line_height": "1.1"
+                },
+                "tagline": {
+                    "size": "~18-20px",
+                    "weight": "400 (Regular)",
+                    "color": "#B8C5D6",
+                    "line_height": "1.6"
+                },
+                "buttons": {
+                    "size": "16px",
+                    "weight": "600 (Semibold)",
+                    "letter_spacing": "0.01em"
+                }
+                },
+                "improved_modern_typography": {
+                "font_families": {
+                    "display": {
+                    "name": "Space Grotesk",
+                    "fallback": "'Space Grotesk', 'Inter', -apple-system, sans-serif",
+                    "cdn": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap",
+                    "usage": "Hero headings, large display text",
+                    "characteristics": "Geometric, modern, tech-forward aesthetic"
+                    },
+                    "heading": {
+                    "name": "Inter",
+                    "fallback": "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "cdn": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
+                    "usage": "All headings, navigation, UI elements",
+                    "characteristics": "Clean, highly legible, professional"
+                    },
+                    "body": {
+                    "name": "Inter",
+                    "fallback": "'Inter', system-ui, sans-serif",
+                    "cdn": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap",
+                    "usage": "Body text, paragraphs, descriptions",
+                    "characteristics": "Optimal readability, neutral"
+                    },
+                    "monospace": {
+                    "name": "JetBrains Mono",
+                    "fallback": "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+                    "cdn": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap",
+                    "usage": "Code snippets, technical data",
+                    "characteristics": "Developer-friendly, modern monospace"
+                    }
+                },
+                "type_scale": {
+                    "hero_display": {
+                    "element": "H1 Hero",
+                    "desktop": {
+                        "size": "clamp(56px, 8vw, 96px)",
+                        "size_rem": "6rem (96px)",
+                        "weight": 700,
+                        "line_height": 1.05,
+                        "letter_spacing": "-0.03em",
+                        "font_family": "Space Grotesk"
+                    },
+                    "tablet": {
+                        "size": "64px (4rem)",
+                        "weight": 700,
+                        "line_height": 1.1
+                    },
+                    "mobile": {
+                        "size": "48px (3rem)",
+                        "weight": 700,
+                        "line_height": 1.15
+                    },
+                    "css_example": "font: 700 clamp(3rem, 8vw, 6rem)/1.05 'Space Grotesk', sans-serif; letter-spacing: -0.03em;"
+                    },
+                    "h1_section": {
+                    "element": "H1 Section Header",
+                    "desktop": {
+                        "size": "56px (3.5rem)",
+                        "weight": 700,
+                        "line_height": 1.15,
+                        "letter_spacing": "-0.02em",
+                        "font_family": "Inter"
+                    },
+                    "mobile": {
+                        "size": "36px (2.25rem)",
+                        "weight": 700,
+                        "line_height": 1.2
+                    }
+                    },
+                    "h2": {
+                    "element": "H2 Subsection",
+                    "desktop": {
+                        "size": "40px (2.5rem)",
+                        "weight": 700,
+                        "line_height": 1.25,
+                        "letter_spacing": "-0.015em",
+                        "font_family": "Inter"
+                    },
+                    "mobile": {
+                        "size": "28px (1.75rem)",
+                        "weight": 700,
+                        "line_height": 1.3
+                    }
+                    },
+                    "h3": {
+                    "element": "H3 Card Headers",
+                    "desktop": {
+                        "size": "28px (1.75rem)",
+                        "weight": 600,
+                        "line_height": 1.35,
+                        "letter_spacing": "-0.01em",
+                        "font_family": "Inter"
+                    },
+                    "mobile": {
+                        "size": "22px (1.375rem)",
+                        "weight": 600,
+                        "line_height": 1.4
+                    }
+                    },
+                    "h4": {
+                    "element": "H4 Small Headers",
+                    "size": "20px (1.25rem)",
+                    "weight": 600,
+                    "line_height": 1.4,
+                    "letter_spacing": "0",
+                    "font_family": "Inter"
+                    },
+                    "body_large": {
+                    "element": "Lead Paragraph",
+                    "size": "20px (1.25rem)",
+                    "weight": 400,
+                    "line_height": 1.6,
+                    "letter_spacing": "0",
+                    "font_family": "Inter",
+                    "max_width": "65ch"
+                    },
+                    "body": {
+                    "element": "Standard Body Text",
+                    "size": "16px (1rem)",
+                    "weight": 400,
+                    "line_height": 1.65,
+                    "letter_spacing": "0",
+                    "font_family": "Inter",
+                    "max_width": "70ch"
+                    },
+                    "body_small": {
+                    "element": "Supporting Text",
+                    "size": "14px (0.875rem)",
+                    "weight": 400,
+                    "line_height": 1.6,
+                    "letter_spacing": "0.005em",
+                    "font_family": "Inter"
+                    },
+                    "caption": {
+                    "element": "Captions, Metadata",
+                    "size": "12px (0.75rem)",
+                    "weight": 500,
+                    "line_height": 1.5,
+                    "letter_spacing": "0.01em",
+                    "font_family": "Inter",
+                    "text_transform": "uppercase"
+                    },
+                    "button": {
+                    "element": "CTA Buttons",
+                    "size": "16px (1rem)",
+                    "weight": 600,
+                    "line_height": 1,
+                    "letter_spacing": "0.01em",
+                    "font_family": "Inter"
+                    },
+                    "button_large": {
+                    "element": "Primary Hero CTAs",
+                    "size": "18px (1.125rem)",
+                    "weight": 600,
+                    "line_height": 1,
+                    "letter_spacing": "0.005em",
+                    "font_family": "Inter"
+                    }
+                },
+                "font_weights": {
+                    "regular": 400,
+                    "medium": 500,
+                    "semibold": 600,
+                    "bold": 700,
+                    "extrabold": 800
+                },
+                "text_colors": {
+                    "primary": "#FFFFFF",
+                    "secondary": "#B8C5D6",
+                    "muted": "#8B9DB5",
+                    "accent": "#00D4C8",
+                    "inverse": "#0A1628"
+                },
+                "responsive_behavior": {
+                    "fluid_typography": "Use clamp() for responsive scaling without media queries",
+                    "breakpoints": {
+                    "mobile": "320px - 767px",
+                    "tablet": "768px - 1023px",
+                    "desktop": "1024px+"
+                    },
+                    "scale_ratio": "1.25 (Major Third) for desktop, 1.2 for mobile"
+                }
+                },
+                "css_implementation": {
+                "css_variables": "/* Typography System */\n:root {\n  /* Font Families */\n  --font-display: 'Space Grotesk', 'Inter', -apple-system, sans-serif;\n  --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;\n  --font-body: 'Inter', system-ui, sans-serif;\n  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;\n  \n  /* Font Sizes */\n  --text-hero: clamp(3rem, 8vw, 6rem);\n  --text-h1: clamp(2.25rem, 5vw, 3.5rem);\n  --text-h2: clamp(1.75rem, 4vw, 2.5rem);\n  --text-h3: clamp(1.375rem, 3vw, 1.75rem);\n  --text-h4: 1.25rem;\n  --text-lg: 1.25rem;\n  --text-base: 1rem;\n  --text-sm: 0.875rem;\n  --text-xs: 0.75rem;\n  \n  /* Font Weights */\n  --weight-regular: 400;\n  --weight-medium: 500;\n  --weight-semibold: 600;\n  --weight-bold: 700;\n  --weight-extrabold: 800;\n  \n  /* Line Heights */\n  --leading-tight: 1.1;\n  --leading-snug: 1.35;\n  --leading-normal: 1.5;\n  --leading-relaxed: 1.65;\n  \n  /* Letter Spacing */\n  --tracking-tighter: -0.03em;\n  --tracking-tight: -0.015em;\n  --tracking-normal: 0;\n  --tracking-wide: 0.01em;\n}",
+                "utility_classes": "/* Heading Classes */\n.hero-display {\n  font-family: var(--font-display);\n  font-size: var(--text-hero);\n  font-weight: var(--weight-bold);\n  line-height: 1.05;\n  letter-spacing: var(--tracking-tighter);\n}\n\n.h1 {\n  font-family: var(--font-heading);\n  font-size: var(--text-h1);\n  font-weight: var(--weight-bold);\n  line-height: var(--leading-tight);\n  letter-spacing: var(--tracking-tight);\n}\n\n/* Body Text */\n.body-lead {\n  font-family: var(--font-body);\n  font-size: var(--text-lg);\n  line-height: var(--leading-relaxed);\n  max-width: 65ch;\n}\n\n.body {\n  font-family: var(--font-body);\n  font-size: var(--text-base);\n  line-height: var(--leading-relaxed);\n  max-width: 70ch;\n}\n\n/* Button Text */\n.btn-text {\n  font-family: var(--font-heading);\n  font-size: var(--text-base);\n  font-weight: var(--weight-semibold);\n  letter-spacing: var(--tracking-wide);\n}"
+                },
+                "design_principles": {
+                "hierarchy": "Clear visual hierarchy with 5-7 distinct levels",
+                "contrast": "High contrast between heading sizes (1.25-1.33 ratio)",
+                "readability": "Body text line-height 1.6-1.65 for optimal reading",
+                "white_space": "Generous vertical rhythm using 8px baseline grid",
+                "accessibility": "Minimum 16px body text, AA contrast ratios",
+                "performance": "Variable fonts where possible, font-display: swap"
+                },
+                "implementation_notes": {
+                "font_loading": "Use font-display: swap to prevent FOIT (Flash of Invisible Text)",
+                "performance_tip": "Subset fonts to include only Latin characters if not using other scripts",
+                "fallback_strategy": "System font stack ensures instant rendering while custom fonts load",
+                "variable_fonts": "Consider using Inter Variable to reduce font files from 5 to 1",
+                "modern_features": "Use clamp() for fluid typography, removes need for multiple breakpoints"
+                }
+            }
+        },
+        "Elements To Use":
+        {
+            "Navbar across the website":
+            {
+                "Installation": "npx shadcn@latest add @react-bits/CardNav-JS-CSS",
+                "Usage": "Refer to https://reactbits.dev/components/card-nav for implementation details and customize it according to the design guidelines given"
+            },
+            
+            "Hero Text Effect":
+            {
+                "Installation": "npx shadcn@latest add @react-bits/GradientText-JS-CSS",
+                "Usage": "Refer to https://reactbits.dev/text-animations/gradient-text for implementation details and customize it according to the design guidelines given"
+            },
+
+            "Border to clickable buttons":
+            {
+                "Installation": "npx shadcn@latest add @react-bits/StarBorder-JS-CSS",
+                "Usage": "Refer to https://reactbits.dev/animations/star-border for implementation details and customize it according to the design guidelines given"
+            },
+
+            "Effects to Profile Cards":
+            {
+                "Installation": "npx shadcn@latest add @react-bits/GlareHover-JS-CSS",
+                "Usage": "Refer to https://reactbits.dev/animations/glare-hover for implementation details and customize it according to the design guidelines given"
+            }
+        }
+    }
+}
+
