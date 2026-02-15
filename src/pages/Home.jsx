@@ -20,7 +20,7 @@ export default function Home() {
                                 animationSpeed={4}
                                 className="hero-gradient-text"
                             >
-                                Research & Education
+                                Research, Education & Healthcare
                             </GradientText>
                         </h1>
                         <p className="hero__subtitle">

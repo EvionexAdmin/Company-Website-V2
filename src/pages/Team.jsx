@@ -1,4 +1,7 @@
 import GlareHover from '../components/ui/GlareHover/GlareHover'
+import kedarPhoto from '../assets/images/team/kedar.jpeg'
+import mrunalPhoto from '../assets/images/team/mrunal.jfif'
+import atharvaPhoto from '../assets/images/team/atharva.png'
 import './Team.css'
 
 const teamMembers = [
@@ -6,21 +9,21 @@ const teamMembers = [
         name: 'Atharva Shinde',
         title: 'Director & Co-Founder',
         bio: 'Visionary leader with deep expertise in AI and machine learning. Atharva drives the technical strategy at Evionex, ensuring our products leverage cutting-edge technology to deliver real impact in research and education.',
-        initial: 'AS',
+        photo: atharvaPhoto,
         gradient: 'linear-gradient(135deg, #00D4C8, #0D9488)',
     },
     {
         name: 'Kedar Navsariwala',
         title: 'Director & Co-Founder',
         bio: 'Technology architect and product strategist with a passion for building scalable solutions. Kedar leads the development of Evionex\'s platforms, focusing on user experience, performance, and security.',
-        initial: 'KN',
+        photo: kedarPhoto,
         gradient: 'linear-gradient(135deg, #7C5CFF, #6D28D9)',
     },
     {
         name: 'Mrunal Samant',
         title: 'Director & Co-Founder',
         bio: 'Domain expert in research and education technology. Mrunal shapes the product vision at Evionex, ensuring our solutions address real challenges faced by institutions and researchers across India.',
-        initial: 'MS',
+        photo: mrunalPhoto,
         gradient: 'linear-gradient(135deg, #FF6B6B, #DC2626)',
     },
 ]
@@ -56,10 +59,10 @@ export default function Team() {
                                 className={`team-glare-card animate-fade-in-up animate-delay-${i + 1}`}
                             >
                                 <div className="team-card__glow" style={{ background: member.gradient }}></div>
+                                <div className="team-card__photo">
+                                    <img src={member.photo} alt={member.name} />
+                                </div>
                                 <div className="team-card__inner">
-                                    <div className="team-card__avatar" style={{ background: member.gradient }}>
-                                        <span>{member.initial}</span>
-                                    </div>
                                     <h3 className="team-card__name">{member.name}</h3>
                                     <p className="team-card__title">{member.title}</p>
                                     <p className="team-card__bio">{member.bio}</p>

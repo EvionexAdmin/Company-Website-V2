@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     overflow: hidden;
-    padding-top: 5rem;
+    padding-top: 8rem;
 }
 
 .hero__bg-glow {
@@ -191,7 +191,7 @@
 
 .hero-gradient-text .text-content {
     font-family: var(--font-display);
-    font-size: var(--text-hero);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: var(--weight-bold);
     line-height: 1.05;
     letter-spacing: var(--tracking-tighter);

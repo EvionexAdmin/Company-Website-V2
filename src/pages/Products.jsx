@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
 import MagicBento from '../components/ui/MagicBento/MagicBento'
+import evinoteIcon from '../assets/images/products/evinote-icon.png'
+import luminaryLogo from '../assets/images/products/luminary-logo.png'
+import genesetuLogo from '../assets/images/products/genesetu-logo.png'
 import './Products.css'
 
 // Convert hex color to RGB string for MagicBento glowColor prop
@@ -17,7 +20,7 @@ const products = [
         type: 'Research Solution',
         tagColor: '#00D4C8',
         description: 'A comprehensive electronic lab notebook solution designed to streamline research workflows, manage lab resources, and ensure data security across your entire research organization.',
-        videoPlaceholder: true,
+        logo: evinoteIcon,
         features: [
             { icon: '📓', title: 'Electronic Lab Notebook', desc: 'Digital documentation of experiments with rich media support, templates, and version control.' },
             { icon: '💰', title: 'Budget Tracking', desc: 'Monitor research grants, expenditures, and allocations with real-time financial dashboards.' },
@@ -35,7 +38,7 @@ const products = [
         type: 'Education Solution',
         tagColor: '#7C5CFF',
         description: 'An AI-powered learning platform that transforms education through personalized quizzes, intelligent analytics, and collaborative tools designed for modern institutions.',
-        videoPlaceholder: true,
+        logo: luminaryLogo,
         features: [
             { icon: '📖', title: 'Digital Journals', desc: 'Interactive student journals with AI-assisted note-taking and knowledge organization.' },
             { icon: '🧩', title: 'AI-Driven Quizzes', desc: 'Adaptive assessments that adjust difficulty based on student performance and learning patterns.' },
@@ -53,7 +56,7 @@ const products = [
         type: 'Healthcare Solution',
         tagColor: '#FF6B6B',
         description: 'An AI-enabled Electronic Health Record platform that leverages Whole Exome Sequencing (WES) data to analyze 7,000+ diseases in newborn and prenatal infants and maintain their complete life records.',
-        videoPlaceholder: true,
+        logo: genesetuLogo,
         features: [
             { icon: '🧬', title: 'WES Data Analysis', desc: 'Advanced Whole Exome Sequencing analysis covering 7,000+ genetic conditions in newborns.' },
             { icon: '👶', title: 'Neonatal Screening', desc: 'Comprehensive newborn and prenatal screening with AI-powered risk assessment algorithms.' },
@@ -90,18 +93,11 @@ export default function Products() {
                             <span className="tag" style={{ color: product.tagColor, borderColor: product.tagColor + '40', background: product.tagColor + '15' }}>
                                 {product.type}
                             </span>
-                            <h2 className="product-title">{product.name}</h2>
-                            <p className="product-desc">{product.description}</p>
-                        </div>
-
-                        {/* Video Placeholder */}
-                        <div className="product-video animate-fade-in-up">
-                            <div className="product-video__placeholder" style={{ borderColor: product.tagColor + '30' }}>
-                                <div className="product-video__play" style={{ background: product.tagColor }}>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--bg-dark-navy)"><path d="M8 5v14l11-7z" /></svg>
-                                </div>
-                                <p>Watch {product.name} Demo</p>
+                            <div className="product-title-row" style={{ display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'center' }}>
+                                <img src={product.logo} alt={`${product.name} Logo`} style={{ height: '48px', width: '48px', objectFit: 'contain', filter: 'drop-shadow(0 0 12px ' + product.tagColor + '50)' }} />
+                                <h2 className="product-title" style={{ margin: 0 }}>{product.name}</h2>
                             </div>
+                            <p className="product-desc">{product.description}</p>
                         </div>
 
                         {/* Features Bento Grid */}

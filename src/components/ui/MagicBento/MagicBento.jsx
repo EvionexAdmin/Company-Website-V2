@@ -4,7 +4,7 @@ import './MagicBento.css';
 
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
-const DEFAULT_GLOW_COLOR = '132, 0, 255';
+const DEFAULT_GLOW_COLOR = '0, 212, 200';
 const MOBILE_BREAKPOINT = 768;
 
 const createParticleElement = (x, y, color = DEFAULT_GLOW_COLOR) => {
@@ -44,7 +44,7 @@ const updateCardGlowProperties = (card, mouseX, mouseY, glow, radius) => {
 const ParticleCard = ({
     children,
     className = '',
-    disableAnimations = false,
+    disableAnimations = true,
     style,
     particleCount = DEFAULT_PARTICLE_COUNT,
     glowColor = DEFAULT_GLOW_COLOR,

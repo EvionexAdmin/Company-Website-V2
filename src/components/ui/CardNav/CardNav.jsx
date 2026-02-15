@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { GoArrowUpRight } from 'react-icons/go';
 import './CardNav.css';
@@ -14,7 +14,8 @@ const CardNav = ({
     buttonBgColor,
     buttonTextColor,
     ctaButtonText = 'Get Started',
-    onCtaClick
+    onCtaClick,
+    forceClose = false
 }) => {
     const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
@@ -115,6 +116,18 @@ const CardNav = ({
         return () => window.removeEventListener('resize', handleResize);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isExpanded]);
+
+    // Close menu when forceClose prop changes to true
+    useEffect(() => {
+        if (forceClose && isExpanded) {
+            const tl = tlRef.current;
+            if (tl) {
+                setIsHamburgerOpen(false);
+                tl.eventCallback('onReverseComplete', () => setIsExpanded(false));
+                tl.reverse();
+            }
+        }
+    }, [forceClose]);
 
     const toggleMenu = () => {
         const tl = tlRef.current;

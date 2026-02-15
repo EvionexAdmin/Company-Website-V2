@@ -1,6 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import CardNav from './ui/CardNav/CardNav'
+import evionexLogo from '../assets/images/logo/evionex-logo.png'
+import evionexText from '../assets/images/logo/evionex-text.png'
 import './Navbar.css'
 
 const navItems = [
@@ -37,6 +39,14 @@ const navItems = [
 export default function Navbar() {
     const location = useLocation()
     const navigate = useNavigate()
+    const [forceClose, setForceClose] = useState(false)
+
+    // Close the nav menu on every route change
+    useEffect(() => {
+        setForceClose(true)
+        const timer = setTimeout(() => setForceClose(false), 100)
+        return () => clearTimeout(timer)
+    }, [location.pathname])
 
     // Intercept CardNav link clicks for client-side routing
     useEffect(() => {
@@ -57,8 +67,8 @@ export default function Navbar() {
 
     const LogoElement = (
         <Link to="/" className="navbar__logo" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span className="navbar__logo-icon">◆</span>
-            <span className="navbar__logo-text">Evionex</span>
+            <img src={evionexLogo} alt="Evionex Logo" className="navbar__logo-icon" style={{ height: '32px', width: 'auto' }} />
+            <img src={evionexText} alt="Evionex" className="navbar__logo-text" style={{ height: '20px', width: 'auto' }} />
         </Link>
     )
 
@@ -72,6 +82,7 @@ export default function Navbar() {
             buttonBgColor="#00D4C8"
             buttonTextColor="#0a1628"
             onCtaClick={() => navigate('/contact')}
+            forceClose={forceClose}
         />
     )
 }

@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import evionexLogo from '../assets/images/logo/evionex-logo.png'
+import evionexText from '../assets/images/logo/evionex-text.png'
 import './Footer.css'
 
 export default function Footer() {
@@ -9,8 +11,8 @@ export default function Footer() {
                     {/* Brand Column */}
                     <div className="footer__brand">
                         <Link to="/" className="footer__logo">
-                            <span className="footer__logo-icon">◆</span>
-                            <span>Evionex</span>
+                            <img src={evionexLogo} alt="Evionex Logo" style={{ height: '28px', width: 'auto' }} />
+                            <img src={evionexText} alt="Evionex" style={{ height: '18px', width: 'auto' }} />
                         </Link>
                         <p className="footer__tagline">
                             Transforming Research & Education through AI-powered digital solutions.

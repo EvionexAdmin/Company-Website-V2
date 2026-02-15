@@ -218,7 +218,7 @@ img {
 /* Hero Display */
 .hero-display {
   font-family: var(--font-display);
-  font-size: var(--text-hero);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
   font-weight: var(--weight-bold);
   line-height: 1.05;
   letter-spacing: var(--tracking-tighter);
@@ -422,7 +422,7 @@ img {
 
 /* Page Hero */
 .page-hero {
-  padding: var(--space-4xl) 0 var(--space-2xl);
+  padding: 10rem 0 var(--space-2xl);
 }
 
 /* ===========================
