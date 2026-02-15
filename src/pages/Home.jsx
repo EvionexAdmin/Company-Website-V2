@@ -9,6 +9,19 @@ export default function Home() {
         <div className="home">
             {/* Hero Section */}
             <section className="hero">
+                <div className="hero__video-bg">
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="hero__video"
+                    >
+                        <source src="/hero-bg.mp4" type="video/mp4" />
+                        <source src="/hero-bg.mov" type="video/quicktime" />
+                    </video>
+                    <div className="hero__video-overlay"></div>
+                </div>
                 <div className="hero__bg-glow"></div>
                 <div className="container hero__container">
                     <div className="hero__content animate-fade-in-up">
@@ -27,7 +40,7 @@ export default function Home() {
                             Empowering institutions with intelligent solutions that streamline research workflows,
                             enhance learning experiences, and revolutionize healthcare data management.
                         </p>
-                        <div className="btn-group">
+                        <div className="btn-group" style={{ marginBottom: '3rem' }}>
                             <StarBorder as="div" color="#00D4C8" speed="5s" className="star-cta-wrapper">
                                 <Link to="/products" className="btn btn-primary btn-large star-btn">
                                     Explore Our Products

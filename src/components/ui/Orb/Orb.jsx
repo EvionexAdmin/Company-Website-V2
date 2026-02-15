@@ -7,7 +7,7 @@ export default function Orb({
   hoverIntensity = 0.2,
   rotateOnHover = true,
   forceHoverState = false,
-  backgroundColor = '#ffffffff'
+  backgroundColor = '#000000ff'
 }) {
   const ctnDom = useRef(null);
 
