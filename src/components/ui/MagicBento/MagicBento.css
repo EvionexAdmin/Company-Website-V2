@@ -209,6 +209,64 @@
     pointer-events: none;
 }
 
+/* Bento Media (video / image backgrounds) */
+.bento-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+.bento-media__video,
+.bento-media__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: inherit;
+    opacity: 0.45;
+    transition: opacity 0.4s ease;
+}
+
+.magic-bento-card:hover .bento-media__video,
+.magic-bento-card:hover .bento-media__image,
+.particle-container:hover .bento-media__video,
+.particle-container:hover .bento-media__image {
+    opacity: 0.75;
+}
+
+.bento-media__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top,
+            rgba(10, 22, 40, 0.95) 0%,
+            rgba(10, 22, 40, 0.6) 40%,
+            rgba(10, 22, 40, 0.1) 100%);
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+/* Ensure text content sits above the media */
+.magic-bento-card__header,
+.magic-bento-card__content {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* Bento Media (video / image backgrounds) */
+.magic-bento-card--has-media .magic-bento-card__header,
+.magic-bento-card--has-media .magic-bento-card__content {
+    transition: opacity 0.3s ease;
+}
+
+.magic-bento-card--has-media:hover .magic-bento-card__header,
+.magic-bento-card--has-media:hover .magic-bento-card__content {
+    opacity: 0;
+}
+
 .bento-section {
     position: relative;
     user-select: none;

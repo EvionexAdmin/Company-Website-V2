@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import MagicBento from '../components/ui/MagicBento/MagicBento'
 import evinoteIcon from '../assets/images/products/evinote-icon.png'
@@ -14,6 +15,24 @@ const hexToRgb = (hex) => {
 }
 
 const products = [
+    {
+        id: 'genesetu',
+        name: 'Gene Setu',
+        type: 'Healthcare Solution',
+        tagColor: '#00bafd',
+        description: 'An AI-enabled Electronic Health Record platform that leverages Whole Exome Sequencing (WES) data to analyze 6,000+ diseases in newborn, prenatal infants and adults, along with maintaining their complete life records.',
+        logo: genesetuLogo,
+        features: [
+            { title: 'WES Data Analysis', desc: 'Whole Exome Sequencing analysis covering 6,000+ genetic conditions.', media: { src: '/media/genesetu/wes-results.mp4', type: 'video' } },
+            { title: 'Biomarker Tracking', desc: 'Track biomarkers throughout life to monitor health.', media: { src: '/media/genesetu/biomarker-tracking.mp4', type: 'video' } },
+            { title: 'Life Record Management', desc: 'Maintain complete health records from birth through life with secure, accessible storage.', media: { src: '/media/genesetu/ehr-repository.jpeg', type: 'image' } },
+            { title: 'AI Diagnostics', desc: 'Machine learning models for early disease detection and predictive health analytics.', media: { src: '/media/genesetu/live-diagnostics.mp4', type: 'video' } },
+            { title: 'Medication Tracking', desc: 'Track medications and prescriptions with reminders and dosage tracking.', media: { src: '/media/genesetu/medication-tracking.mp4', type: 'video' } },
+            { title: 'NutriLogging', desc: 'Track nutrition and diet with AI-powered insights.', media: { src: '/media/genesetu/nutrilogging.mp4', type: 'video' } },
+        ],
+        ctaPrimary: 'Request a Demo',
+        ctaSecondary: 'Learn More',
+    },
     {
         id: 'evinote',
         name: 'EviNote',
@@ -50,32 +69,45 @@ const products = [
         ctaPrimary: 'Get Started',
         ctaSecondary: 'Watch Demo',
     },
-    {
-        id: 'genesetu',
-        name: 'Gene Setu',
-        type: 'Healthcare Solution',
-        tagColor: '#FF6B6B',
-        description: 'An AI-enabled Electronic Health Record platform that leverages Whole Exome Sequencing (WES) data to analyze 7,000+ diseases in newborn and prenatal infants and maintain their complete life records.',
-        logo: genesetuLogo,
-        features: [
-            { icon: '🧬', title: 'WES Data Analysis', desc: 'Advanced Whole Exome Sequencing analysis covering 7,000+ genetic conditions in newborns.' },
-            { icon: '👶', title: 'Neonatal Screening', desc: 'Comprehensive newborn and prenatal screening with AI-powered risk assessment algorithms.' },
-            { icon: '📋', title: 'Life Record Management', desc: 'Maintain complete health records from birth through life with secure, accessible storage.' },
-            { icon: '🤖', title: 'AI Diagnostics', desc: 'Machine learning models for early disease detection and predictive health analytics.' },
-            { icon: '🏥', title: 'Hospital Integration', desc: 'Seamless integration with existing hospital management and laboratory information systems.' },
-            { icon: '🔐', title: 'HIPAA & Indian Compliance', desc: 'Full compliance with healthcare data regulations including DISHA and international standards.' },
-        ],
-        ctaPrimary: 'Request a Demo',
-        ctaSecondary: 'Learn More',
-    },
 ]
 
 export default function Products() {
+    const videoRef = useRef(null)
+
+    const handleMouseEnter = () => {
+        if (videoRef.current) {
+            videoRef.current.play().catch(e => console.log("Video play failed", e))
+        }
+    }
+
+    const handleMouseLeave = () => {
+        if (videoRef.current) {
+            videoRef.current.pause()
+        }
+    }
+
     return (
         <div className="products-page">
             {/* Header */}
-            <section className="page-hero">
-                <div className="container">
+            {/* Header */}
+            <section
+                className="page-hero"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
+                <div className="hero__video-bg">
+                    <video
+                        ref={videoRef}
+                        loop
+                        muted
+                        playsInline
+                        className="hero__video"
+                    >
+                        <source src="/media/happy-family.mp4" type="video/mp4" />
+                    </video>
+                    <div className="hero__video-overlay"></div>
+                </div>
+                <div className="container" style={{ position: 'relative', zIndex: 2 }}>
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">Our Products</span>
                         <h1>Solutions That <span className="text-gradient">Transform</span></h1>
@@ -107,6 +139,7 @@ export default function Products() {
                                 title: feature.title,
                                 description: feature.desc,
                                 label: feature.icon,
+                                ...(feature.media && { media: feature.media }),
                             }))}
                             glowColor={hexToRgb(product.tagColor)}
                             enableSpotlight={true}

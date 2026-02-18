@@ -2,6 +2,75 @@ import { useRef, useEffect, useCallback, useState } from 'react';
 import { gsap } from 'gsap';
 import './MagicBento.css';
 
+// Media component for bento cards — plays video on hover, shows image otherwise
+const BentoMedia = ({ media }) => {
+    const videoRef = useRef(null);
+
+    const handleMouseEnter = useCallback(() => {
+        if (videoRef.current) {
+            videoRef.current.play().catch(() => { });
+        }
+    }, []);
+
+    const handleMouseLeave = useCallback(() => {
+        if (videoRef.current) {
+            videoRef.current.pause();
+            videoRef.current.currentTime = 0;
+        }
+    }, []);
+
+    useEffect(() => {
+        const videoEl = videoRef.current;
+        if (!videoEl) return;
+
+        const card = videoEl.closest('.magic-bento-card') || videoEl.closest('.particle-container');
+        if (!card) return;
+
+        card.addEventListener('mouseenter', handleMouseEnter);
+        card.addEventListener('mouseleave', handleMouseLeave);
+
+        return () => {
+            card.removeEventListener('mouseenter', handleMouseEnter);
+            card.removeEventListener('mouseleave', handleMouseLeave);
+        };
+    }, [handleMouseEnter, handleMouseLeave]);
+
+    if (!media) return null;
+
+    if (media.type === 'video') {
+        return (
+            <div className="bento-media">
+                <video
+                    ref={videoRef}
+                    src={media.src}
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    className="bento-media__video"
+                />
+                <div className="bento-media__overlay" />
+            </div>
+        );
+    }
+
+    if (media.type === 'image') {
+        return (
+            <div className="bento-media">
+                <img
+                    src={media.src}
+                    alt=""
+                    className="bento-media__image"
+                    loading="lazy"
+                />
+                <div className="bento-media__overlay" />
+            </div>
+        );
+    }
+
+    return null;
+};
+
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
 const DEFAULT_GLOW_COLOR = '0, 212, 200';
@@ -463,7 +532,7 @@ const MagicBento = ({
 
             <BentoCardGrid gridRef={gridRef}>
                 {(cardData || []).map((card, index) => {
-                    const baseClassName = `magic-bento-card ${textAutoHide ? 'magic-bento-card--text-autohide' : ''} ${enableBorderGlow ? 'magic-bento-card--border-glow' : ''}`;
+                    const baseClassName = `magic-bento-card ${textAutoHide ? 'magic-bento-card--text-autohide' : ''} ${enableBorderGlow ? 'magic-bento-card--border-glow' : ''} ${card.media ? 'magic-bento-card--has-media' : ''}`;
                     const cardProps = {
                         className: baseClassName,
                         style: {
@@ -484,6 +553,7 @@ const MagicBento = ({
                                 clickEffect={clickEffect}
                                 enableMagnetism={enableMagnetism}
                             >
+                                {card.media && <BentoMedia media={card.media} />}
                                 <div className="magic-bento-card__header">
                                     <div className="magic-bento-card__label">{card.label}</div>
                                 </div>
@@ -497,6 +567,7 @@ const MagicBento = ({
 
                     return (
                         <div key={index} {...cardProps}>
+                            {card.media && <BentoMedia media={card.media} />}
                             <div className="magic-bento-card__header">
                                 <div className="magic-bento-card__label">{card.label}</div>
                             </div>
