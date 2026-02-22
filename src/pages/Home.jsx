@@ -124,13 +124,13 @@ export default function Home() {
                                 name: 'Luminary',
                                 type: 'Education Solution',
                                 description: 'An AI-powered learning platform that personalizes education through intelligent quizzes, analytics, and collaborative tools.',
-                                color: '#7C5CFF'
+                                color: '#ffae00'
                             },
                             {
                                 name: 'Gene Setu',
                                 type: 'Healthcare Solution',
                                 description: 'AI-enabled Electronic Health Record platform leveraging Whole Exome Sequencing to analyze 7,000+ diseases in newborn and prenatal infants.',
-                                color: '#FF6B6B'
+                                color: '#00bafd'
                             }
                         ].map((product, i) => (
                             <div key={i} className="card product-preview__card">

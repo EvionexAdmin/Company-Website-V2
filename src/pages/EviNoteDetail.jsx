@@ -1,0 +1,124 @@
+import { Link } from 'react-router-dom'
+import evinoteIcon from '../assets/images/products/evinote-icon.png'
+import './ProductDetail.css'
+
+const accentColor = '#00D4C8'
+
+const overview = [
+    {
+        icon: '📓',
+        title: 'What is EviNote?',
+        text: 'EviNote is a comprehensive Electronic Lab Notebook (ELN) platform built for modern research institutions. It digitizes every aspect of laboratory workflows — from experiment documentation and data management to resource scheduling, budgeting, and team collaboration — all within a single, secure ecosystem designed for scientific rigor.'
+    },
+    {
+        icon: '💡',
+        title: 'Why did we build EviNote?',
+        text: 'Indian research institutions manage thousands of experiments annually, yet most still rely on paper notebooks and fragmented tools. Data loss, compliance issues, and collaboration bottlenecks slow down discovery. We built EviNote to give researchers a modern, integrated platform that ensures reproducibility, simplifies administration, and lets scientists focus on what matters — breakthrough research.'
+    },
+    {
+        icon: '🔬',
+        title: 'Who is it for?',
+        text: 'EviNote serves university research departments, government labs (CSIR, ICAR, DBT-funded institutes), pharmaceutical R&D teams, biotech startups, and private research organizations. It is built for principal investigators, research scholars, lab managers, and institutional administrators who need a unified platform for managing complex research operations.'
+    },
+    {
+        icon: '🌍',
+        title: 'Total Addressable Market',
+        text: 'The global Electronic Lab Notebook market is valued at $590 million and is projected to exceed $1.3 billion by 2030, growing at 11% CAGR. India\'s research infrastructure is expanding rapidly — with over 1,000 universities and 3,000+ research labs, the domestic digital research tools market is poised for significant growth as institutions modernize under the National Education Policy and National Research Foundation initiatives.'
+    },
+]
+
+const features = [
+    { title: 'Electronic Lab Notebook', desc: 'Document every experiment with rich-text editing, embedded media, structured templates, and full version history. EviNote\'s ELN captures protocols, observations, results, and conclusions in a searchable, auditable format — replacing paper notebooks with a system built for reproducibility, compliance, and collaboration across research teams.', media: { src: '/media/evinote/electronic-lab-notebook.mp4', type: 'video' } },
+    { title: 'Scientific Illustrator', desc: 'Create publication-ready scientific diagrams, molecular structures, lab schematics, and data visualizations directly inside EviNote. The built-in illustrator provides templates for charts, flowcharts, apparatus diagrams, and more — eliminating the need for external design tools and keeping all assets linked to their experiments.', media: { src: '/media/evinote/scientific-illustrator.mp4', type: 'video' } },
+    { title: 'Resource Management', desc: 'Track equipment availability, schedule instrument sessions, manage consumable inventory, and monitor maintenance cycles. EviNote provides a centralized resource management dashboard that prevents double-bookings, reduces equipment downtime, and ensures every team member has visibility into shared lab resources.', media: { src: '/media/evinote/equipment-management.mp4', type: 'video' } },
+    { title: 'Lab Duties', desc: 'Assign, track, and manage lab responsibilities across team members with clear ownership and deadlines. From routine maintenance tasks to safety checks and sample processing schedules, the Lab Duties module ensures accountability and keeps your lab running smoothly without manual coordination overhead.', media: { src: '/media/evinote/lab-duties.mp4', type: 'video' } },
+    { title: 'Budget Tracking', desc: 'Monitor research grant allocations, track expenditures, and forecast budget utilization in real time. EviNote breaks down spending by project, grant, category, and team member — providing principal investigators and administrators with financial clarity and helping institutions maintain compliance with funding agency requirements.', media: { src: '/media/evinote/budget-tracking.mp4', type: 'video' } },
+    { title: 'Project Tracker', desc: 'Stay updated with a bird\'s-eye view of every research project\'s progress. Track milestones, deliverables, team contributions, and timelines in one dashboard. The Project Tracker integrates with ELN entries and resource bookings so you always know where a project stands — from initial proposal to publication.', media: { src: '/media/evinote/project-tracker.mp4', type: 'video' } },
+]
+
+export default function EviNoteDetail() {
+    return (
+        <div className="product-detail">
+            {/* Hero */}
+            <section className="product-detail__hero">
+                <div className="container" style={{ textAlign: 'center' }}>
+                    <img src={evinoteIcon} alt="EviNote" className="product-detail__hero-logo" style={{ '--logo-glow': accentColor }} />
+                    <h1 className="product-detail__hero-title">EviNote</h1>
+                    <span className="product-detail__hero-type" style={{ color: accentColor, borderColor: accentColor + '40', background: accentColor + '15', border: `1px solid ${accentColor}40` }}>
+                        Research Solution
+                    </span>
+                    <p className="product-detail__hero-desc">
+                        A comprehensive electronic lab notebook solution designed to streamline research workflows, manage lab resources, and ensure data security across your entire research organization.
+                    </p>
+                </div>
+            </section>
+
+            {/* Overview */}
+            <section className="product-detail__overview">
+                <div className="container">
+                    <div className="section-header" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                        <h2 style={{ fontSize: '2.2rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                            About <span style={{ color: accentColor }}>EviNote</span>
+                        </h2>
+                    </div>
+                    <div className="product-detail__overview-grid">
+                        {overview.map((item, i) => (
+                            <div key={i} className="product-detail__overview-card">
+                                <span className="product-detail__overview-icon">{item.icon}</span>
+                                <h3>{item.title}</h3>
+                                <p>{item.text}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Features */}
+            <section className="product-detail__features">
+                <div className="container">
+                    <h2 className="product-detail__features-title">
+                        Powerful <span style={{ color: accentColor }}>Features</span>
+                    </h2>
+                    {features.map((feature, i) => (
+                        <div key={i} className={`product-detail__feature ${i % 2 !== 0 ? 'product-detail__feature--reverse' : ''}`}>
+                            <div className="product-detail__feature-video-wrap" style={{ borderColor: accentColor + '20' }}>
+                                <video
+                                    className="product-detail__feature-video"
+                                    controls
+                                    muted
+                                    playsInline
+                                    preload="metadata"
+                                >
+                                    <source src={feature.media.src} type="video/mp4" />
+                                </video>
+                            </div>
+                            <div className="product-detail__feature-content">
+                                <span className="product-detail__feature-num" style={{ color: accentColor }}>Feature {String(i + 1).padStart(2, '0')}</span>
+                                <h3 className="product-detail__feature-title">{feature.title}</h3>
+                                <p className="product-detail__feature-desc">{feature.desc}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Bottom CTA */}
+            <section className="product-detail__cta">
+                <div className="container">
+                    <div className="product-detail__cta-box" style={{ borderColor: accentColor + '20' }}>
+                        <h2>Ready to Modernize Your Research?</h2>
+                        <p>Get started with EviNote and transform how your institution manages research.</p>
+                        <div className="product-detail__cta-buttons">
+                            <Link to="/pricing" className="btn btn-primary btn-large" style={{ background: accentColor }}>
+                                View Pricing
+                            </Link>
+                            <Link to="/contact" className="btn btn-secondary btn-large">
+                                Book a FREE Trial
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    )
+}

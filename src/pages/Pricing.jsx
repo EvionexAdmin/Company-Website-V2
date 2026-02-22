@@ -6,7 +6,7 @@ import './Pricing.css'
 const plans = [
     {
         product: 'Gene Setu',
-        tagColor: '#FF6B6B',
+        tagColor: '#00bafd',
         target: 'For Hospitals & Healthcare Facilities',
         tiers: [
             {
@@ -126,7 +126,7 @@ const plans = [
     },
     {
         product: 'Luminary',
-        tagColor: '#7C5CFF',
+        tagColor: '#ffae00',
         target: 'For Educational Institutions',
         tiers: [
             {

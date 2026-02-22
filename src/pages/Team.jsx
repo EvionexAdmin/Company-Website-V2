@@ -17,14 +17,14 @@ const teamMembers = [
         title: 'Director & Co-Founder',
         bio: 'Technology architect and product strategist with a passion for building scalable solutions. Kedar leads the development of Evionex\'s platforms, focusing on user experience, performance, and security.',
         photo: kedarPhoto,
-        gradient: 'linear-gradient(135deg, #7C5CFF, #6D28D9)',
+        gradient: 'linear-gradient(135deg, #6366f1, #4f46e5)',
     },
     {
         name: 'Mrunal Samant',
         title: 'Director & Co-Founder',
         bio: 'Domain expert in research and education technology. Mrunal shapes the product vision at Evionex, ensuring our solutions address real challenges faced by institutions and researchers across India.',
         photo: mrunalPhoto,
-        gradient: 'linear-gradient(135deg, #FF6B6B, #DC2626)',
+        gradient: 'linear-gradient(135deg, #f472b6, #ec4899)',
     },
 ]
 
@@ -52,7 +52,7 @@ export default function Team() {
                                 background="var(--bg-card-surface)"
                                 borderRadius="var(--radius-xl)"
                                 borderColor="rgba(255,255,255,0.06)"
-                                glareColor={member.gradient.includes('#00D4C8') ? '#00D4C8' : member.gradient.includes('#7C5CFF') ? '#7C5CFF' : '#FF6B6B'}
+                                glareColor={member.gradient.includes('#00D4C8') ? '#00D4C8' : member.gradient.includes('#6366f1') ? '#6366f1' : '#f472b6'}
                                 glareOpacity={0.15}
                                 glareAngle={-30}
                                 transitionDuration={800}

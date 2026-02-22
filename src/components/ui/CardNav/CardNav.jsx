@@ -15,7 +15,9 @@ const CardNav = ({
     buttonTextColor,
     ctaButtonText = 'Get Started',
     onCtaClick,
-    forceClose = false
+    forceClose = false,
+    showCta = true,
+    rightSlot = null
 }) => {
     const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
@@ -171,14 +173,19 @@ const CardNav = ({
                         )}
                     </div>
 
-                    <button
-                        type="button"
-                        className="card-nav-cta-button"
-                        style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
-                        onClick={onCtaClick}
-                    >
-                        {ctaButtonText}
-                    </button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', height: '100%' }}>
+                        {rightSlot}
+                        {showCta && (
+                            <button
+                                type="button"
+                                className="card-nav-cta-button"
+                                style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+                                onClick={onCtaClick}
+                            >
+                                {ctaButtonText}
+                            </button>
+                        )}
+                    </div>
                 </div>
 
                 <div className="card-nav-content" aria-hidden={!isExpanded}>

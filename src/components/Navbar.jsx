@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import CardNav from './ui/CardNav/CardNav'
+import ThemeToggle from './ThemeToggle'
 import evionexLogo from '../assets/images/logo/evionex-logo.png'
 import evionexText from '../assets/images/logo/evionex-text.png'
+import evionexLogoLight from '../assets/images/logo/evionex-logo-light.png'
+import evionexTextLight from '../assets/images/logo/evionex-text-light.png'
+import { useTheme } from '../contexts/ThemeContext'
 import './Navbar.css'
 
-const navItems = [
+const darkNavItems = [
     {
         label: 'Company',
         bgColor: '#0d2137',
@@ -36,10 +40,43 @@ const navItems = [
     },
 ]
 
+const lightNavItems = [
+    {
+        label: 'Company',
+        bgColor: '#c8dff5',
+        textColor: '#0d1e32',
+        links: [
+            { label: 'Home', href: '/', ariaLabel: 'Go to Home page' },
+            { label: 'Who We Are', href: '/who-we-are', ariaLabel: 'About Evionex' },
+            { label: 'Team', href: '/team', ariaLabel: 'Meet the team' },
+        ],
+    },
+    {
+        label: 'Solutions',
+        bgColor: '#bde4ef',
+        textColor: '#082d3e',
+        links: [
+            { label: 'Products', href: '/products', ariaLabel: 'View our products' },
+            { label: 'Pricing', href: '/pricing', ariaLabel: 'View pricing' },
+        ],
+    },
+    {
+        label: 'Connect',
+        bgColor: '#ced6f0',
+        textColor: '#111430',
+        links: [
+            { label: 'Careers', href: '/careers', ariaLabel: 'View open positions' },
+            { label: 'Contact', href: '/contact', ariaLabel: 'Contact us' },
+        ],
+    },
+]
+
 export default function Navbar() {
     const location = useLocation()
     const navigate = useNavigate()
     const [forceClose, setForceClose] = useState(false)
+    const { theme } = useTheme()
+    const isLight = theme === 'light'
 
     // Close the nav menu on every route change
     useEffect(() => {
@@ -67,8 +104,18 @@ export default function Navbar() {
 
     const LogoElement = (
         <Link to="/" className="navbar__logo" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img src={evionexLogo} alt="Evionex Logo" className="navbar__logo-icon" style={{ height: '32px', width: 'auto' }} />
-            <img src={evionexText} alt="Evionex" className="navbar__logo-text" style={{ height: '20px', width: 'auto' }} />
+            <img
+                src={isLight ? evionexLogoLight : evionexLogo}
+                alt="Evionex Logo"
+                className="navbar__logo-icon"
+                style={{ height: '32px', width: 'auto' }}
+            />
+            <img
+                src={isLight ? evionexTextLight : evionexText}
+                alt="Evionex"
+                className="navbar__logo-text"
+                style={{ height: '20px', width: 'auto' }}
+            />
         </Link>
     )
 
@@ -76,12 +123,11 @@ export default function Navbar() {
         <CardNav
             logo={LogoElement}
             logoAlt="Evionex"
-            items={navItems}
-            baseColor="rgba(10, 22, 40, 0.95)"
-            menuColor="#fff"
-            buttonBgColor="#00D4C8"
-            buttonTextColor="#0a1628"
-            onCtaClick={() => navigate('/contact')}
+            items={isLight ? lightNavItems : darkNavItems}
+            baseColor={isLight ? 'rgba(240, 245, 252, 0.98)' : 'rgba(10, 22, 40, 0.95)'}
+            menuColor={isLight ? '#0d1e32' : '#fff'}
+            showCta={false}
+            rightSlot={<ThemeToggle />}
             forceClose={forceClose}
         />
     )

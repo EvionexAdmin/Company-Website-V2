@@ -30,8 +30,7 @@ const products = [
             { title: 'Medication Tracking', desc: 'Track medications and prescriptions with reminders and dosage tracking.', media: { src: '/media/genesetu/medication-tracking.mp4', type: 'video' } },
             { title: 'NutriLogging', desc: 'Track nutrition and diet with AI-powered insights.', media: { src: '/media/genesetu/nutrilogging.mp4', type: 'video' } },
         ],
-        ctaPrimary: 'Request a Demo',
-        ctaSecondary: 'Learn More',
+        learnMorePath: '/products/genesetu',
     },
     {
         id: 'evinote',
@@ -41,33 +40,33 @@ const products = [
         description: 'A comprehensive electronic lab notebook solution designed to streamline research workflows, manage lab resources, and ensure data security across your entire research organization.',
         logo: evinoteIcon,
         features: [
-            { icon: '📓', title: 'Electronic Lab Notebook', desc: 'Digital documentation of experiments with rich media support, templates, and version control.' },
-            { icon: '💰', title: 'Budget Tracking', desc: 'Monitor research grants, expenditures, and allocations with real-time financial dashboards.' },
-            { icon: '📅', title: 'Lab Calendar', desc: 'Coordinate schedules, deadlines, and milestones with integrated lab-wide calendaring.' },
-            { icon: '🔧', title: 'Resource Booking', desc: 'Reserve equipment, lab space, and shared resources with automated conflict detection.' },
-            { icon: '💬', title: 'Lab Chat', desc: 'Secure, real-time communication channels designed for research team collaboration.' },
-            { icon: '🔒', title: 'Data Security', desc: 'End-to-end encryption, audit trails, and compliance with Indian data protection standards.' },
+            { title: 'Electronic Lab Notebook', desc: 'Digital documentation of experiments with rich media support, templates, and version control.', media: { src: '/media/evinote/electronic-lab-notebook.mp4', type: 'video' } },
+            { title: 'Scientific Illustrator', desc: 'Create high-quality scientific illustrations and diagrams with ease.', media: { src: '/media/evinote/scientific-illustrator.mp4', type: 'video' } },
+            { title: 'Resource Management', desc: 'Manage lab resources, equipment, and supplies efficiently.', media: { src: '/media/evinote/equipment-management.mp4', type: 'video' } },
+            { title: 'Lab Duties', desc: 'Manage lab duties and responsibilities with ease.', media: { src: '/media/evinote/lab-duties.mp4', type: 'video' } },
+            { title: 'Budget Tracking', desc: 'Never lose track of your lab expenses again.', media: { src: '/media/evinote/budget-tracking.mp4', type: 'video' } },
+            { title: 'Project Tracker', desc: 'Always stay updated with the latest updates of your project.', media: { src: '/media/evinote/project-tracker.mp4', type: 'video' } },
         ],
-        ctaPrimary: 'Request a Demo',
-        ctaSecondary: 'Watch Demo',
+        learnMorePath: '/products/evinote',
+        demoLink: 'https://youtu.be/KbUlFY_-5qI?si=PrKlyMIIZDdWoIcP',
     },
     {
         id: 'luminary',
         name: 'Luminary',
         type: 'Education Solution',
-        tagColor: '#7C5CFF',
+        tagColor: '#ffae00',
         description: 'An AI-powered learning platform that transforms education through personalized quizzes, intelligent analytics, and collaborative tools designed for modern institutions.',
         logo: luminaryLogo,
         features: [
-            { icon: '📖', title: 'Digital Journals', desc: 'Interactive student journals with AI-assisted note-taking and knowledge organization.' },
-            { icon: '🧩', title: 'AI-Driven Quizzes', desc: 'Adaptive assessments that adjust difficulty based on student performance and learning patterns.' },
-            { icon: '🎤', title: 'Interview Practice', desc: 'AI-powered mock interviews with real-time feedback for placement preparation.' },
-            { icon: '📝', title: 'Assignment Management', desc: 'Streamlined creation, submission, and grading of assignments with plagiarism detection.' },
-            { icon: '📊', title: 'Performance Analytics', desc: 'Comprehensive dashboards tracking student progress, engagement, and learning outcomes.' },
-            { icon: '🤝', title: 'Collaboration Tools', desc: 'Group projects, peer reviews, and discussion forums for collaborative learning.' },
+            { title: 'Digital Journals', desc: 'Interactive student journals with AI-assisted note-taking and knowledge organization.', media: { src: '/media/luminary/add-subjects.mp4', type: 'video' } },
+            { title: 'AI-Driven Quizzes', desc: 'Adaptive assessments that adjust difficulty based on student performance and learning patterns.', media: { src: '/media/luminary/ai-quizzes.mp4', type: 'video' } },
+            { title: 'Interview Practice', desc: 'AI-powered mock interviews with real-time feedback for placement preparation.', media: { src: '/media/luminary/interview-prep.mp4', type: 'video' } },
+            { title: 'Comprehensive Tests', desc: 'Create and take tests with ease.', media: { src: '/media/luminary/conduct-tests.mp4', type: 'video' } },
+            { title: 'Performance Based Leaderboards', desc: 'Track student progress and engagement with real-time leaderboards.', media: { src: '/media/luminary/competitive-leaderboard.mp4', type: 'video' } },
+            { title: 'Competitive Exam Prep', desc: 'Prepare for competitive exams with AI-powered adaptive learning and personalized feedback.', media: { src: '/media/luminary/national-exams-prep.mp4', type: 'video' } },
         ],
-        ctaPrimary: 'Get Started',
-        ctaSecondary: 'Watch Demo',
+        learnMorePath: '/products/luminary',
+        demoLink: 'https://youtu.be/r-hpIGB21W4?si=F9r1VhG7QW0S2tlw',
     },
 ]
 
@@ -139,6 +138,7 @@ export default function Products() {
                                 title: feature.title,
                                 description: feature.desc,
                                 label: feature.icon,
+                                titleColor: product.tagColor,
                                 ...(feature.media && { media: feature.media }),
                             }))}
                             glowColor={hexToRgb(product.tagColor)}
@@ -152,12 +152,20 @@ export default function Products() {
 
                         {/* CTAs */}
                         <div className="product-ctas animate-fade-in-up">
-                            <Link to="/contact" className="btn btn-primary btn-large" style={{ background: product.tagColor }}>
-                                {product.ctaPrimary}
+                            <Link to={product.learnMorePath} className="btn btn-primary btn-large" style={{ background: product.tagColor }}>
+                                Learn More
                             </Link>
-                            <button className="btn btn-secondary btn-large">
-                                {product.ctaSecondary}
-                            </button>
+                            {product.demoLink && (
+                                <a
+                                    href={product.demoLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn btn-secondary btn-large"
+                                    style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                                >
+                                    Watch a Demo
+                                </a>
+                            )}
                         </div>
                     </div>
                 </section>

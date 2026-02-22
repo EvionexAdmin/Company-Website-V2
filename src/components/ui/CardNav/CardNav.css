@@ -207,3 +207,17 @@
         font-size: 15px;
     }
 }
+
+/* Light Mode - CardNav */
+:root.light-mode .card-nav {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+}
+
+:root.light-mode .nav-card-link {
+    color: currentColor;
+}
+
+:root.light-mode .nav-card-link:hover {
+    opacity: 0.65;
+}
