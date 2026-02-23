@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { supabase } from '../lib/supabaseClient'
 import './Contact.css'
 
 export default function Contact() {
@@ -6,21 +7,76 @@ export default function Contact() {
         firstName: '',
         lastName: '',
         email: '',
+        designation: '',
+        phone: '',
         interest: '',
         message: '',
     })
-    const [submitted, setSubmitted] = useState(false)
+    const [submitStatus, setSubmitStatus] = useState({ loading: false, error: null, success: false })
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        // Form submission logic will be added later
-        console.log('Form submitted:', formData)
-        setSubmitted(true)
-        setTimeout(() => setSubmitted(false), 4000)
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email || !emailRegex.test(formData.email)) {
+            alert('Please enter a valid e-mail');
+            return;
+        }
+
+        const phoneRegex = /^\+?[0-9\s\-()]{7,15}$/;
+        if (!formData.phone || !phoneRegex.test(formData.phone)) {
+            alert('Please enter a valid phone number');
+            return;
+        }
+
+        if (!formData.message || formData.message.trim() === '') {
+            alert('Please enter a message');
+            return;
+        }
+
+        if (formData.message.length > 200) {
+            alert('Message cannot exceed 200 characters');
+            return;
+        }
+
+        setSubmitStatus({ loading: true, error: null, success: false })
+
+        try {
+            const { error } = await supabase
+                .from('contact_messages')
+                .insert([
+                    {
+                        first_name: formData.firstName,
+                        last_name: formData.lastName,
+                        email: formData.email,
+                        designation: formData.designation,
+                        phone_number: formData.phone,
+                        interest: formData.interest,
+                        message: formData.message,
+                    }
+                ])
+
+            if (error) throw error
+
+            setSubmitStatus({ loading: false, error: null, success: true })
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                designation: '',
+                phone: '',
+                interest: '',
+                message: '',
+            })
+            setTimeout(() => setSubmitStatus({ loading: false, error: null, success: false }), 4000)
+        } catch (error) {
+            console.error('Error submitting form:', error)
+            setSubmitStatus({ loading: false, error: 'Failed to send message. Please try again later.', success: false })
+        }
     }
 
     return (
@@ -103,14 +159,40 @@ export default function Contact() {
                                     <label className="form-label" htmlFor="email">Email Address</label>
                                     <input
                                         className="form-input"
-                                        type="email"
+                                        type="text"
                                         id="email"
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
                                         placeholder="john@institution.com"
-                                        required
                                     />
+                                </div>
+
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label className="form-label" htmlFor="designation">Designation</label>
+                                        <input
+                                            className="form-input"
+                                            type="text"
+                                            id="designation"
+                                            name="designation"
+                                            value={formData.designation}
+                                            onChange={handleChange}
+                                            placeholder="Director, Principal, etc."
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label" htmlFor="phone">Phone No.</label>
+                                        <input
+                                            className="form-input"
+                                            type="tel"
+                                            id="phone"
+                                            name="phone"
+                                            value={formData.phone}
+                                            onChange={handleChange}
+                                            placeholder="+91 9876543210"
+                                        />
+                                    </div>
                                 </div>
 
                                 <div className="form-group">
@@ -140,13 +222,21 @@ export default function Contact() {
                                         value={formData.message}
                                         onChange={handleChange}
                                         placeholder="Tell us about your institution and how we can help..."
-                                        required
+                                        maxLength={200}
                                     ></textarea>
+                                    <div style={{ textAlign: 'right', fontSize: '0.875rem', color: '#666', marginTop: '4px' }}>
+                                        {formData.message.length}/200
+                                    </div>
                                 </div>
 
-                                <button type="submit" className="btn btn-primary btn-large" style={{ width: '100%' }}>
-                                    {submitted ? '✓ Message Sent!' : 'Send Message'}
+                                <button type="submit" className="btn btn-primary btn-large" style={{ width: '100%' }} disabled={submitStatus.loading}>
+                                    {submitStatus.loading ? 'Sending...' : submitStatus.success ? '✓ Message Sent!' : 'Send Message'}
                                 </button>
+                                {submitStatus.error && (
+                                    <p className="error-message" style={{ color: '#ef4444', marginTop: '10px', textAlign: 'center', fontSize: '0.875rem' }}>
+                                        {submitStatus.error}
+                                    </p>
+                                )}
                             </form>
                         </div>
                     </div>
