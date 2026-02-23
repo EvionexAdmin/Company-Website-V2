@@ -24,7 +24,6 @@ export default function Home() {
                 <div className="hero__bg-glow"></div>
                 <div className="container hero__container">
                     <div className="hero__content animate-fade-in-up">
-                        <span className="tag">AI-Powered Digital Transformation</span>
                         <h1 className="hero-display">
                             Transforming<br />
                             <GradientText

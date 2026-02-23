@@ -7,7 +7,7 @@ export default function Orb({
   hoverIntensity = 0.2,
   rotateOnHover = true,
   forceHoverState = false,
-  backgroundColor = '#000000ff'
+  backgroundColor = '#ffffffff'
 }) {
   const ctnDom = useRef(null);
 
@@ -32,6 +32,7 @@ export default function Orb({
     uniform float rot;
     uniform float hoverIntensity;
     uniform vec3 backgroundColor;
+    uniform float isLightMode;
     varying vec2 vUv;
 
     vec3 rgb2yiq(vec3 c) {
@@ -119,6 +120,10 @@ export default function Orb({
       vec3 color1 = adjustHue(baseColor1, hue);
       vec3 color2 = adjustHue(baseColor2, hue);
       vec3 color3 = adjustHue(baseColor3, hue);
+
+      if (isLightMode > 0.5) {
+        color3 = vec3(0.0, 0.882, 1.0);
+      }
       
       float ang = atan(uv.y, uv.x);
       float len = length(uv);
@@ -206,7 +211,8 @@ export default function Orb({
         hover: { value: 0 },
         rot: { value: 0 },
         hoverIntensity: { value: hoverIntensity },
-        backgroundColor: { value: hexToVec3(backgroundColor) }
+        backgroundColor: { value: hexToVec3(backgroundColor) },
+        isLightMode: { value: 0.0 }
       }
     });
 
@@ -265,6 +271,7 @@ export default function Orb({
       program.uniforms.hue.value = hue;
       program.uniforms.hoverIntensity.value = hoverIntensity;
       program.uniforms.backgroundColor.value = hexToVec3(backgroundColor);
+      program.uniforms.isLightMode.value = document.documentElement.classList.contains('light-mode') ? 1.0 : 0.0;
 
       const effectiveHover = forceHoverState ? 1 : targetHover;
       program.uniforms.hover.value += (effectiveHover - program.uniforms.hover.value) * 0.1;

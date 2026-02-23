@@ -669,7 +669,7 @@ a,
   --bg-dark-navy: #f5f7fa;
   --bg-deep-navy: #eef2f7;
   --bg-slate-blue: #e2e8f0;
-  --bg-card-surface: #ffffff;
+  --bg-card-surface: #ffffffe8;
 
   /* Text Colors */
   --text-primary: #1a202c;
@@ -685,7 +685,7 @@ a,
 
 /* Light mode — Navbar / CardNav */
 :root.light-mode .card-nav-container .card-nav {
-  background-color: rgba(255, 255, 255, 0.92) !important;
+  background-color: rgb(255, 255, 255) !important;
   border-color: rgba(0, 0, 0, 0.08);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
@@ -817,7 +817,7 @@ a,
 
 /* Light mode — Video overlays */
 :root.light-mode .hero__video-overlay {
-  background: rgba(245, 247, 250, 0.75);
+  background: rgba(213, 213, 213, 0.838);
 }
 
 /* Light mode — Page hero */
