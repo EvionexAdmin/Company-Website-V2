@@ -18,7 +18,6 @@ export default function Home() {
                         className="hero__video"
                     >
                         <source src="/hero-bg.mp4" type="video/mp4" />
-                        <source src="/hero-bg.mov" type="video/quicktime" />
                     </video>
                     <div className="hero__video-overlay"></div>
                 </div>
