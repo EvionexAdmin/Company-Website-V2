@@ -173,6 +173,23 @@
     margin: 0 auto var(--space-xl);
 }
 
+/* Razorpay Payment Button */
+.razorpay-btn-container {
+    width: 100%;
+    text-align: center;
+}
+
+.razorpay-btn-container form {
+    width: 100%;
+    text-align: center;
+}
+
+.razorpay-btn-container .razorpay-payment-button {
+    width: 100% !important;
+    margin: 0 auto !important;
+    display: block !important;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
     .pricing-grid {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { initiatePayment } from '../utils/razorpay'
 import './Pricing.css'
@@ -10,38 +10,39 @@ const plans = [
         target: 'For Hospitals & Healthcare Facilities',
         tiers: [
             {
-                name: 'Clinic',
-                price: '19,999',
-                priceAmount: 1999900,
-                period: '/month',
-                description: 'For small clinics and diagnostic centers',
+                name: 'Gentic Testing Package',
+                razorpayButtonId: 'pl_SKHB6XogP0LeER',
+                price: '16,999',
+                priceAmount: 1699900,
+                period: '',
+                description: 'For Individual',
                 features: [
-                    'Up to 500 patient records',
+                    'Expert Personalized Counselling',
                     'WES Data Analysis',
                     'Neonatal Screening',
-                    'Basic Life Records',
-                    'Standard reports',
-                    'Email Support',
-                ],
-                highlighted: false,
-            },
-            {
-                name: 'Hospital',
-                price: '49,999',
-                priceAmount: 4999900,
-                period: '/month',
-                description: 'Complete solution for hospitals',
-                features: [
-                    'Up to 5,000 patient records',
-                    'All Clinic features',
-                    'AI Diagnostics',
-                    'Hospital Integration',
-                    'Advanced Analytics',
-                    'HIPAA & DISHA Compliance',
-                    'Priority Support',
-                    'Data Export & API',
+                    '6,000+ Disease Panel',
+                    '24/7 Support',
+                    'Geneticist Certified Report',
+                    'Gene Setu+ Platform Access upto 1 year',
                 ],
                 highlighted: true,
+            },
+            {
+                name: 'Blood Report Analysis',
+                price: 'FREE',
+                priceAmount: 0,
+                period: '(Coming Soon)',
+                description: 'Advance Blood Report Analysis With our State of the Art Expert AI Models',
+                features: [
+                    'Advanced AI/ML Report Analysis',
+                    'Comprehensive Biomarker Insights',
+                    'AI-Powered Health Diagnostics',
+                    'Advanced Trend Analytics',
+                    'HIPAA & DISHA Compliance',
+                    'Gene Setu App Integration',
+
+                ],
+                highlighted: false,
             },
             {
                 name: 'Health Network',
@@ -186,6 +187,37 @@ const plans = [
     },
 ]
 
+function RazorpayButton({ buttonId, highlighted, tagColor }) {
+    const containerRef = useRef(null)
+
+    useEffect(() => {
+        if (!containerRef.current) return
+        // Clear any previous content
+        containerRef.current.innerHTML = ''
+        const form = document.createElement('form')
+        const script = document.createElement('script')
+        script.src = 'https://checkout.razorpay.com/v1/payment-button.js'
+        script.setAttribute('data-payment_button_id', buttonId)
+        script.async = true
+        form.appendChild(script)
+        containerRef.current.appendChild(form)
+
+        return () => {
+            if (containerRef.current) {
+                containerRef.current.innerHTML = ''
+            }
+        }
+    }, [buttonId])
+
+    return (
+        <div
+            ref={containerRef}
+            className={`razorpay-btn-container ${highlighted ? 'razorpay-btn-highlighted' : ''}`}
+            style={highlighted ? { '--rp-accent': tagColor } : {}}
+        />
+    )
+}
+
 export default function Pricing() {
     const [activeProduct, setActiveProduct] = useState(0)
 
@@ -277,13 +309,21 @@ export default function Pricing() {
                                         </li>
                                     ))}
                                 </ul>
-                                <button
-                                    className={`btn ${tier.highlighted ? 'btn-primary' : 'btn-secondary'} pricing-card__btn`}
-                                    style={tier.highlighted ? { background: currentPlan.tagColor } : {}}
-                                    onClick={() => handleSubscribe(tier.name, tier.priceAmount, currentPlan.product)}
-                                >
-                                    {tier.isEnterprise ? 'Contact Sales' : 'Subscribe Now'}
-                                </button>
+                                {tier.razorpayButtonId ? (
+                                    <RazorpayButton
+                                        buttonId={tier.razorpayButtonId}
+                                        highlighted={tier.highlighted}
+                                        tagColor={currentPlan.tagColor}
+                                    />
+                                ) : (
+                                    <button
+                                        className={`btn ${tier.highlighted ? 'btn-primary' : 'btn-secondary'} pricing-card__btn`}
+                                        style={tier.highlighted ? { background: currentPlan.tagColor } : {}}
+                                        onClick={() => handleSubscribe(tier.name, tier.priceAmount, currentPlan.product)}
+                                    >
+                                        {tier.isEnterprise ? 'Contact Sales' : 'Continue'}
+                                    </button>
+                                )}
                             </div>
                         ))}
                     </div>

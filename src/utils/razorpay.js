@@ -14,10 +14,10 @@
  */
 
 // Replace with your actual Razorpay Key ID when ready
-const RAZORPAY_KEY_ID = 'rzp_test_XXXXXXXXXX'
+const RAZORPAY_KEY_ID = ''
 
 // Set to true when Razorpay is properly configured
-const RAZORPAY_ENABLED = false
+const RAZORPAY_ENABLED = true
 
 /**
  * Load Razorpay checkout script dynamically
