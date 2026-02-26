@@ -86,7 +86,7 @@ export default function Contact() {
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">Contact Us</span>
                         <h1>Get in <span className="text-gradient">Touch</span></h1>
-                        <p>We'd love to hear from you. Let's discuss how Evionex can transform your institution.</p>
+                        <p>We'd love to hear from you. Let's discuss how Evionex can transform your life.</p>
                     </div>
                 </div>
             </section>
@@ -101,7 +101,7 @@ export default function Contact() {
                                     <div className="feature-icon">📍</div>
                                     <div>
                                         <h4>Registered Office</h4>
-                                        <p>Evionex Private Limited<br />Mumbai, Maharashtra, India</p>
+                                        <p>Evionex Private Limited<br />Pune, Maharashtra, India</p>
                                     </div>
                                 </div>
 
@@ -136,7 +136,7 @@ export default function Contact() {
                                             name="firstName"
                                             value={formData.firstName}
                                             onChange={handleChange}
-                                            placeholder="John"
+                                            placeholder="Your First Name"
                                             required
                                         />
                                     </div>
@@ -149,7 +149,7 @@ export default function Contact() {
                                             name="lastName"
                                             value={formData.lastName}
                                             onChange={handleChange}
-                                            placeholder="Doe"
+                                            placeholder="Your Surname"
                                             required
                                         />
                                     </div>
@@ -164,7 +164,7 @@ export default function Contact() {
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        placeholder="john@institution.com"
+                                        placeholder="Please enter your Email Address"
                                     />
                                 </div>
 
@@ -178,7 +178,7 @@ export default function Contact() {
                                             name="designation"
                                             value={formData.designation}
                                             onChange={handleChange}
-                                            placeholder="Director, Principal, etc."
+                                            placeholder="Parent, Director, Teacher, etc."
                                         />
                                     </div>
                                     <div className="form-group">
@@ -190,7 +190,7 @@ export default function Contact() {
                                             name="phone"
                                             value={formData.phone}
                                             onChange={handleChange}
-                                            placeholder="+91 9876543210"
+                                            placeholder="Enter your Phone Number"
                                         />
                                     </div>
                                 </div>
@@ -221,7 +221,7 @@ export default function Contact() {
                                         name="message"
                                         value={formData.message}
                                         onChange={handleChange}
-                                        placeholder="Tell us about your institution and how we can help..."
+                                        placeholder="Tell us about your needs and how we can help..."
                                         maxLength={200}
                                     ></textarea>
                                     <div style={{ textAlign: 'right', fontSize: '0.875rem', color: '#666', marginTop: '4px' }}>

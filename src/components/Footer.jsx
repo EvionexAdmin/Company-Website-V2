@@ -21,7 +21,7 @@ export default function Footer() {
                             <img src={isLight ? evionexTextLight : evionexText} alt="Evionex" style={{ height: '18px', width: 'auto' }} />
                         </Link>
                         <p className="footer__tagline">
-                            Transforming Research & Education through AI-powered digital solutions.
+                            Transforming your life through relevant AI-powered digital solutions.
                         </p>
                         <div className="footer__socials">
                             <a href="https://www.linkedin.com/company/evionex/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">

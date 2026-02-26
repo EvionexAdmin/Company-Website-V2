@@ -35,8 +35,7 @@ export default function Home() {
                             </GradientText>
                         </h1>
                         <p className="hero__subtitle">
-                            Empowering institutions with intelligent solutions that streamline research workflows,
-                            enhance learning experiences, and revolutionize healthcare data management.
+                            Strengthening Research, Accelerating Education and Securing Families in the era of Artificial Intelligence.
                         </p>
                         <div className="btn-group" style={{ marginBottom: '3rem' }}>
                             <StarBorder as="div" color="#00D4C8" speed="5s" className="star-cta-wrapper">
@@ -70,7 +69,7 @@ export default function Home() {
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">Why Evionex</span>
                         <h1>The Evionex <span className="text-gradient">Advantage</span></h1>
-                        <p>Cutting-edge solutions designed to transform how institutions operate</p>
+                        <p>Bringing state-of-the-art solutions to your life</p>
                     </div>
 
                     <div className="grid-3">
@@ -115,19 +114,19 @@ export default function Home() {
                             {
                                 name: 'EviNote',
                                 type: 'Research Solution',
-                                description: 'A comprehensive electronic lab notebook that transforms how researchers document, collaborate, and manage laboratory workflows.',
+                                description: 'Not your ordinary ELN, EviNote is a complete end-to-end Laboratory Management Platform with the power of Artificial Intelligence.',
                                 color: '#00D4C8'
                             },
                             {
                                 name: 'Luminary',
                                 type: 'Education Solution',
-                                description: 'An AI-powered learning platform that personalizes education through intelligent quizzes, analytics, and collaborative tools.',
+                                description: 'World\'s first AI-powered Learning Enhancement System (AILES), built in India for universities everywhere.',
                                 color: '#ffae00'
                             },
                             {
                                 name: 'Gene Setu',
                                 type: 'Healthcare Solution',
-                                description: 'AI-enabled Electronic Health Record platform leveraging Whole Exome Sequencing to analyze 7,000+ diseases in newborn and prenatal infants.',
+                                description: '6000+ Diseases, Nutrigenomic and Pharmacogenomic Profile, all through a single test, and that\'s just the beginning.',
                                 color: '#00bafd'
                             }
                         ].map((product, i) => (
@@ -154,7 +153,7 @@ export default function Home() {
             <section className="section cta-section">
                 <div className="container">
                     <div className="cta-box">
-                        <h2>Ready to Transform Your Institution?</h2>
+                        <h2>Ready to Transform Your Life?</h2>
                         <p>Partner with Evionex and experience the future of research, education, and healthcare technology.</p>
                         <div className="btn-group" style={{ justifyContent: 'center' }}>
                             <Link to="/contact" className="btn btn-primary btn-large">Get Started Today</Link>
