@@ -55,11 +55,103 @@
 }
 
 .product-detail__hero-desc {
-    max-width: 700px;
+    max-width: 720px;
     margin: 0 auto;
     color: var(--text-secondary);
     font-size: 1.15rem;
     line-height: 1.7;
+}
+
+/* Hero CTA Buttons — Gene Setu specific */
+.product-detail__hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+/* Trust Bar — Gene Setu specific */
+.product-detail__trust-bar {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.product-detail__trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.product-detail__trust-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+/* Overview Card Link — Gene Setu specific */
+.product-detail__card-link {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: opacity 0.2s ease;
+}
+
+.product-detail__card-link:hover {
+    opacity: 0.8;
+}
+
+/* FAQ Doctor Partner Block — Gene Setu specific */
+.product-detail__faq-doctor-block {
+    background: rgba(0, 186, 253, 0.04);
+    border: 1px solid rgba(0, 186, 253, 0.12);
+    border-radius: var(--radius-xl);
+    padding: 2rem 2.5rem;
+    text-align: center;
+}
+
+.product-detail__faq-label--doctor {
+    margin-bottom: 0.5rem;
+}
+
+.product-detail__faq-doctor-text {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* CTA Micro Trust — Gene Setu specific */
+.product-detail__cta-micro-trust {
+    margin-top: 1.25rem;
+    font-size: 0.8rem !important;
+    color: var(--text-muted) !important;
+    letter-spacing: 0.02em;
+    margin-bottom: 0 !important;
+}
+
+/* Light mode — Gene Setu specific elements */
+:root.light-mode .product-detail__trust-bar {
+    border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+:root.light-mode .product-detail__faq-doctor-block {
+    background: rgba(0, 186, 253, 0.03);
+    border-color: rgba(0, 186, 253, 0.15);
 }
 
 /* Overview Section */
@@ -469,5 +561,27 @@
     .product-detail__faq-answer {
         padding: 0 1.25rem 1rem 1.25rem;
         font-size: 0.9rem;
+    }
+
+    .product-detail__hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-detail__hero-buttons .btn {
+        width: 100%;
+        max-width: 340px;
+    }
+
+    .product-detail__trust-bar {
+        gap: 0.75rem 1.25rem;
+    }
+
+    .product-detail__trust-item {
+        font-size: 0.7rem;
+    }
+
+    .product-detail__faq-doctor-block {
+        padding: 1.5rem 1.25rem;
     }
 }

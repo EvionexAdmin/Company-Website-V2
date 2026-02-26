@@ -7,34 +7,44 @@ const accentColor = '#00bafd'
 
 const overview = [
     {
-        icon: '🧬',
-        title: 'What is Gene Setu?',
-        text: 'Gene Setu is an AI-enabled Electronic Health Record (EHR) platform that leverages Whole Exome Sequencing (WES) data to analyze over 6,000 genetic diseases in newborns, prenatal infants, and adults. It serves as a complete life-record management system storing, analyzing, and surfacing actionable health insights from birth through adulthood.'
+        icon: '👶',
+        title: 'What Does Gene Setu Do?',
+        text: 'Gene Setu is a platform that screens your baby\'s DNA to check for over 6,000 inherited conditions from metabolic disorders to rare genetic diseases using a simple sample collected from your newborn. You get a clear, certified report reviewed by a human geneticist.'
     },
     {
         icon: '💡',
-        title: 'Why did we build Gene Setu?',
-        text: 'India diagnoses over 1.7 million children with birth defects annually, yet early genetic screening remains inaccessible for the vast majority. We built Gene Setu to bridge the gap between genomic science and everyday healthcare giving hospitals an affordable, AI-powered tool that detects genetic conditions early, tracks biomarkers lifelong, and empowers clinicians with predictive diagnostics.'
+        title: 'Why Early Screening Matters',
+        text: 'Over 1.7 million children in India are born with genetic conditions every year yet most are diagnosed years too late. Early detection means early action. Gene Setu puts that power in your hands from day one.'
     },
     {
-        icon: '🏥',
-        title: 'Who is it for?',
-        text: 'Gene Setu is designed for hospitals, diagnostic centers, neonatal intensive care units (NICUs), pediatric clinics, and public health programs. It is purpose-built for healthcare institutions in India and emerging markets looking to integrate genomic screening into standard patient care workflows.'
+        icon: '🏠',
+        title: 'How Does It Work?',
+        text: 'Order online. A certified technician visits your home to collect a small sample. Your results reviewed by a geneticist are delivered within 21 working days, along with 1 year of access to the Gene Setu health platform.'
     },
     {
-        icon: '🌍',
-        title: 'Total Addressable Market',
-        text: 'The global EHR market is valued at over $29 billion and is projected to reach $47 billion by 2030. The clinical genomics market adds another $9 billion globally. In India alone, the digital health market is expected to reach $37 billion by 2030, driven by government initiatives like the Ayushman Bharat Digital Mission and rising adoption of AI in diagnostics.'
+        icon: '🤝',
+        title: 'Are You a Doctor or Clinic?',
+        text: 'Gene Setu is also built for pediatricians, OB-GYNs, and neonatal clinics who want to offer genomic screening to their patients. Partner with us to integrate Gene Setu into your care workflow.',
+        link: { label: 'Learn about our partner program →', to: '/contact' }
     },
 ]
 
 const features = [
-    { title: 'WES Data Analysis', desc: 'Gene Setu processes Whole Exome Sequencing data to screen for over 6,000 genetic conditions in a single test. The platform ingests raw sequencing data, runs variant calling pipelines, and surfaces clinically relevant mutations enabling doctors to detect hereditary diseases, carrier status, and pharmacogenomic markers without needing bioinformatics expertise.', media: { src: '/media/genesetu/wes-results.mp4', type: 'video' } },
-    { title: 'Biomarker Tracking', desc: 'Continuously monitor patient biomarkers throughout their lifetime. Gene Setu tracks lab values, vital signs, and genetic markers over time, generating trend charts and automated alerts when values drift outside healthy ranges. This longitudinal view helps clinicians catch developing conditions before they become critical.', media: { src: '/media/genesetu/biomarker-tracking.mp4', type: 'video' } },
-    { title: 'Life Record Management', desc: 'Maintain a complete, unified health record from birth through life. Gene Setu consolidates prescriptions, lab results, imaging, vaccinations, and genetic data into a single timeline. Records are securely stored and instantly accessible across departments, enabling seamless continuity of care.', media: { src: '/media/genesetu/ehr-repository.jpeg', type: 'image' } },
-    { title: 'AI Diagnostics', desc: 'Machine learning models trained on millions of clinical data points power Gene Setu\'s predictive diagnostics engine. The system identifies early disease patterns, suggests differential diagnoses, and flags high-risk patients supporting clinicians with evidence-based decision-making in real time.', media: { src: '/media/genesetu/live-diagnostics.mp4', type: 'video' } },
-    { title: 'Medication Tracking', desc: 'Track every prescription across a patient\'s care journey with automatic reminders, dosage schedules, drug-interaction warnings, and refill notifications. Gene Setu ensures medication adherence while alerting physicians to potential pharmacogenomic conflicts identified through the patient\'s genetic profile.', media: { src: '/media/genesetu/medication-tracking.mp4', type: 'video' } },
-    { title: 'NutriLogging', desc: 'Track nutrition and dietary patterns with AI-powered insights. Patients can log meals while the system analyzes macro and micronutrient intake against their genetic profile and health objectives. Clinicians receive nutritional summaries that inform diet-related treatment plans and wellness recommendations.', media: { src: '/media/genesetu/nutrilogging.mp4', type: 'video' } },
+    { title: 'Screen for 6,000+ Conditions in One Test', desc: 'A single DNA sample from your baby screens for over 6,000 inherited conditions metabolic, neurological, cardiac, and more. No repeat tests. No guesswork. Results are reviewed by a certified geneticist and surfaced in plain language.', media: { src: '/media/genesetu/wes-results.mp4', type: 'video' } },
+    { title: 'Know When Something Is Off Before It Becomes Serious', desc: 'Gene Setu tracks your baby\'s lab values, growth markers, and vital signs over time. Automated alerts notify you when anything drifts outside the healthy range, so you and your doctor can act early.', media: { src: '/media/genesetu/biomarker-tracking.mp4', type: 'video' } },
+    { title: 'One Place for Your Baby\'s Entire Health Story', desc: 'Vaccinations, prescriptions, lab reports, genetic data all in one secure timeline from birth. Accessible instantly from any device, and shareable with any doctor in seconds.', media: { src: '/media/genesetu/ehr-repository.jpeg', type: 'image' } },
+    { title: 'AI That Supports Your Doctor, Not Replaces Them', desc: 'Our AI flags early risk patterns and suggests possible conditions based on your baby\'s data giving your doctor a head start. All findings are reviewed by clinicians before reaching you.', media: { src: '/media/genesetu/live-diagnostics.mp4', type: 'video' } },
+    { title: 'Never Miss a Dose or a Dangerous Interaction', desc: 'Log every medication your baby is prescribed. Gene Setu sends reminders, tracks dosage history, and cross-checks against your baby\'s genetic profile to flag any pharmacogenomic risks.', media: { src: '/media/genesetu/medication-tracking.mp4', type: 'video' } },
+    { title: 'Feed Your Baby Right Backed by Their DNA', desc: 'Log meals and feeding patterns and let Gene Setu\'s AI analyze nutrient intake against your baby\'s genetic profile and health needs. Get personalised dietary guidance informed by real biology.', media: { src: '/media/genesetu/nutrilogging.mp4', type: 'video' } },
+]
+
+const featureLabels = [
+    'WES Data Analysis',
+    'Biomarker Tracking',
+    'Life Record Management',
+    'AI Diagnostics',
+    'Medication Tracking',
+    'NutriLogging',
 ]
 
 const faqCategories = [
@@ -168,12 +178,27 @@ const faqCategories = [
     },
 ]
 
+const trustBarItems = [
+    { icon: '🏥', label: 'NABL-Accredited Labs' },
+    { icon: '📋', label: 'Geneticist-Certified Reports' },
+    { icon: '🔒', label: 'DISHA Compliant' },
+    { icon: '🧬', label: '6,000+ Diseases Screened' },
+]
+
 export default function GeneSetuDetail() {
     const [openFaqIndex, setOpenFaqIndex] = useState(null)
 
     const toggleFaq = (categoryIdx, faqIdx) => {
         const key = `${categoryIdx}-${faqIdx}`
         setOpenFaqIndex(prev => prev === key ? null : key)
+    }
+
+    const scrollToFeatures = (e) => {
+        e.preventDefault()
+        const featuresSection = document.querySelector('.product-detail__features')
+        if (featuresSection) {
+            featuresSection.scrollIntoView({ behavior: 'smooth' })
+        }
     }
 
     return (
@@ -187,8 +212,28 @@ export default function GeneSetuDetail() {
                         Healthcare Solution
                     </span>
                     <p className="product-detail__hero-desc">
-                        An AI-enabled Electronic Health Record platform that leverages Whole Exome Sequencing data to analyze 6,000+ diseases in newborn, prenatal infants and adults, along with maintaining their complete life records.
+                        Give your baby the most complete health start possible. We screen your newborn for 6,000+ genetic conditions using advanced DNA analysis and keep their complete health record safe for life.
                     </p>
+
+                    {/* CTA Buttons */}
+                    <div className="product-detail__hero-buttons">
+                        <Link to="/pricing" className="btn btn-primary btn-large" style={{ background: accentColor }}>
+                            I'm Interested
+                        </Link>
+                        <a href="#features" onClick={scrollToFeatures} className="btn btn-secondary btn-large">
+                            See How It Works ↓
+                        </a>
+                    </div>
+
+                    {/* Trust Bar */}
+                    <div className="product-detail__trust-bar">
+                        {trustBarItems.map((item, i) => (
+                            <span key={i} className="product-detail__trust-item">
+                                <span className="product-detail__trust-icon">{item.icon}</span>
+                                {item.label}
+                            </span>
+                        ))}
+                    </div>
                 </div>
             </section>
 
@@ -206,6 +251,11 @@ export default function GeneSetuDetail() {
                                 <span className="product-detail__overview-icon">{item.icon}</span>
                                 <h3>{item.title}</h3>
                                 <p>{item.text}</p>
+                                {item.link && (
+                                    <Link to={item.link.to} className="product-detail__card-link" style={{ color: accentColor }}>
+                                        {item.link.label}
+                                    </Link>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -213,10 +263,10 @@ export default function GeneSetuDetail() {
             </section>
 
             {/* Features */}
-            <section className="product-detail__features">
+            <section className="product-detail__features" id="features-section">
                 <div className="container">
                     <h2 className="product-detail__features-title">
-                        Powerful <span style={{ color: accentColor }}>Features</span>
+                        Everything Gene Setu Does <span style={{ color: accentColor }}>For Your Baby</span>
                     </h2>
                     {features.map((feature, i) => (
                         <div key={i} className={`product-detail__feature ${i % 2 !== 0 ? 'product-detail__feature--reverse' : ''}`}>
@@ -236,7 +286,7 @@ export default function GeneSetuDetail() {
                                 )}
                             </div>
                             <div className="product-detail__feature-content">
-                                <span className="product-detail__feature-num" style={{ color: accentColor }}>Feature {String(i + 1).padStart(2, '0')}</span>
+                                <span className="product-detail__feature-num" style={{ color: accentColor }}>Feature {String(i + 1).padStart(2, '0')} {featureLabels[i]}</span>
                                 <h3 className="product-detail__feature-title">{feature.title}</h3>
                                 <p className="product-detail__feature-desc">{feature.desc}</p>
                             </div>
@@ -249,12 +299,12 @@ export default function GeneSetuDetail() {
             <section className="product-detail__faq">
                 <div className="container">
                     <div className="product-detail__faq-header">
-                        <span className="product-detail__faq-label" style={{ color: accentColor }}>Have Questions?</span>
+                        <span className="product-detail__faq-label" style={{ color: accentColor }}>For Parents</span>
                         <h2 className="product-detail__faq-title">
                             Frequently Asked <span style={{ color: accentColor }}>Questions</span>
                         </h2>
                         <p className="product-detail__faq-subtitle">
-                            Everything you need to know about the Gene Setu Genetic Testing Package (₹16,999). We've answered the most common questions from parents just like you.
+                            Everything you need to know about the Gene Setu Genetic Testing Package. We've answered the most common questions from parents just like you.
                         </p>
                     </div>
 
@@ -301,22 +351,15 @@ export default function GeneSetuDetail() {
                                 </div>
                             </div>
                         ))}
-                    </div>
-                </div>
-            </section>
 
-            {/* Bottom CTA */}
-            <section className="product-detail__cta">
-                <div className="container">
-                    <div className="product-detail__cta-box" style={{ borderColor: accentColor + '20' }}>
-                        <h2>Ready to Transform Your Healthcare?</h2>
-                        <p>Get started with Gene Setu and bring genomic intelligence to your patients.</p>
-                        <div className="product-detail__cta-buttons">
-                            <Link to="/pricing" className="btn btn-primary btn-large" style={{ background: accentColor }}>
-                                View Pricing
-                            </Link>
-                            <Link to="/contact" className="btn btn-secondary btn-large">
-                                Book a FREE Trial
+                        {/* FOR DOCTORS Partner CTA Block */}
+                        <div className="product-detail__faq-doctor-block">
+                            <span className="product-detail__faq-label product-detail__faq-label--doctor" style={{ color: accentColor }}>For Doctors</span>
+                            <p className="product-detail__faq-doctor-text">
+                                Are you a clinician or hospital looking to integrate Gene Setu? Visit our partner program page.
+                            </p>
+                            <Link to="/contact" className="btn btn-primary" style={{ background: accentColor, fontSize: '0.95rem', padding: '0.7rem 1.75rem' }}>
+                                Partner With Us →
                             </Link>
                         </div>
                     </div>
