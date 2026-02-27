@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { initiatePayment } from '../utils/razorpay'
 import './Pricing.css'
 
@@ -7,21 +7,23 @@ const plans = [
     {
         product: 'Gene Setu',
         tagColor: '#00bafd',
-        target: 'For Hospitals & Healthcare Facilities',
+        target: 'For Individual, Families & Healthcare Providers',
         tiers: [
             {
                 name: 'Gentic Testing Package',
-                razorpayButtonId: 'pl_SKHB6XogP0LeER',
-                price: '16,999',
-                priceAmount: 1699900,
+                price: '18,000',
+                originalPrice: '25,000',
+                priceAmount: 1800000,
                 period: '',
-                description: 'For Individual',
+                description: 'One Package, life long benefits',
                 features: [
                     'Expert Personalized Counselling',
-                    'WES Data Analysis',
-                    'Neonatal Screening',
+                    'In-depth WES Data Analysis',
+                    'Neonatal and Adult Screening',
                     '6,000+ Disease Panel',
-                    '24/7 Support',
+                    'Nutrigenomic Profile',
+                    'Pharmacogenomic Profile',
+                    'Chronic Disease Risk Prediction',
                     'Geneticist Certified Report',
                     'Gene Setu+ Platform Access upto 1 year',
                 ],
@@ -49,7 +51,7 @@ const plans = [
                 price: 'Custom',
                 priceAmount: 0,
                 period: '',
-                description: 'For hospital chains and health networks',
+                description: 'For hospital chains and clinics',
                 features: [
                     'Unlimited patient records',
                     'All Hospital features',
@@ -187,54 +189,35 @@ const plans = [
     },
 ]
 
-function RazorpayButton({ buttonId, highlighted, tagColor }) {
-    const containerRef = useRef(null)
-
-    useEffect(() => {
-        if (!containerRef.current) return
-        // Clear any previous content
-        containerRef.current.innerHTML = ''
-        const form = document.createElement('form')
-        const script = document.createElement('script')
-        script.src = 'https://checkout.razorpay.com/v1/payment-button.js'
-        script.setAttribute('data-payment_button_id', buttonId)
-        script.async = true
-        form.appendChild(script)
-        containerRef.current.appendChild(form)
-
-        return () => {
-            if (containerRef.current) {
-                containerRef.current.innerHTML = ''
-            }
-        }
-    }, [buttonId])
-
-    return (
-        <div
-            ref={containerRef}
-            className={`razorpay-btn-container ${highlighted ? 'razorpay-btn-highlighted' : ''}`}
-            style={highlighted ? { '--rp-accent': tagColor } : {}}
-        />
-    )
-}
 
 export default function Pricing() {
     const [activeProduct, setActiveProduct] = useState(0)
 
-    const handleSubscribe = (tierName, priceAmount, productName) => {
-        if (priceAmount === 0) {
-            // Enterprise - redirect to contact
-            window.location.hash = '/contact'
+    const navigate = useNavigate()
+
+    const handlePayOrQuote = (tierName, priceAmount, productName, isEnterprise) => {
+        // Enterprise tiers and non-Gene Setu products -> contact page
+        if (isEnterprise || productName !== 'Gene Setu') {
+            navigate('/contact')
             return
         }
+
+        // Gene Setu one-time payment via Razorpay
         initiatePayment({
             planName: `${productName} - ${tierName}`,
             amount: priceAmount,
             onSuccess: (response) => {
-                alert('Payment successful! Your subscription is now active.')
+                alert(
+                    `✅ Payment Successful!\n\n` +
+                    `Your ${tierName} plan for ${productName} is now active.\n` +
+                    `Payment ID: ${response.razorpay_payment_id}\n\n` +
+                    `Our team will reach out to you shortly with onboarding details.`
+                )
             },
             onFailure: (error) => {
-                console.log('Payment failed or cancelled:', error)
+                if (error.message !== 'Payment cancelled') {
+                    console.error('Payment failed:', error)
+                }
             },
         })
     }
@@ -293,8 +276,16 @@ export default function Pricing() {
                                 <div className="pricing-card__price">
                                     {tier.price === 'Custom' ? (
                                         <span className="pricing-card__amount">Custom</span>
+                                    ) : tier.price === 'FREE' ? (
+                                        <>
+                                            <span className="pricing-card__amount">FREE</span>
+                                            <span className="pricing-card__period">{tier.period}</span>
+                                        </>
                                     ) : (
                                         <>
+                                            {tier.originalPrice && (
+                                                <span className="pricing-card__original-price">₹{tier.originalPrice}</span>
+                                            )}
                                             <span className="pricing-card__currency">₹</span>
                                             <span className="pricing-card__amount">{tier.price}</span>
                                             <span className="pricing-card__period">{tier.period}</span>
@@ -309,21 +300,17 @@ export default function Pricing() {
                                         </li>
                                     ))}
                                 </ul>
-                                {tier.razorpayButtonId ? (
-                                    <RazorpayButton
-                                        buttonId={tier.razorpayButtonId}
-                                        highlighted={tier.highlighted}
-                                        tagColor={currentPlan.tagColor}
-                                    />
-                                ) : (
-                                    <button
-                                        className={`btn ${tier.highlighted ? 'btn-primary' : 'btn-secondary'} pricing-card__btn`}
-                                        style={tier.highlighted ? { background: currentPlan.tagColor } : {}}
-                                        onClick={() => handleSubscribe(tier.name, tier.priceAmount, currentPlan.product)}
-                                    >
-                                        {tier.isEnterprise ? 'Contact Sales' : 'Continue'}
-                                    </button>
-                                )}
+                                <button
+                                    className={`btn ${tier.highlighted ? 'btn-primary' : 'btn-secondary'} pricing-card__btn`}
+                                    style={tier.highlighted ? { background: currentPlan.tagColor } : {}}
+                                    onClick={() => handlePayOrQuote(tier.name, tier.priceAmount, currentPlan.product, tier.isEnterprise)}
+                                >
+                                    {tier.isEnterprise
+                                        ? 'Contact Sales'
+                                        : currentPlan.product === 'Gene Setu'
+                                            ? 'Pay Now'
+                                            : 'Get Quote'}
+                                </button>
                             </div>
                         ))}
                     </div>

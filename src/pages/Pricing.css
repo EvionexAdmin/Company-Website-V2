@@ -129,6 +129,14 @@
     color: var(--text-muted);
 }
 
+.pricing-card__original-price {
+    font-size: var(--text-h3);
+    color: var(--text-muted);
+    text-decoration: line-through;
+    margin-right: 0.5rem;
+    opacity: 0.6;
+}
+
 /* Features */
 .pricing-card__features {
     list-style: none;
@@ -171,23 +179,6 @@
     font-size: var(--text-base);
     max-width: 550px;
     margin: 0 auto var(--space-xl);
-}
-
-/* Razorpay Payment Button */
-.razorpay-btn-container {
-    width: 100%;
-    text-align: center;
-}
-
-.razorpay-btn-container form {
-    width: 100%;
-    text-align: center;
-}
-
-.razorpay-btn-container .razorpay-payment-button {
-    width: 100% !important;
-    margin: 0 auto !important;
-    display: block !important;
 }
 
 /* Responsive */

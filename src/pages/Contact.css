@@ -1,3 +1,41 @@
+/* Contact Hero with Background Image */
+.contact-hero {
+    position: relative;
+    padding: 8rem 0 4rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 340px;
+}
+
+.contact-hero__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.contact-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(10, 12, 28, 0.75) 0%,
+            rgba(10, 12, 28, 0.88) 100%);
+}
+
+.contact-hero .container {
+    position: relative;
+    z-index: 1;
+}
+
+.light-mode .contact-hero__overlay {
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0.55) 0%,
+            rgba(255, 255, 255, 0.72) 100%);
+}
+
 .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1.5fr;

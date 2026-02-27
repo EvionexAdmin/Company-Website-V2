@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import doctorBg from '../assets/doctor-handshake.jpg'
 import './Contact.css'
 
 export default function Contact() {
@@ -81,7 +82,9 @@ export default function Contact() {
 
     return (
         <div className="contact-page">
-            <section className="page-hero">
+            <section className="contact-hero">
+                <div className="contact-hero__bg" style={{ backgroundImage: `url(${doctorBg})` }}></div>
+                <div className="contact-hero__overlay"></div>
                 <div className="container">
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">Contact Us</span>
