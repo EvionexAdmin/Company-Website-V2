@@ -20,7 +20,7 @@ const products = [
         name: 'Gene Setu',
         type: 'Healthcare Solution',
         tagColor: '#00bafd',
-        description: 'An AI-enabled Electronic Health Record platform that leverages Whole Exome Sequencing (WES) data to analyze 6,000+ diseases in newborn, prenatal infants and adults, along with maintaining their complete life records.',
+        description: 'An AI-enabled Electronic Health Record platform that leverages Whole Exome Sequencing (WES) data to analyze 6,000+ diseases in individuals of all ages, along with maintaining their complete life records.',
         logo: genesetuLogo,
         features: [
             { title: 'WES Data Analysis', desc: 'Whole Exome Sequencing analysis covering 6,000+ genetic conditions.', media: { src: '/media/genesetu/wes-results.mp4', type: 'video' } },
