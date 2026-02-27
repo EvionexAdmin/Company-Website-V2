@@ -683,20 +683,7 @@ a,
   --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.12);
 }
 
-/* Light mode — Navbar / CardNav */
-:root.light-mode .card-nav-container .card-nav {
-  background-color: rgb(255, 255, 255) !important;
-  border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-:root.light-mode .hamburger-line {
-  background-color: #1a202c;
-}
-
-:root.light-mode .card-nav-container .card-nav .hamburger-menu {
-  color: #1a202c;
-}
+/* Light mode — Navbar handled by Navbar.css */
 
 /* Light mode — Theme toggle */
 :root.light-mode .theme-toggle {

@@ -73,36 +73,18 @@ const plans = [
         target: 'For Research Labs & Institutions',
         tiers: [
             {
-                name: 'Starter',
-                price: '4,999',
-                priceAmount: 499900,
-                period: '/month',
+                name: 'Individual Labs',
+                price: '700',
+                priceAmount: 70000,
+                period: '/user/month',
                 description: 'Perfect for small research labs getting started',
                 features: [
-                    'Up to 10 researchers',
+                    'Up to 10 Researchers',
                     'Electronic Lab Notebook',
                     'Basic Budget Tracking',
                     'Lab Calendar',
                     '5 GB Storage',
                     'Email Support',
-                ],
-                highlighted: false,
-            },
-            {
-                name: 'Professional',
-                price: '14,999',
-                priceAmount: 1499900,
-                period: '/month',
-                description: 'Ideal for growing research organizations',
-                features: [
-                    'Up to 50 researchers',
-                    'All Starter features',
-                    'Advanced Analytics',
-                    'Resource Booking',
-                    'Lab Chat',
-                    '50 GB Storage',
-                    'Priority Support',
-                    'Data Export & API',
                 ],
                 highlighted: true,
             },
@@ -114,7 +96,8 @@ const plans = [
                 description: 'For large institutions with custom needs',
                 features: [
                     'Unlimited researchers',
-                    'All Professional features',
+                    'AI Features',
+                    'All Individual Lab features',
                     'Custom integrations',
                     'Dedicated account manager',
                     'On-premise deployment option',
@@ -133,35 +116,36 @@ const plans = [
         target: 'For Educational Institutions',
         tiers: [
             {
-                name: 'Basic',
-                price: '2,999',
-                priceAmount: 299900,
-                period: '/month',
-                description: 'Great for individual classrooms',
+                name: 'Study Companion Pack',
+                price: 'FREE',
+                priceAmount: 0,
+                period: '',
+                description: 'Great for students trying out our product',
                 features: [
-                    'Up to 100 students',
-                    'Digital Journals',
+                    'Smart Learning Techniques',
+                    'Digital Journal Writing',
                     'AI-Driven Quizzes',
-                    'Basic Analytics',
-                    '10 GB Storage',
-                    'Email Support',
+                    'National Exam Preparation',
+                    'Basic Storage',
+                    'Socratic AI',
                 ],
                 highlighted: false,
             },
             {
-                name: 'Institution',
-                price: '9,999',
-                priceAmount: 999900,
-                period: '/month',
-                description: 'Complete solution for schools & colleges',
+                name: 'Educator Pack',
+                price: '300',
+                priceAmount: 30000,
+                period: '/student/month',
+                description: 'Complete solution for clasrooms & tuitions',
                 features: [
-                    'Up to 500 students',
+                    'Up to 150 students',
                     'All Basic features',
                     'Interview Practice',
-                    'Assignment Management',
+                    'Subject Management',
+                    'Assignment & Journal Management',
                     'Performance Analytics',
                     'Collaboration Tools',
-                    '100 GB Storage',
+                    '10 GB Storage/student',
                     'Priority Support',
                 ],
                 highlighted: true,
@@ -231,7 +215,7 @@ export default function Pricing() {
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">Pricing</span>
                         <h1>Choose the Right <span className="text-gradient">Solution</span></h1>
-                        <p>Flexible plans designed for organizations of all sizes. All plans include a 14-day free trial.</p>
+                        <p>Flexible plans which we can proudly say are the best in the market</p>
                     </div>
                 </div>
             </section>
@@ -282,14 +266,16 @@ export default function Pricing() {
                                             <span className="pricing-card__period">{tier.period}</span>
                                         </>
                                     ) : (
-                                        <>
+                                        <div className="pricing-card__price-stack">
                                             {tier.originalPrice && (
                                                 <span className="pricing-card__original-price">₹{tier.originalPrice}</span>
                                             )}
-                                            <span className="pricing-card__currency">₹</span>
-                                            <span className="pricing-card__amount">{tier.price}</span>
-                                            <span className="pricing-card__period">{tier.period}</span>
-                                        </>
+                                            <div className="pricing-card__price-row">
+                                                <span className="pricing-card__currency">₹</span>
+                                                <span className="pricing-card__amount">{tier.price}</span>
+                                                <span className="pricing-card__period">{tier.period}</span>
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                                 <ul className="pricing-card__features">

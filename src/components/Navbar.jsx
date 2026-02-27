@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import CardNav from './ui/CardNav/CardNav'
+import { useEffect, useState, useRef } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 import evionexLogo from '../assets/images/logo/evionex-logo.png'
 import evionexText from '../assets/images/logo/evionex-text.png'
@@ -9,126 +8,155 @@ import evionexTextLight from '../assets/images/logo/evionex-text-light.png'
 import { useTheme } from '../contexts/ThemeContext'
 import './Navbar.css'
 
-const darkNavItems = [
-    {
-        label: 'Company',
-        bgColor: '#0d2137',
-        textColor: '#fff',
-        links: [
-            { label: 'Home', href: '/', ariaLabel: 'Go to Home page' },
-            { label: 'Who We Are', href: '/who-we-are', ariaLabel: 'About Evionex' },
-            { label: 'Team', href: '/team', ariaLabel: 'Meet the team' },
-        ],
-    },
-    {
-        label: 'Solutions',
-        bgColor: '#0a2a3f',
-        textColor: '#fff',
-        links: [
-            { label: 'Products', href: '/products', ariaLabel: 'View our products' },
-            { label: 'Pricing', href: '/pricing', ariaLabel: 'View pricing' },
-        ],
-    },
-    {
-        label: 'Connect',
-        bgColor: '#1a1a2e',
-        textColor: '#fff',
-        links: [
-            { label: 'Careers', href: '/careers', ariaLabel: 'View open positions' },
-            { label: 'Contact', href: '/contact', ariaLabel: 'Contact us' },
-        ],
-    },
-]
-
-const lightNavItems = [
-    {
-        label: 'Company',
-        bgColor: '#c8dff5',
-        textColor: '#0d1e32',
-        links: [
-            { label: 'Home', href: '/', ariaLabel: 'Go to Home page' },
-            { label: 'Who We Are', href: '/who-we-are', ariaLabel: 'About Evionex' },
-            { label: 'Team', href: '/team', ariaLabel: 'Meet the team' },
-        ],
-    },
-    {
-        label: 'Solutions',
-        bgColor: '#bde4ef',
-        textColor: '#082d3e',
-        links: [
-            { label: 'Products', href: '/products', ariaLabel: 'View our products' },
-            { label: 'Pricing', href: '/pricing', ariaLabel: 'View pricing' },
-        ],
-    },
-    {
-        label: 'Connect',
-        bgColor: '#ced6f0',
-        textColor: '#111430',
-        links: [
-            { label: 'Careers', href: '/careers', ariaLabel: 'View open positions' },
-            { label: 'Contact', href: '/contact', ariaLabel: 'Contact us' },
-        ],
-    },
+const navLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'Who We Are', href: '/who-we-are' },
+    { label: 'Products', href: '/products' },
+    { label: 'Pricing', href: '/pricing' },
+    { label: 'Team', href: '/team' },
+    { label: 'Careers', href: '/careers' },
+    { label: 'Contact', href: '/contact' },
 ]
 
 export default function Navbar() {
     const location = useLocation()
-    const navigate = useNavigate()
-    const [forceClose, setForceClose] = useState(false)
     const { theme } = useTheme()
     const isLight = theme === 'light'
+    const [scrolled, setScrolled] = useState(false)
+    const [mobileOpen, setMobileOpen] = useState(false)
+    const navRef = useRef(null)
 
-    // Close the nav menu on every route change
+    // Listen for scroll to toggle frosted glass
     useEffect(() => {
-        setForceClose(true)
-        const timer = setTimeout(() => setForceClose(false), 100)
-        return () => clearTimeout(timer)
+        const onScroll = () => setScrolled(window.scrollY > 20)
+        window.addEventListener('scroll', onScroll, { passive: true })
+        onScroll()
+        return () => window.removeEventListener('scroll', onScroll)
+    }, [])
+
+    // Close mobile drawer on route change
+    useEffect(() => {
+        setMobileOpen(false)
     }, [location.pathname])
 
-    // Intercept CardNav link clicks for client-side routing
+    // Close mobile drawer on Escape key
     useEffect(() => {
-        const handleNavClick = (e) => {
-            const link = e.target.closest('.nav-card-link')
-            if (!link) return
-
-            const href = link.getAttribute('href')
-            if (href && href.startsWith('/')) {
-                e.preventDefault()
-                navigate(href)
-            }
+        const handleKey = (e) => {
+            if (e.key === 'Escape') setMobileOpen(false)
         }
+        document.addEventListener('keydown', handleKey)
+        return () => document.removeEventListener('keydown', handleKey)
+    }, [])
 
-        document.addEventListener('click', handleNavClick)
-        return () => document.removeEventListener('click', handleNavClick)
-    }, [navigate, location])
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        document.body.style.overflow = mobileOpen ? 'hidden' : ''
+        return () => { document.body.style.overflow = '' }
+    }, [mobileOpen])
 
-    const LogoElement = (
-        <Link to="/" className="navbar__logo" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img
-                src={isLight ? evionexLogoLight : evionexLogo}
-                alt="Evionex Logo"
-                className="navbar__logo-icon"
-                style={{ height: '32px', width: 'auto' }}
-            />
-            <img
-                src={isLight ? evionexTextLight : evionexText}
-                alt="Evionex"
-                className="navbar__logo-text"
-                style={{ height: '20px', width: 'auto' }}
-            />
-        </Link>
-    )
+    const isActive = (href) => {
+        if (href === '/') return location.pathname === '/'
+        return location.pathname.startsWith(href)
+    }
 
     return (
-        <CardNav
-            logo={LogoElement}
-            logoAlt="Evionex"
-            items={isLight ? lightNavItems : darkNavItems}
-            baseColor={isLight ? 'rgba(240, 245, 252, 0.98)' : 'rgba(10, 22, 40, 0.95)'}
-            menuColor={isLight ? '#0d1e32' : '#fff'}
-            showCta={false}
-            rightSlot={<ThemeToggle />}
-            forceClose={forceClose}
-        />
+        <>
+            <nav
+                ref={navRef}
+                className={`gn-navbar ${scrolled ? 'gn-navbar--scrolled' : ''} ${isLight ? 'gn-navbar--light' : ''}`}
+                role="navigation"
+                aria-label="Main navigation"
+            >
+                {/* Animated gradient bottom border */}
+                <div className="gn-navbar__gradient-border" aria-hidden="true" />
+
+                <div className="gn-navbar__inner">
+                    {/* Logo */}
+                    <Link to="/" className="gn-navbar__logo" aria-label="Evionex — Go to homepage">
+                        <img
+                            src={isLight ? evionexLogoLight : evionexLogo}
+                            alt=""
+                            className="gn-navbar__logo-icon"
+                        />
+                        <img
+                            src={isLight ? evionexTextLight : evionexText}
+                            alt="Evionex"
+                            className="gn-navbar__logo-text"
+                        />
+                    </Link>
+
+                    {/* Desktop links */}
+                    <ul className="gn-navbar__links" role="menubar">
+                        {navLinks.map((link) => (
+                            <li key={link.href} role="none">
+                                <Link
+                                    to={link.href}
+                                    role="menuitem"
+                                    className={`gn-navbar__link ${isActive(link.href) ? 'gn-navbar__link--active' : ''}`}
+                                >
+                                    {link.label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+
+                    {/* Right side: theme toggle + CTA */}
+                    <div className="gn-navbar__actions">
+                        <ThemeToggle />
+                        <Link to="/contact" className="gn-navbar__cta">
+                            Get in Touch
+                        </Link>
+                    </div>
+
+                    {/* Mobile hamburger */}
+                    <button
+                        className={`gn-navbar__hamburger ${mobileOpen ? 'gn-navbar__hamburger--open' : ''}`}
+                        onClick={() => setMobileOpen((v) => !v)}
+                        aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                        aria-expanded={mobileOpen}
+                    >
+                        <span />
+                        <span />
+                        <span />
+                    </button>
+                </div>
+            </nav>
+
+            {/* Mobile overlay */}
+            <div
+                className={`gn-mobile-overlay ${mobileOpen ? 'gn-mobile-overlay--visible' : ''}`}
+                onClick={() => setMobileOpen(false)}
+                aria-hidden="true"
+            />
+
+            {/* Mobile drawer */}
+            <aside
+                className={`gn-mobile-drawer ${mobileOpen ? 'gn-mobile-drawer--open' : ''} ${isLight ? 'gn-mobile-drawer--light' : ''}`}
+                aria-label="Mobile navigation"
+            >
+                <div className="gn-mobile-drawer__links">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.href}
+                            to={link.href}
+                            className={`gn-mobile-drawer__link ${isActive(link.href) ? 'gn-mobile-drawer__link--active' : ''}`}
+                            onClick={() => setMobileOpen(false)}
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+                </div>
+                <div className="gn-mobile-drawer__bottom">
+                    <ThemeToggle />
+                    <Link
+                        to="/contact"
+                        className="gn-mobile-drawer__cta"
+                        onClick={() => setMobileOpen(false)}
+                    >
+                        Get in Touch
+                    </Link>
+                </div>
+            </aside>
+        </>
     )
 }
