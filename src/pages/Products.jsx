@@ -1,5 +1,5 @@
-import { useRef } from 'react'
 import { Link } from 'react-router-dom'
+
 import MagicBento from '../components/ui/MagicBento/MagicBento'
 import evinoteIcon from '../assets/images/products/evinote-icon.png'
 import luminaryLogo from '../assets/images/products/luminary-logo.png'
@@ -71,32 +71,15 @@ const products = [
 ]
 
 export default function Products() {
-    const videoRef = useRef(null)
-
-    const handleMouseEnter = () => {
-        if (videoRef.current) {
-            videoRef.current.play().catch(e => console.log("Video play failed", e))
-        }
-    }
-
-    const handleMouseLeave = () => {
-        if (videoRef.current) {
-            videoRef.current.pause()
-        }
-    }
 
     return (
         <div className="products-page">
             {/* Header */}
             {/* Header */}
-            <section
-                className="page-hero"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-            >
+            <section className="page-hero">
                 <div className="hero__video-bg">
                     <video
-                        ref={videoRef}
+                        autoPlay
                         loop
                         muted
                         playsInline
