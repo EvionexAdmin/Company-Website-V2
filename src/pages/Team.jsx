@@ -1,30 +1,38 @@
 import GlareHover from '../components/ui/GlareHover/GlareHover'
 import kedarPhoto from '../assets/images/team/kedar.jpeg'
-import mrunalPhoto from '../assets/images/team/mrunal.jfif'
+import mrunalPhoto from '../assets/images/team/mrunal.png'
 import atharvaPhoto from '../assets/images/team/atharva.png'
+import dhrumilPhoto from '../assets/images/team/dhrumil.png'
 import './Team.css'
 
 const teamMembers = [
     {
         name: 'Atharva Shinde',
-        title: 'Director & Co-Founder',
-        bio: 'Visionary leader with deep expertise in AI and machine learning. Atharva drives the technical strategy at Evionex, ensuring our products leverage cutting-edge technology to deliver real impact in research and education.',
+        title: 'CEO & Founder',
+        bio: 'Technology architect and product strategist with a passion for building scalable solutions. Atharva leads the development of Evionex\'s platforms, focusing on user experience, performance, and security.',
         photo: atharvaPhoto,
         gradient: 'linear-gradient(135deg, #00D4C8, #0D9488)',
     },
     {
         name: 'Kedar Navsariwala',
-        title: 'Director & Co-Founder',
-        bio: 'Technology architect and product strategist with a passion for building scalable solutions. Kedar leads the development of Evionex\'s platforms, focusing on user experience, performance, and security.',
+        title: 'CTO & Co-Founder',
+        bio: 'Visionary leader with deep expertise in AI and machine learning. Kedar drives the technical strategy at Evionex, ensuring our products are up to date with the latest technology to deliver real impact.',
         photo: kedarPhoto,
         gradient: 'linear-gradient(135deg, #6366f1, #4f46e5)',
     },
     {
         name: 'Mrunal Samant',
-        title: 'Director & Co-Founder',
+        title: 'COO & Co-Founder',
         bio: 'Domain expert in research and education technology. Mrunal shapes the product vision at Evionex, ensuring our solutions address real challenges faced by institutions and researchers across India.',
         photo: mrunalPhoto,
         gradient: 'linear-gradient(135deg, #f472b6, #ec4899)',
+    },
+    {
+        name: 'Dhrumil',
+        title: 'CMO & Co-Founder',
+        bio: 'Expert in Market analysis and strategy. Dhrumil helps Evionex understand and respond to market trends to ensure we stay ahead of the competition.',
+        photo: dhrumilPhoto,
+        gradient: 'linear-gradient(135deg, #f59e0b, #d97706)',
     },
 ]
 
@@ -52,7 +60,7 @@ export default function Team() {
                                 background="var(--bg-card-surface)"
                                 borderRadius="var(--radius-xl)"
                                 borderColor="rgba(255,255,255,0.06)"
-                                glareColor={member.gradient.includes('#00D4C8') ? '#00D4C8' : member.gradient.includes('#6366f1') ? '#6366f1' : '#f472b6'}
+                                glareColor={member.gradient.includes('#00D4C8') ? '#00D4C8' : member.gradient.includes('#6366f1') ? '#6366f1' : member.gradient.includes('#f472b6') ? '#f472b6' : '#f59e0b'}
                                 glareOpacity={0.15}
                                 glareAngle={-30}
                                 transitionDuration={800}
