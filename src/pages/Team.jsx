@@ -28,7 +28,7 @@ const teamMembers = [
         gradient: 'linear-gradient(135deg, #f472b6, #ec4899)',
     },
     {
-        name: 'Dhrumil',
+        name: 'Dhrumil Agarwal',
         title: 'CMO & Co-Founder',
         bio: 'Expert in Market analysis and strategy. Dhrumil helps Evionex understand and respond to market trends to ensure we stay ahead of the competition.',
         photo: dhrumilPhoto,
