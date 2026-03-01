@@ -133,7 +133,8 @@
 }
 
 .pricing-card__original-price {
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
+    font-family: var(--font-display);
     color: var(--text-muted);
     text-decoration: line-through;
     opacity: 0.6;

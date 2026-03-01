@@ -392,7 +392,7 @@
 @media (max-width: 960px) {
 
     .gn-navbar__links,
-    .gn-navbar__cta {
+    .gn-navbar__actions {
         display: none;
     }
 

@@ -14,7 +14,7 @@ const plans = [
                 price: '18,000',
                 originalPrice: '25,000',
                 priceAmount: 1800000,
-                period: '',
+                period: '/person',
                 description: 'One Package, life long benefits',
                 features: [
                     'Expert Personalized Counselling',

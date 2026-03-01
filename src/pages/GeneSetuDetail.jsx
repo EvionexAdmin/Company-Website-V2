@@ -159,8 +159,8 @@ const faqCategories = [
         icon: '💰',
         faqs: [
             {
-                q: 'Is the ₹16,999 a one-time fee or are there hidden costs?',
-                a: 'The ₹16,999 is a single, all-inclusive fee with absolutely no hidden charges. This price covers everything home sample collection, Whole Exome Sequencing, AI-powered analysis, the Geneticist Certified Report, one personalized genetic counselling session, and 1 year of access to the Gene Setu+ platform. There are no surprise add-ons, lab fees, or consultation charges beyond what is included in the package.'
+                q: 'Is the ₹18,000 a one-time fee or are there hidden costs?',
+                a: 'The ₹18,000 is a single, all-inclusive fee with absolutely no hidden charges. This price covers everything home sample collection, Whole Exome Sequencing, AI-powered analysis, the Geneticist Certified Report, one personalized genetic counselling session, and 1 year of access to the Gene Setu+ platform. There are no surprise add-ons, lab fees, or consultation charges beyond what is included in the package.'
             },
             {
                 q: 'What is included in the 1-year Gene Setu+ platform access?',

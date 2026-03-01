@@ -16,6 +16,7 @@ export default function Careers() {
     const [showModal, setShowModal] = useState(false)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [position, setPosition] = useState('')
     const [file, setFile] = useState(null)
     const [dragOver, setDragOver] = useState(false)
     const [status, setStatus] = useState('idle') // idle | uploading | success | error
@@ -25,6 +26,7 @@ export default function Careers() {
     const resetForm = () => {
         setName('')
         setEmail('')
+        setPosition('')
         setFile(null)
         setErrorMsg('')
         setStatus('idle')
@@ -82,6 +84,7 @@ export default function Careers() {
 
         if (!name.trim()) { setErrorMsg('Please enter your name'); return }
         if (!email.trim()) { setErrorMsg('Please enter your email'); return }
+        if (!position.trim()) { setErrorMsg('Please enter the position you are applying for'); return }
         const fileErr = validateFile(file)
         if (fileErr) { setErrorMsg(fileErr); return }
 
@@ -107,6 +110,7 @@ export default function Careers() {
                     filePath,
                     applicantName: name.trim(),
                     applicantEmail: email.trim(),
+                    applicantPosition: position.trim(),
                 },
             })
 
@@ -243,6 +247,32 @@ export default function Careers() {
                                             disabled={status === 'uploading'}
                                             required
                                         />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label className="form-label" htmlFor="resume-position">
+                                            Position Applying For *
+                                        </label>
+                                        <div className="form-input-wrapper">
+                                            <input
+                                                id="resume-position"
+                                                type="text"
+                                                className="form-input"
+                                                placeholder="e.g. Frontend Developer"
+                                                value={position}
+                                                onChange={(e) => {
+                                                    if (e.target.value.length <= 30) {
+                                                        setPosition(e.target.value)
+                                                    }
+                                                }}
+                                                maxLength={30}
+                                                disabled={status === 'uploading'}
+                                                required
+                                            />
+                                            <span className="form-char-count">
+                                                {position.length}/30
+                                            </span>
+                                        </div>
                                     </div>
 
                                     <div className="form-group">
