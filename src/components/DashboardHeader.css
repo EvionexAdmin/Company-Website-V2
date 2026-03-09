@@ -1,0 +1,96 @@
+/* ============================================
+   DASHBOARD HEADER — Minimal Floating Logo
+   Replaces full navbar when user is logged in
+   ============================================ */
+
+@keyframes dashLogoFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dash-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 1rem 1.5rem;
+    animation: dashLogoFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dash-header__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    padding: 0.5rem 0.875rem;
+    border-radius: 12px;
+    background: rgba(10, 22, 40, 0.45);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.15),
+        0 0 0 0.5px rgba(255, 255, 255, 0.04) inset;
+    transition:
+        background 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.3s ease;
+}
+
+.dash-header__logo:hover {
+    background: rgba(10, 22, 40, 0.6);
+    border-color: rgba(0, 212, 200, 0.15);
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.2),
+        0 0 24px rgba(0, 212, 200, 0.06),
+        0 0 0 0.5px rgba(255, 255, 255, 0.06) inset;
+    transform: translateY(-1px);
+}
+
+.dash-header__logo:active {
+    transform: translateY(0);
+}
+
+.dash-header__logo-icon {
+    height: 26px;
+    width: auto;
+    flex-shrink: 0;
+}
+
+.dash-header__logo-text {
+    height: 15px;
+    width: auto;
+    opacity: 0.85;
+    transition: opacity 0.25s ease;
+}
+
+.dash-header__logo:hover .dash-header__logo-text {
+    opacity: 1;
+}
+
+/* ——— Responsive ——— */
+@media (max-width: 768px) {
+    .dash-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .dash-header__logo {
+        padding: 0.4rem 0.7rem;
+        border-radius: 10px;
+    }
+
+    .dash-header__logo-icon {
+        height: 22px;
+    }
+
+    .dash-header__logo-text {
+        height: 13px;
+    }
+}

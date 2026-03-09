@@ -10,7 +10,7 @@ const plans = [
         target: 'For Individual, Families & Healthcare Providers',
         tiers: [
             {
-                name: 'Gentic Testing Package',
+                name: 'Genetic Testing Package',
                 price: '18,000',
                 originalPrice: '25,000',
                 priceAmount: 1800000,

@@ -33,7 +33,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(10, 22, 40, 0.7);
+    background: var(--overlay-medium);
     z-index: 1;
 }
 
@@ -44,11 +44,11 @@
 }
 
 .product-section {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .product-section--alt {
-    background: var(--bg-deep-navy);
+    background: var(--bg-alt-section);
 }
 
 .product-header {

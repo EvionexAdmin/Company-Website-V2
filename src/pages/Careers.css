@@ -1,4 +1,4 @@
-.careers-content {
+﻿.careers-content {
     max-width: 800px;
     margin: 0 auto;
 }
@@ -8,7 +8,7 @@
     padding: var(--space-3xl);
     background: var(--bg-card-surface);
     border-radius: var(--radius-xl);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
 }
 
 .careers-status__icon {
@@ -119,18 +119,13 @@
     max-height: 90vh;
     overflow-y: auto;
     background: var(--bg-deep-navy);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-medium);
     border-radius: var(--radius-xl);
     padding: 2rem;
     box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
     animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-:root.light-mode .resume-modal {
-    background: #ffffff;
-    border-color: rgba(0, 0, 0, 0.08);
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.12);
-}
 
 .resume-modal__close {
     position: absolute;
@@ -141,8 +136,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--social-icon-bg);
+    border: 1px solid var(--border-medium);
     border-radius: 8px;
     color: var(--text-muted);
     font-size: 0.85rem;
@@ -155,14 +150,7 @@
     color: var(--text-primary);
 }
 
-:root.light-mode .resume-modal__close {
-    background: rgba(0, 0, 0, 0.04);
-    border-color: rgba(0, 0, 0, 0.08);
-}
 
-:root.light-mode .resume-modal__close:hover {
-    background: rgba(0, 0, 0, 0.08);
-}
 
 .resume-modal__title {
     font-size: var(--text-h3);
@@ -201,7 +189,7 @@
 
 /* Dropzone */
 .resume-dropzone {
-    border: 2px dashed rgba(255, 255, 255, 0.12);
+    border: 2px dashed var(--border-strong);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
     cursor: pointer;
@@ -221,20 +209,8 @@
     border-style: solid;
 }
 
-:root.light-mode .resume-dropzone {
-    border-color: rgba(0, 0, 0, 0.12);
-}
 
-:root.light-mode .resume-dropzone:hover,
-:root.light-mode .resume-dropzone--active {
-    border-color: #00B8AE;
-    background: rgba(0, 184, 174, 0.04);
-}
 
-:root.light-mode .resume-dropzone--has-file {
-    border-color: rgba(0, 184, 174, 0.3);
-    background: rgba(0, 184, 174, 0.04);
-}
 
 .resume-dropzone__placeholder {
     display: flex;

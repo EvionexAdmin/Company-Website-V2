@@ -1,4 +1,4 @@
-/* ===========================
+﻿/* ===========================
    Product Detail Pages
    =========================== */
 
@@ -62,7 +62,7 @@
     line-height: 1.7;
 }
 
-/* Hero CTA Buttons — Gene Setu specific */
+/* Hero CTA Buttons â€” Gene Setu specific */
 .product-detail__hero-buttons {
     display: flex;
     gap: 1rem;
@@ -71,7 +71,7 @@
     margin-top: 2rem;
 }
 
-/* Trust Bar — Gene Setu specific */
+/* Trust Bar â€” Gene Setu specific */
 .product-detail__trust-bar {
     display: flex;
     gap: 1.5rem;
@@ -98,7 +98,7 @@
     line-height: 1;
 }
 
-/* Overview Card Link — Gene Setu specific */
+/* Overview Card Link â€” Gene Setu specific */
 .product-detail__card-link {
     display: inline-block;
     margin-top: 1rem;
@@ -112,7 +112,7 @@
     opacity: 0.8;
 }
 
-/* FAQ Doctor Partner Block — Gene Setu specific */
+/* FAQ Doctor Partner Block â€” Gene Setu specific */
 .product-detail__faq-doctor-block {
     background: rgba(0, 186, 253, 0.04);
     border: 1px solid rgba(0, 186, 253, 0.12);
@@ -135,7 +135,7 @@
     margin-right: auto;
 }
 
-/* CTA Micro Trust — Gene Setu specific */
+/* CTA Micro Trust â€” Gene Setu specific */
 .product-detail__cta-micro-trust {
     margin-top: 1.25rem;
     font-size: 0.8rem !important;
@@ -144,15 +144,7 @@
     margin-bottom: 0 !important;
 }
 
-/* Light mode — Gene Setu specific elements */
-:root.light-mode .product-detail__trust-bar {
-    border-top-color: rgba(0, 0, 0, 0.06);
-}
 
-:root.light-mode .product-detail__faq-doctor-block {
-    background: rgba(0, 186, 253, 0.03);
-    border-color: rgba(0, 186, 253, 0.15);
-}
 
 /* Overview Section */
 .product-detail__overview {
@@ -479,43 +471,14 @@
     background: rgba(0, 186, 253, 0.02);
 }
 
-/* Light Mode */
-:root.light-mode .product-detail__overview-card {
-    border-color: rgba(0, 0, 0, 0.08);
-}
 
-:root.light-mode .product-detail__feature-video-wrap {
-    border-color: rgba(0, 0, 0, 0.1);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-}
 
-:root.light-mode .product-detail__feature {
-    border-bottom-color: rgba(0, 0, 0, 0.06);
-}
 
-:root.light-mode .product-detail__cta-box {
-    border-color: rgba(0, 0, 0, 0.08);
-}
 
-:root.light-mode .product-detail__faq-category {
-    border-color: rgba(0, 0, 0, 0.08);
-}
 
-:root.light-mode .product-detail__faq-category-header {
-    border-bottom-color: rgba(0, 0, 0, 0.06);
-}
 
-:root.light-mode .product-detail__faq-item {
-    border-bottom-color: rgba(0, 0, 0, 0.04);
-}
 
-:root.light-mode .product-detail__faq-chevron {
-    background: rgba(0, 0, 0, 0.04);
-}
 
-:root.light-mode .product-detail__faq-item--open {
-    background: rgba(0, 186, 253, 0.03);
-}
 
 /* Responsive */
 @media (max-width: 768px) {

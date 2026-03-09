@@ -80,9 +80,9 @@
 
 /* Mission */
 .mission-section {
-    background: var(--bg-deep-navy);
-    border-top: 1px solid rgba(255, 255, 255, 0.03);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    background: var(--bg-alt-section);
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .mission-section .section-header p {
@@ -103,8 +103,8 @@
 
 /* Stats */
 .stats-section {
-    background: var(--bg-deep-navy);
-    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    background: var(--bg-alt-section);
+    border-top: 1px solid var(--border-subtle);
 }
 
 .stats-grid {

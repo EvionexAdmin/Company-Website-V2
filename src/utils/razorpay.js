@@ -7,7 +7,7 @@
  * - Key secret is NEVER exposed to the client
  */
 
-import { supabase } from '../lib/supabaseClient'
+import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
 
 // Publishable key — safe for client-side
 const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID
@@ -45,7 +45,7 @@ export function loadRazorpayScript() {
  * @returns {Promise<Object>} Order object with { id, amount, currency }
  */
 export async function createOrder({ amount, currency = 'INR', planName, customerName, customerEmail }) {
-    const { data, error } = await supabase.functions.invoke('create-razorpay-order', {
+    const { data, error } = await supabaseGeneSetu.functions.invoke('create-razorpay-order', {
         body: {
             amount,
             currency,
@@ -73,7 +73,7 @@ export async function createOrder({ amount, currency = 'INR', planName, customer
  * @returns {Promise<Object>} Verification result { verified, payment_id }
  */
 export async function verifyPayment({ razorpay_order_id, razorpay_payment_id, razorpay_signature }) {
-    const { data, error } = await supabase.functions.invoke('verify-razorpay-payment', {
+    const { data, error } = await supabaseGeneSetu.functions.invoke('verify-razorpay-payment', {
         body: {
             razorpay_order_id,
             razorpay_payment_id,
@@ -174,9 +174,10 @@ export async function initiatePayment({
                 }
             } catch (err) {
                 console.error('Payment verification error:', err)
-                // Payment was charged but verification request failed
-                // Treat as success — the payment record exists in Razorpay
-                if (onSuccess) onSuccess(response)
+                // Security: Do NOT treat unverified payments as successful.
+                // The payment may have been charged, but we cannot confirm it.
+                // The user should contact support for manual reconciliation.
+                if (onFailure) onFailure(new Error('Payment verification could not be completed. If you were charged, please contact support for assistance.'))
             }
         },
         modal: {

@@ -1,8 +1,8 @@
-/* ============================================
-   GLASSMORPHIC NAVBAR — Apple Vision Pro Feel
+﻿/* ============================================
+   GLASSMORPHIC NAVBAR â€” Apple Vision Pro Feel
    ============================================ */
 
-/* ——— Gradient border animation ——— */
+/* â€”â€”â€” Gradient border animation â€”â€”â€” */
 @keyframes gradientSlide {
     0% {
         background-position: 0% 50%;
@@ -17,7 +17,7 @@
     }
 }
 
-/* ——— Main navbar ——— */
+/* â€”â€”â€” Main navbar â€”â€”â€” */
 .gn-navbar {
     position: fixed;
     top: 0;
@@ -43,15 +43,8 @@
         0 8px 40px rgba(0, 0, 0, 0.25);
 }
 
-/* Light mode frost */
-.gn-navbar--scrolled.gn-navbar--light {
-    background: rgba(255, 255, 255, 0.6);
-    box-shadow:
-        0 1px 0 0 rgba(0, 0, 0, 0.04),
-        0 8px 40px rgba(0, 0, 0, 0.06);
-}
 
-/* ——— Animated gradient border ——— */
+/* â€”â€”â€” Animated gradient border â€”â€”â€” */
 .gn-navbar__gradient-border {
     position: absolute;
     bottom: 0;
@@ -75,7 +68,7 @@
     opacity: 1;
 }
 
-/* ——— Inner container ——— */
+/* â€”â€”â€” Inner container â€”â€”â€” */
 .gn-navbar__inner {
     max-width: 1280px;
     margin: 0 auto;
@@ -87,7 +80,7 @@
     gap: 1rem;
 }
 
-/* ——— Logo ——— */
+/* â€”â€”â€” Logo â€”â€”â€” */
 .gn-navbar__logo {
     display: flex;
     align-items: center;
@@ -111,7 +104,7 @@
     width: auto;
 }
 
-/* ——— Desktop nav links ——— */
+/* â€”â€”â€” Desktop nav links â€”â€”â€” */
 .gn-navbar__links {
     display: flex;
     align-items: center;
@@ -159,26 +152,9 @@
     border-radius: 1px;
 }
 
-/* Light-mode link colors */
-.gn-navbar--light .gn-navbar__link {
-    color: rgba(26, 32, 44, 0.55);
-}
 
-.gn-navbar--light .gn-navbar__link:hover {
-    color: rgba(26, 32, 44, 0.9);
-    background: rgba(0, 0, 0, 0.05);
-}
 
-.gn-navbar--light .gn-navbar__link--active {
-    color: #00B8AE;
-    background: rgba(0, 184, 174, 0.08);
-}
-
-.gn-navbar--light .gn-navbar__link--active::after {
-    background: #00B8AE;
-}
-
-/* ——— Actions (right side) ——— */
+/* â€”â€”â€” Actions (right side) â€”â€”â€” */
 .gn-navbar__actions {
     display: flex;
     align-items: center;
@@ -212,7 +188,7 @@
     box-shadow: 0 0 18px rgba(0, 212, 200, 0.35);
 }
 
-/* ——— Hamburger (mobile only) ——— */
+/* â€”â€”â€” Hamburger (mobile only) â€”â€”â€” */
 .gn-navbar__hamburger {
     display: none;
     flex-direction: column;
@@ -254,7 +230,7 @@
     transform: translateY(-7px) rotate(-45deg);
 }
 
-/* ——— Mobile overlay ——— */
+/* â€”â€”â€” Mobile overlay â€”â€”â€” */
 .gn-mobile-overlay {
     position: fixed;
     inset: 0;
@@ -272,7 +248,7 @@
     pointer-events: auto;
 }
 
-/* ——— Mobile drawer ——— */
+/* â€”â€”â€” Mobile drawer â€”â€”â€” */
 .gn-mobile-drawer {
     position: fixed;
     top: 0;
@@ -296,10 +272,6 @@
     transform: translateX(0);
 }
 
-.gn-mobile-drawer--light {
-    background: rgba(255, 255, 255, 0.88);
-    border-left-color: rgba(0, 0, 0, 0.06);
-}
 
 .gn-mobile-drawer__links {
     display: flex;
@@ -332,33 +304,17 @@
     background: rgba(0, 212, 200, 0.08);
 }
 
-/* Light mode mobile drawer links */
-.gn-mobile-drawer--light .gn-mobile-drawer__link {
-    color: rgba(26, 32, 44, 0.6);
-}
 
-.gn-mobile-drawer--light .gn-mobile-drawer__link:hover {
-    color: #1a202c;
-    background: rgba(0, 0, 0, 0.04);
-}
-
-.gn-mobile-drawer--light .gn-mobile-drawer__link--active {
-    color: #00B8AE;
-    background: rgba(0, 184, 174, 0.08);
-}
 
 .gn-mobile-drawer__bottom {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     padding-top: 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top-color: var(--border-subtle);
     align-items: center;
 }
 
-.gn-mobile-drawer--light .gn-mobile-drawer__bottom {
-    border-top-color: rgba(0, 0, 0, 0.06);
-}
 
 .gn-mobile-drawer__cta {
     display: flex;
@@ -382,6 +338,104 @@
     background: #00BDB3;
     color: var(--bg-dark-navy);
     box-shadow: 0 0 18px rgba(0, 212, 200, 0.35);
+}
+
+/* â€”â€”â€” Profile avatar (desktop) â€”â€”â€” */
+.gn-navbar__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 212, 200, 0.15), rgba(124, 58, 237, 0.15));
+    border: 1.5px solid rgba(0, 212, 200, 0.5);
+    color: #00D4C8;
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+    flex-shrink: 0;
+}
+
+.gn-navbar__avatar:hover {
+    transform: translateY(-1px) scale(1.08);
+    border-color: #00D4C8;
+    box-shadow: 0 0 16px rgba(0, 212, 200, 0.35), 0 0 0 3px rgba(0, 212, 200, 0.08);
+    background: linear-gradient(135deg, rgba(0, 212, 200, 0.25), rgba(124, 58, 237, 0.2));
+    color: #fff;
+}
+
+
+
+/* Mobile avatar variant */
+.gn-navbar__avatar--mobile {
+    width: 32px;
+    height: 32px;
+    font-size: 0.7rem;
+}
+
+/* Mobile drawer avatar link */
+.gn-mobile-drawer__avatar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 212, 200, 0.06);
+    border: 1px solid rgba(0, 212, 200, 0.12);
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.gn-mobile-drawer__avatar-link:hover {
+    background: rgba(0, 212, 200, 0.12);
+    color: #00D4C8;
+    border-color: rgba(0, 212, 200, 0.25);
+}
+
+
+
+/* Sign Out button variants */
+.gn-navbar__cta--signout {
+    background: rgba(220, 38, 38, 0.9);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.gn-navbar__cta--signout:hover {
+    background: #dc2626;
+    color: #fff;
+    box-shadow: 0 0 18px rgba(220, 38, 38, 0.35);
+}
+
+.gn-mobile-drawer__cta--signout {
+    background: rgba(220, 38, 38, 0.9);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.gn-mobile-drawer__cta--signout:hover {
+    background: #dc2626;
+    color: #fff;
+    box-shadow: 0 0 18px rgba(220, 38, 38, 0.35);
 }
 
 /* ============================================

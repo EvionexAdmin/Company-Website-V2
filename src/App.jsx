@@ -10,6 +10,11 @@ import Team from './pages/Team'
 import Careers from './pages/Careers'
 import Contact from './pages/Contact'
 import Pricing from './pages/Pricing'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+import VerifyEmail from './pages/VerifyEmail'
+import Dashboard from './pages/Dashboard'
+import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
     return (
@@ -25,6 +30,10 @@ export default function App() {
                 <Route path="careers" element={<Careers />} />
                 <Route path="contact" element={<Contact />} />
                 <Route path="pricing" element={<Pricing />} />
+                <Route path="portal/login" element={<Login />} />
+                <Route path="portal/signup" element={<Signup />} />
+                <Route path="portal/verify-email" element={<VerifyEmail />} />
+                <Route path="portal/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             </Route>
         </Routes>
     )

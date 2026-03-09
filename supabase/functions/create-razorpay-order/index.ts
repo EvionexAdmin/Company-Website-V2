@@ -1,11 +1,17 @@
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+// deno-lint-ignore-file
+// @ts-nocheck
+// This file runs in the Deno/Supabase Edge Runtime — Deno globals are always available there.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+// --- Security: Restrict CORS to production origin only ---
+const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") || "https://www.evionex.com";
+
 const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
     "Access-Control-Allow-Headers":
         "authorization, x-client-info, apikey, content-type",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Max-Age": "86400",
 };
 
 Deno.serve(async (req: Request) => {
@@ -15,6 +21,28 @@ Deno.serve(async (req: Request) => {
     }
 
     try {
+        // --- Security: Verify the caller is authenticated ---
+        const authHeader = req.headers.get("Authorization");
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return new Response(
+                JSON.stringify({ error: "Unauthorized" }),
+                { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+        }
+
+        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+        const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+        const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
+            global: { headers: { Authorization: authHeader } },
+        });
+        const { data: { user: callerUser }, error: authError } = await supabaseAuth.auth.getUser();
+        if (authError || !callerUser) {
+            return new Response(
+                JSON.stringify({ error: "Invalid or expired token" }),
+                { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+            );
+        }
+
         const { amount, currency = "INR", plan_name, customer_name, customer_email } =
             await req.json();
 
@@ -80,7 +108,6 @@ Deno.serve(async (req: Request) => {
         const order = await razorpayResponse.json();
 
         // Store order in Supabase database using service role
-        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
         const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
         const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -114,7 +141,7 @@ Deno.serve(async (req: Request) => {
     } catch (error) {
         console.error("create-razorpay-order error:", error);
         return new Response(
-            JSON.stringify({ error: error.message }),
+            JSON.stringify({ error: "An internal error occurred. Please try again." }),
             {
                 status: 500,
                 headers: { ...corsHeaders, "Content-Type": "application/json" },

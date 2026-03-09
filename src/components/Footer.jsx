@@ -1,15 +1,9 @@
 import { Link } from 'react-router-dom'
-import { useTheme } from '../contexts/ThemeContext'
 import evionexLogo from '../assets/images/logo/evionex-logo.png'
 import evionexText from '../assets/images/logo/evionex-text.png'
-import evionexLogoLight from '../assets/images/logo/evionex-logo-light.png'
-import evionexTextLight from '../assets/images/logo/evionex-text-light.png'
 import './Footer.css'
 
 export default function Footer() {
-    const { theme } = useTheme()
-    const isLight = theme === 'light'
-
     return (
         <footer className="footer">
             <div className="container">
@@ -17,8 +11,8 @@ export default function Footer() {
                     {/* Brand Column */}
                     <div className="footer__brand">
                         <Link to="/" className="footer__logo">
-                            <img src={isLight ? evionexLogoLight : evionexLogo} alt="Evionex Logo" style={{ height: '28px', width: 'auto' }} />
-                            <img src={isLight ? evionexTextLight : evionexText} alt="Evionex" style={{ height: '18px', width: 'auto' }} />
+                            <img src={evionexLogo} alt="Evionex Logo" style={{ height: '28px', width: 'auto' }} />
+                            <img src={evionexText} alt="Evionex" style={{ height: '18px', width: 'auto' }} />
                         </Link>
                         <p className="footer__tagline">
                             Transforming your life through relevant AI-powered digital solutions.

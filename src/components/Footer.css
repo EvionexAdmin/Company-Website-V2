@@ -1,6 +1,6 @@
 .footer {
     background: var(--bg-deep-navy);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid var(--border-subtle);
     padding: var(--space-3xl) 0 var(--space-xl);
     margin-top: auto;
 }
@@ -52,13 +52,13 @@
     width: 36px;
     height: 36px;
     border-radius: var(--radius-md);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--social-icon-bg);
     color: var(--text-muted);
     transition: all var(--transition-fast);
 }
 
 .footer__socials a:hover {
-    background: rgba(0, 212, 200, 0.15);
+    background: var(--social-icon-hover-bg);
     color: var(--primary-cyan);
     transform: translateY(-2px);
 }

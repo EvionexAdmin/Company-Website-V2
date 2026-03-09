@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -36,6 +36,22 @@
   --text-secondary: #B8C5D6;
   --text-muted: #8B9DB5;
   --text-link: #00D4C8;
+
+  /* Semantic Border Colors */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-medium: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.15);
+
+  /* Semantic Overlay Colors */
+  --overlay-dark: rgba(10, 22, 40, 0.65);
+  --overlay-medium: rgba(10, 22, 40, 0.7);
+  --overlay-heavy: rgba(10, 22, 40, 0.85);
+
+  /* Semantic Surface Colors */
+  --bg-alt-section: var(--bg-deep-navy);
+  --social-icon-bg: rgba(255, 255, 255, 0.05);
+  --social-icon-hover-bg: rgba(0, 212, 200, 0.15);
+  --card-photo-gradient-to: var(--bg-card-surface);
 
   /* Font Families */
   --font-display: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
@@ -193,7 +209,7 @@ img {
 /* Cards */
 .card {
   background: var(--bg-card-surface);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: var(--space-xl);
   transition: transform var(--transition-base), box-shadow var(--transition-base);
@@ -238,7 +254,7 @@ img {
 .btn-secondary {
   background: var(--bg-slate-blue);
   color: var(--text-primary);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-medium);
 }
 
 .btn-secondary:hover {
@@ -271,7 +287,7 @@ img {
   border-radius: var(--radius-full);
   background: rgba(0, 212, 200, 0.1);
   color: var(--primary-cyan);
-  border: 1px solid rgba(0, 212, 200, 0.2);
+  border: 1px solid rgba(0, 212, 200, 0.25);
 }
 
 /* Grid Layouts */
@@ -363,7 +379,7 @@ img {
   font-size: var(--text-base);
   color: var(--text-primary);
   background: var(--bg-deep-navy);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-medium);
   border-radius: var(--radius-md);
   outline: none;
   transition: border-color var(--transition-fast);
@@ -485,223 +501,3 @@ img {
   animation-delay: 0.4s;
 }
 
-
-
-/* ===========================
-   Smooth Theme Transition
-   =========================== */
-*,
-*::before,
-*::after {
-  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, fill 0.4s ease;
-}
-
-/* Preserve existing component transitions — override just for elements that have their own transitions */
-.btn,
-.card,
-a,
-.navbar__link,
-.form-input,
-.form-select,
-.form-textarea,
-.footer__socials a,
-.pricing-tab,
-.pricing-card {
-  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.25s ease;
-}
-
-/* ===========================
-   Theme Toggle Button
-   =========================== */
-.theme-toggle {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.08);
-  cursor: pointer;
-  height: 32px;
-}
-
-.theme-toggle__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  color: var(--text-muted);
-  transition: all 0.3s ease;
-}
-
-.theme-toggle__icon--active {
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--text-primary);
-}
-
-/* ===========================
-   Light Mode
-   =========================== */
-:root.light-mode {
-  /* Background Colors */
-  --bg-dark-navy: #f5f7fa;
-  --bg-deep-navy: #eef2f7;
-  --bg-slate-blue: #e2e8f0;
-  --bg-card-surface: #ffffffe8;
-
-  /* Text Colors */
-  --text-primary: #1a202c;
-  --text-secondary: #4a5568;
-  --text-muted: #718096;
-  --text-link: #00B8AE;
-
-  /* Shadows */
-  --shadow-glow: 0 0 20px rgba(0, 212, 200, 0.1);
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
-  --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.12);
-}
-
-/* Light mode — Navbar handled by Navbar.css */
-
-/* Light mode — Theme toggle */
-:root.light-mode .theme-toggle {
-  border-color: rgba(0, 0, 0, 0.12);
-  background: rgba(0, 0, 0, 0.06);
-}
-
-:root.light-mode .theme-toggle__icon--active {
-  background: rgba(0, 0, 0, 0.1);
-  color: #1a202c;
-}
-
-/* Light mode — Cards and surfaces */
-:root.light-mode .card {
-  background: #ffffff;
-  border-color: rgba(0, 0, 0, 0.08);
-}
-
-:root.light-mode .card:hover {
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
-}
-
-/* Light mode — Tags */
-:root.light-mode .tag {
-  background: rgba(0, 212, 200, 0.08);
-  border-color: rgba(0, 212, 200, 0.2);
-}
-
-/* Light mode — Buttons */
-:root.light-mode .btn-secondary {
-  background: #e2e8f0;
-  border-color: rgba(0, 0, 0, 0.1);
-  color: #1a202c;
-}
-
-:root.light-mode .btn-secondary:hover {
-  background: rgba(0, 0, 0, 0.08);
-  border-color: var(--primary-cyan);
-  color: #1a202c;
-}
-
-/* Light mode — Forms */
-:root.light-mode .form-input,
-:root.light-mode .form-select,
-:root.light-mode .form-textarea {
-  background: #f7fafc;
-  border-color: rgba(0, 0, 0, 0.12);
-  color: #1a202c;
-}
-
-:root.light-mode .form-select option {
-  background: #ffffff;
-  color: #1a202c;
-}
-
-/* Light mode — Glow line */
-:root.light-mode .glow-line {
-  background: linear-gradient(90deg, transparent, rgba(0, 212, 200, 0.3), transparent);
-}
-
-/* Light mode — CTA Box */
-:root.light-mode .cta-box {
-  background: linear-gradient(135deg, #ffffff, #f0f4f8);
-  border-color: rgba(0, 212, 200, 0.2);
-}
-
-/* Light mode — Footer */
-:root.light-mode .footer {
-  background: #e8ecf1;
-  border-top-color: rgba(0, 0, 0, 0.06);
-}
-
-:root.light-mode .footer__socials a {
-  background: rgba(0, 0, 0, 0.06);
-  color: #718096;
-}
-
-:root.light-mode .footer__socials a:hover {
-  background: rgba(0, 212, 200, 0.12);
-  color: var(--primary-cyan);
-}
-
-/* Light mode — Pricing */
-:root.light-mode .pricing-tab {
-  background: #ffffff;
-  color: #4a5568;
-}
-
-:root.light-mode .pricing-tab:hover {
-  background: #f0f4f8;
-}
-
-:root.light-mode .pricing-tab--active {
-  background: rgba(0, 0, 0, 0.04);
-}
-
-:root.light-mode .pricing-card {
-  background: #ffffff;
-  border-color: rgba(0, 0, 0, 0.08);
-}
-
-:root.light-mode .pricing-card__badge {
-  color: #ffffff;
-}
-
-:root.light-mode .pricing-card__price {
-  border-bottom-color: rgba(0, 0, 0, 0.08);
-}
-
-/* Light mode — Product sections */
-:root.light-mode .product-section {
-  border-bottom-color: rgba(0, 0, 0, 0.04);
-}
-
-:root.light-mode .product-section--alt {
-  background: #eef2f7;
-}
-
-/* Light mode — Video overlays */
-:root.light-mode .hero__video-overlay {
-  background: rgba(213, 213, 213, 0.838);
-}
-
-/* Light mode — Page hero */
-:root.light-mode .page-hero {
-  background: #eef2f7;
-}
-
-/* Light mode — Scrolled navbar */
-:root.light-mode .navbar--scrolled {
-  background: rgba(255, 255, 255, 0.92);
-  border-bottom-color: rgba(0, 0, 0, 0.06);
-}
-
-/* Light mode — Text gradient */
-:root.light-mode .text-gradient {
-  background: linear-gradient(135deg, #00B8AE, #00D4C8, #1FC7BE);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
