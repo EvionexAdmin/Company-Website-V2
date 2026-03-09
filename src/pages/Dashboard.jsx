@@ -907,24 +907,24 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
         e.preventDefault()
         setEmployeeFormError(''); setEmployeeFormSuccess(''); setCreatingEmployee(true)
         try {
-            const { data: { session: freshSession } } = await supabaseGeneSetu.auth.getSession()
-            if (!freshSession?.access_token) {
+            const { data: { user: authUser }, error: authErr } = await supabaseGeneSetu.auth.getUser()
+            if (authErr || !authUser) {
                 setEmployeeFormError('Session expired. Please sign out and sign in again.')
                 setCreatingEmployee(false)
                 return
             }
-            const res = await fetch(`${import.meta.env.VITE_GENE_SETU_SUPABASE_URL}/functions/v1/evionex-create-employee`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${freshSession.access_token}`,
-                    'apikey': import.meta.env.VITE_GENE_SETU_SUPABASE_ANON_KEY,
-                },
-                body: JSON.stringify(employeeForm),
+            const { data: result, error: fnErr } = await supabaseGeneSetu.functions.invoke('evionex-create-employee', {
+                body: employeeForm,
             })
-            const result = await res.json()
-            if (!res.ok) {
-                setEmployeeFormError(result.error || 'Failed to create employee')
+            if (fnErr) {
+                let message = fnErr.message || 'Failed to create employee'
+                try {
+                    const errBody = fnErr.context ? await fnErr.context.json() : null
+                    if (errBody?.error) message = errBody.error
+                } catch {
+                    // Keep default message if response body is not JSON.
+                }
+                setEmployeeFormError(message)
             } else {
                 setEmployeeFormSuccess(result.message || 'Employee created successfully!')
                 setEmployeeForm({ fullName: '', email: '', password: '', subRole: 'full-time', department: 'Software Development' })
@@ -989,20 +989,27 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
         if (!isAdminUser) { alert('Only admins can delete users.'); return }
         setIsDeleting(true)
         try {
-            // Get fresh JWT — session prop may be stale after token refresh
-            const { data: { session: freshSession } } = await supabaseGeneSetu.auth.getSession()
-            if (!freshSession?.access_token) {
-                setDeleteError('Session expired. Please sign out and sign in again.')
-                setDeleting(false)
+            const { data: { user: authUser }, error: authErr } = await supabaseGeneSetu.auth.getUser()
+            if (authErr || !authUser) {
+                alert('Session expired. Please sign out and sign in again.')
+                setIsDeleting(false)
                 return
             }
-            const res = await fetch(`${import.meta.env.VITE_GENE_SETU_SUPABASE_URL}/functions/v1/evionex-delete-user`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${freshSession.access_token}`, 'apikey': import.meta.env.VITE_GENE_SETU_SUPABASE_ANON_KEY },
-                body: JSON.stringify({ userId: deletingUser }),
+            const { data: result, error: fnErr } = await supabaseGeneSetu.functions.invoke('evionex-delete-user', {
+                body: { userId: deletingUser },
             })
-            const result = await res.json()
-            if (!res.ok) alert('Delete failed: ' + (result.error || 'Unknown error'))
+            if (fnErr) {
+                let message = fnErr.message || 'Unknown error'
+                try {
+                    const errBody = fnErr.context ? await fnErr.context.json() : null
+                    if (errBody?.error) message = errBody.error
+                } catch {
+                    // Keep default message if response body is not JSON.
+                }
+                alert('Delete failed: ' + message)
+            } else if (!result?.success) {
+                alert('Delete failed: Unknown error')
+            }
         } catch (err) { alert('Delete failed: ' + err.message) }
         setIsDeleting(false); setDeletingUser(null)
         await loadData()
@@ -1230,32 +1237,31 @@ function InstitutionManager({ user, session }) {
         setError(''); setSuccess(''); setCreating(true)
 
         try {
-            // Get fresh JWT — session prop may be stale after token refresh
-            const { data: { session: freshSession } } = await supabaseGeneSetu.auth.getSession()
-            if (!freshSession?.access_token) {
+            const { data: { user: authUser }, error: authErr } = await supabaseGeneSetu.auth.getUser()
+            if (authErr || !authUser) {
                 setError('Session expired. Please sign out and sign in again.')
                 setCreating(false)
                 return
             }
-            const res = await fetch(`${import.meta.env.VITE_GENE_SETU_SUPABASE_URL}/functions/v1/evionex-create-institution`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${freshSession.access_token}`,
-                    'apikey': import.meta.env.VITE_GENE_SETU_SUPABASE_ANON_KEY,
-                },
-                body: JSON.stringify({
+            const { data: result, error: fnErr } = await supabaseGeneSetu.functions.invoke('evionex-create-institution', {
+                body: {
                     username: form.username,
                     password: form.password,
                     institutionName: form.institutionName,
                     address: form.address || undefined,
                     phone: form.phone || undefined,
                     website: form.website || undefined,
-                }),
+                },
             })
-            const result = await res.json()
-            if (!res.ok) {
-                setError(result.error || 'Failed to create institution')
+            if (fnErr) {
+                let message = fnErr.message || 'Failed to create institution'
+                try {
+                    const errBody = fnErr.context ? await fnErr.context.json() : null
+                    if (errBody?.error) message = errBody.error
+                } catch {
+                    // Keep default message if response body is not JSON.
+                }
+                setError(message)
             } else {
                 setSuccess(result.message || 'Institution created successfully!')
                 setForm({ username: '', password: '', institutionName: '', address: '', phone: '', website: '' })
