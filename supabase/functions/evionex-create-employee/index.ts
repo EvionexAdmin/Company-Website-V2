@@ -25,27 +25,28 @@ function decodeBase64Url(input: string): string {
     return atob(base64);
 }
 
-function getCallerIdFromJwt(req: Request): string | null {
+function getCallerIdFromJwt(req: Request): { callerId: string | null; debug?: string } {
     const authHeader = req.headers.get('Authorization') || '';
-    console.log("Debug: authHeader present?", !!authHeader, "Length:", authHeader.length);
     if (!authHeader.startsWith('Bearer ')) {
-        console.error("Debug: Does not start with Bearer");
-        return null;
+        return { callerId: null, debug: `Auth header missing/invalid: "${authHeader.slice(0, 20)}..."` };
     }
     const token = authHeader.slice(7).trim();
+    if (token === 'undefined' || token === 'null' || !token) {
+        return { callerId: null, debug: `Token value is literally "${token}"` };
+    }
     const parts = token.split('.');
     if (parts.length !== 3) {
-        console.error("Debug: Token parts !== 3, got", parts.length);
-        return null;
+        return { callerId: null, debug: `JWT parts count: ${parts.length} (expected 3)` };
     }
     try {
         const jsonStr = decodeBase64Url(parts[1]);
         const payload = JSON.parse(jsonStr);
-        console.log("Debug: payload sub is", payload?.sub);
-        return typeof payload?.sub === 'string' ? payload.sub : null;
+        return {
+            callerId: typeof payload?.sub === 'string' ? payload.sub : null,
+            debug: `Sub found: ${payload?.sub}`
+        };
     } catch (err) {
-        console.error("Debug: Decode failed!", err);
-        return null;
+        return { callerId: null, debug: `Decode failed: ${err.message}` };
     }
 }
 
@@ -61,10 +62,10 @@ Deno.serve(async (req: Request) => {
     }
 
     try {
-        const callerId = getCallerIdFromJwt(req);
+        const { callerId, debug } = getCallerIdFromJwt(req);
         if (!callerId) {
-            console.error("Debug: callerId is null, returning 401");
-            return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+            console.error("401 Unauthorized:", debug);
+            return new Response(JSON.stringify({ error: `Unauthorized: ${debug}` }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
         }
 
         const supabaseAdmin = createClient(
