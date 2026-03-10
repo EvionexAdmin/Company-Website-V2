@@ -913,8 +913,14 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
                 setCreatingEmployee(false)
                 return
             }
+            const { data: sessionData } = await supabaseGeneSetu.auth.getSession()
+            const token = sessionData?.session?.access_token
+
             const { data: result, error: fnErr } = await supabaseGeneSetu.functions.invoke('evionex-create-employee', {
                 body: employeeForm,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             })
             if (fnErr) {
                 let message = fnErr.message || 'Failed to create employee'
@@ -1243,6 +1249,9 @@ function InstitutionManager({ user, session }) {
                 setCreating(false)
                 return
             }
+            const { data: sessionData } = await supabaseGeneSetu.auth.getSession()
+            const token = sessionData?.session?.access_token
+
             const { data: result, error: fnErr } = await supabaseGeneSetu.functions.invoke('evionex-create-institution', {
                 body: {
                     username: form.username,
@@ -1678,9 +1687,9 @@ function InstitutionView({ tab, user }) {
                 .select('doctor_id')
                 .in('doctor_id', allDoctorIds)
             const counts = {}
-            ;(patRows || []).forEach(row => {
-                counts[row.doctor_id] = (counts[row.doctor_id] || 0) + 1
-            })
+                ; (patRows || []).forEach(row => {
+                    counts[row.doctor_id] = (counts[row.doctor_id] || 0) + 1
+                })
             setPatientCounts(counts)
         }
         setLoading(false)
