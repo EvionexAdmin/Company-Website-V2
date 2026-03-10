@@ -934,6 +934,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
                 try {
                     const errBody = fnErr.context ? await fnErr.context.json() : null
                     if (errBody?.error) message = errBody.error
+                    else if (errBody?.msg) message = errBody.msg
                 } catch {
                     // Keep default message if response body is not JSON.
                 }
@@ -1016,6 +1017,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
                 try {
                     const errBody = fnErr.context ? await fnErr.context.json() : null
                     if (errBody?.error) message = errBody.error
+                    else if (errBody?.msg) message = errBody.msg
                 } catch {
                     // Keep default message if response body is not JSON.
                 }
@@ -1284,6 +1286,7 @@ function InstitutionManager({ user, session }) {
                 try {
                     const errBody = fnErr.context ? await fnErr.context.json() : null
                     if (errBody?.error) message = errBody.error
+                    else if (errBody?.msg) message = errBody.msg
                 } catch {
                     // Keep default message if response body is not JSON.
                 }

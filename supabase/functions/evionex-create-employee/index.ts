@@ -28,25 +28,25 @@ function decodeBase64Url(input: string): string {
 function getCallerIdFromJwt(req: Request): { callerId: string | null; debug?: string } {
     const authHeader = req.headers.get('Authorization') || '';
     if (!authHeader.startsWith('Bearer ')) {
-        return { callerId: null, debug: `Auth header missing/invalid: "${authHeader.slice(0, 20)}..."` };
+        return { callerId: null, debug: 'Auth header missing or invalid' };
     }
     const token = authHeader.slice(7).trim();
     if (token === 'undefined' || token === 'null' || !token) {
-        return { callerId: null, debug: `Token value is literally "${token}"` };
+        return { callerId: null, debug: 'Token value is empty or invalid' };
     }
     const parts = token.split('.');
     if (parts.length !== 3) {
-        return { callerId: null, debug: `JWT parts count: ${parts.length} (expected 3)` };
+        return { callerId: null, debug: 'Malformed JWT' };
     }
     try {
         const jsonStr = decodeBase64Url(parts[1]);
         const payload = JSON.parse(jsonStr);
         return {
             callerId: typeof payload?.sub === 'string' ? payload.sub : null,
-            debug: `Sub found: ${payload?.sub}`
+            debug: payload?.sub ? 'OK' : 'No sub claim in JWT'
         };
     } catch (err) {
-        return { callerId: null, debug: `Decode failed: ${err.message}` };
+        return { callerId: null, debug: 'JWT decode failed' };
     }
 }
 
@@ -65,7 +65,7 @@ Deno.serve(async (req: Request) => {
         const { callerId, debug } = getCallerIdFromJwt(req);
         if (!callerId) {
             console.error("401 Unauthorized:", debug);
-            return new Response(JSON.stringify({ error: `Unauthorized: ${debug}` }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+            return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
         }
 
         const supabaseAdmin = createClient(

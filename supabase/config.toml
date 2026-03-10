@@ -365,6 +365,27 @@ inspector_port = 8083
 # The Deno major version to use.
 deno_version = 2
 
+# Functions that are called from the browser need verify_jwt = false
+# because the Supabase Functions relay rejects browser-sent JWTs.
+# Each function implements its own JWT validation and auth checks internally.
+[functions.evionex-create-employee]
+verify_jwt = false
+
+[functions.evionex-create-institution]
+verify_jwt = false
+
+[functions.evionex-delete-user]
+verify_jwt = false
+
+[functions.create-razorpay-order]
+verify_jwt = false
+
+[functions.verify-razorpay-payment]
+verify_jwt = false
+
+[functions.verify-turnstile]
+verify_jwt = false
+
 # [edge_runtime.secrets]
 # secret_key = "env(SECRET_VALUE)"
 
