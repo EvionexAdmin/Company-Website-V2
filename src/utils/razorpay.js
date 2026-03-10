@@ -45,9 +45,6 @@ export function loadRazorpayScript() {
  * @returns {Promise<Object>} Order object with { id, amount, currency }
  */
 export async function createOrder({ amount, currency = 'INR', planName, customerName, customerEmail }) {
-    const { data: sessionData } = await supabaseGeneSetu.auth.getSession()
-    const token = sessionData?.session?.access_token
-
     const { data, error } = await supabaseGeneSetu.functions.invoke('create-razorpay-order', {
         body: {
             amount,
@@ -56,7 +53,6 @@ export async function createOrder({ amount, currency = 'INR', planName, customer
             customer_name: customerName,
             customer_email: customerEmail,
         },
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
     })
 
     if (error) {
@@ -77,16 +73,12 @@ export async function createOrder({ amount, currency = 'INR', planName, customer
  * @returns {Promise<Object>} Verification result { verified, payment_id }
  */
 export async function verifyPayment({ razorpay_order_id, razorpay_payment_id, razorpay_signature }) {
-    const { data: sessionData } = await supabaseGeneSetu.auth.getSession()
-    const token = sessionData?.session?.access_token
-
     const { data, error } = await supabaseGeneSetu.functions.invoke('verify-razorpay-payment', {
         body: {
             razorpay_order_id,
             razorpay_payment_id,
             razorpay_signature,
         },
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
     })
 
     if (error) {

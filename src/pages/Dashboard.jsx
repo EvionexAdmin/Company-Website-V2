@@ -903,6 +903,14 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
     const [employeeFormSuccess, setEmployeeFormSuccess] = useState('')
     const [employeeForm, setEmployeeForm] = useState({ fullName: '', email: '', password: '', subRole: 'full-time', department: 'Software Development' })
 
+    async function getAccessTokenOrThrow() {
+        const { data: sessionData, error: sessionError } = await supabaseGeneSetu.auth.getSession()
+        if (sessionError) throw new Error('Failed to read auth session. Please sign in again.')
+        const token = sessionData?.session?.access_token
+        if (!token) throw new Error('Session expired. Please sign out and sign in again.')
+        return token
+    }
+
     async function handleCreateEmployee(e) {
         e.preventDefault()
         setEmployeeFormError(''); setEmployeeFormSuccess(''); setCreatingEmployee(true)
@@ -913,8 +921,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
                 setCreatingEmployee(false)
                 return
             }
-            const { data: sessionData } = await supabaseGeneSetu.auth.getSession()
-            const token = sessionData?.session?.access_token
+            const token = await getAccessTokenOrThrow()
 
             const { data: result, error: fnErr } = await supabaseGeneSetu.functions.invoke('evionex-create-employee', {
                 body: employeeForm,
@@ -1238,6 +1245,14 @@ function InstitutionManager({ user, session }) {
         setForm(f => ({ ...f, [field]: value }))
     }
 
+    async function getAccessTokenOrThrow() {
+        const { data: sessionData, error: sessionError } = await supabaseGeneSetu.auth.getSession()
+        if (sessionError) throw new Error('Failed to read auth session. Please sign in again.')
+        const token = sessionData?.session?.access_token
+        if (!token) throw new Error('Session expired. Please sign out and sign in again.')
+        return token
+    }
+
     async function handleCreate(e) {
         e.preventDefault()
         setError(''); setSuccess(''); setCreating(true)
@@ -1249,8 +1264,7 @@ function InstitutionManager({ user, session }) {
                 setCreating(false)
                 return
             }
-            const { data: sessionData } = await supabaseGeneSetu.auth.getSession()
-            const token = sessionData?.session?.access_token
+            const token = await getAccessTokenOrThrow()
 
             const { data: result, error: fnErr } = await supabaseGeneSetu.functions.invoke('evionex-create-institution', {
                 body: {
@@ -1260,6 +1274,9 @@ function InstitutionManager({ user, session }) {
                     address: form.address || undefined,
                     phone: form.phone || undefined,
                     website: form.website || undefined,
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
                 },
             })
             if (fnErr) {
