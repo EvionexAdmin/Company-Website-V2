@@ -23,13 +23,8 @@ BEGIN
       ON public.evionex_profiles
       FOR SELECT TO authenticated
       USING (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
     $policy$;
   END IF;
@@ -49,22 +44,12 @@ BEGIN
       ON public.evionex_profiles
       FOR UPDATE TO authenticated
       USING (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
       WITH CHECK (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
     $policy$;
   END IF;
@@ -84,13 +69,8 @@ BEGIN
       ON public.evionex_profiles
       FOR DELETE TO authenticated
       USING (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
     $policy$;
   END IF;
@@ -115,13 +95,8 @@ BEGIN
       ON public.evionex_employees
       FOR SELECT TO authenticated
       USING (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
     $policy$;
   END IF;
@@ -141,13 +116,8 @@ BEGIN
       ON public.evionex_employees
       FOR INSERT TO authenticated
       WITH CHECK (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
     $policy$;
   END IF;
@@ -167,22 +137,12 @@ BEGIN
       ON public.evionex_employees
       FOR UPDATE TO authenticated
       USING (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
       WITH CHECK (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
     $policy$;
   END IF;
@@ -202,13 +162,8 @@ BEGIN
       ON public.evionex_employees
       FOR DELETE TO authenticated
       USING (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
     $policy$;
   END IF;
@@ -233,13 +188,8 @@ BEGIN
       ON public.evionex_institutions
       FOR SELECT TO authenticated
       USING (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
     $policy$;
   END IF;
@@ -259,13 +209,8 @@ BEGIN
       ON public.evionex_institutions
       FOR INSERT TO authenticated
       WITH CHECK (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
     $policy$;
   END IF;
@@ -285,22 +230,12 @@ BEGIN
       ON public.evionex_institutions
       FOR UPDATE TO authenticated
       USING (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
       WITH CHECK (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
     $policy$;
   END IF;
@@ -320,13 +255,8 @@ BEGIN
       ON public.evionex_institutions
       FOR DELETE TO authenticated
       USING (
-        EXISTS (
-          SELECT 1
-          FROM public.evionex_profiles p
-          WHERE p.id = auth.uid()
-            AND p.account_status = 'active'
-            AND p.sub_role = 'admin'
-        )
+        evionex_is_active_user(auth.uid())
+        AND evionex_get_sub_role(auth.uid()) = 'admin'
       )
     $policy$;
   END IF;
