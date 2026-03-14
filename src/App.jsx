@@ -14,6 +14,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import VerifyEmail from './pages/VerifyEmail'
 import Dashboard from './pages/Dashboard'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 import ProtectedRoute from './components/ProtectedRoute'
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
                 <Route path="portal/signup" element={<Signup />} />
                 <Route path="portal/verify-email" element={<VerifyEmail />} />
                 <Route path="portal/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="privacy-policy" element={<PrivacyPolicy />} />
             </Route>
         </Routes>
     )
