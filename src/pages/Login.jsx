@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
 import TurnstileWidget from '../components/TurnstileWidget'
@@ -14,6 +14,10 @@ export default function Login() {
     const [turnstileKey, setTurnstileKey] = useState(0) // key to force remount & reset widget
     const { signIn } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
+
+    // Read redirect param (e.g. from pricing page payment flow)
+    const redirectParam = new URLSearchParams(location.search).get('redirect')
 
     const handleTurnstileVerify = useCallback((token) => {
         setTurnstileToken(token)
@@ -73,7 +77,7 @@ export default function Login() {
                 setTurnstileKey((k) => k + 1)
                 setLoading(false)
             } else {
-                navigate('/portal/dashboard', { replace: true })
+                navigate(redirectParam || '/portal/dashboard', { replace: true })
             }
         } catch {
             setError('An unexpected error occurred. Please try again.')
@@ -141,7 +145,7 @@ export default function Login() {
 
                 <div className="auth-footer">
                     Don't have an account?{' '}
-                    <Link to="/portal/signup">Create one</Link>
+                    <Link to={`/portal/signup${redirectParam ? `?redirect=${encodeURIComponent(redirectParam)}` : ''}`}>Create one</Link>
                 </div>
             </div>
         </div>

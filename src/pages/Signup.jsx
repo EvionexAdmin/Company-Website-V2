@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
 import TurnstileWidget from '../components/TurnstileWidget'
@@ -20,6 +20,10 @@ export default function Signup() {
     const [turnstileToken, setTurnstileToken] = useState(null)
     const [turnstileKey, setTurnstileKey] = useState(0)
     const { signUp } = useAuth()
+    const location = useLocation()
+
+    // Preserve redirect param (e.g. from pricing page payment flow)
+    const redirectParam = new URLSearchParams(location.search).get('redirect')
 
     const handleTurnstileVerify = useCallback((token) => {
         setTurnstileToken(token)
@@ -232,7 +236,7 @@ export default function Signup() {
 
                 <div className="auth-footer">
                     Already have an account?{' '}
-                    <Link to="/portal/login">Sign in</Link>
+                    <Link to={`/portal/login${redirectParam ? `?redirect=${encodeURIComponent(redirectParam)}` : ''}`}>Sign in</Link>
                 </div>
             </div>
         </div>

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
+import ResizableTable from '../components/ResizableTable'
 import './Portal.css'
 
 /* =================== SVG ICON COMPONENTS =================== */
@@ -461,11 +462,11 @@ function UserDetailView({ userId, userType, onBack }) {
                         {orders.length === 0 ? (
                             <div className="empty-state"><div className="empty-state__icon">{ICONS.orders}</div><h3 className="empty-state__title">No orders</h3></div>
                         ) : (
-                            <table className="portal-table"><thead><tr><th>Order ID</th><th>Email</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+                            <ResizableTable className="portal-table"><thead><tr><th>Order ID</th><th>Email</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
                                 <tbody>{orders.map(o => (
                                     <tr key={o.id}><td className="portal-table__mono">{o.razorpay_order_id?.slice(0, 18) || o.id.slice(0, 8)}</td><td>{profileData?.email || '—'}</td><td>{o.plan_name || '—'}</td><td>₹{((o.amount || 0) / 100).toLocaleString('en-IN')}</td><td><span className={`status-badge status-badge--${o.order_status}`}>{o.order_status.replace(/_/g, ' ')}</span></td><td>{new Date(o.created_at).toLocaleDateString('en-IN')}</td></tr>
                                 ))}</tbody>
-                            </table>
+                            </ResizableTable>
                         )}
                     </div>
 
@@ -475,11 +476,11 @@ function UserDetailView({ userId, userType, onBack }) {
                         {reports.length === 0 ? (
                             <div className="empty-state"><div className="empty-state__icon">{ICONS.reports}</div><h3 className="empty-state__title">No reports</h3></div>
                         ) : (
-                            <table className="portal-table"><thead><tr><th>File</th><th>Type</th><th>Uploaded</th></tr></thead>
+                            <ResizableTable className="portal-table"><thead><tr><th>File</th><th>Type</th><th>Uploaded</th></tr></thead>
                                 <tbody>{reports.map(r => (
                                     <tr key={r.id}><td>{r.file_name || '—'}</td><td>{r.report_type}</td><td>{new Date(r.created_at).toLocaleDateString('en-IN')}</td></tr>
                                 ))}</tbody>
-                            </table>
+                            </ResizableTable>
                         )}
                     </div>
                 </>
@@ -697,7 +698,7 @@ function PatientView({ tab, user, profile }) {
             <div className="glass-card glass-card--flush">
                 <div className="glass-card__header" style={{ padding: 'var(--space-lg) var(--space-xl) 0' }}><h2>Recent Orders</h2></div>
                 {orders.length === 0 ? <div className="empty-state"><div className="empty-state__icon">{ICONS.orders}</div><h3 className="empty-state__title">No orders yet</h3><p className="empty-state__text">Your WES orders will appear here after a verified payment.</p></div>
-                    : <table className="portal-table"><thead><tr><th>Order ID</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>{orders.slice(0, 3).map(o => <tr key={o.id}><td className="portal-table__mono">{o.razorpay_order_id?.slice(0, 18) || o.id.slice(0, 8)}</td><td>{o.plan_name || '—'}</td><td>₹{((o.amount || 0) / 100).toLocaleString('en-IN')}</td><td><span className={`status-badge status-badge--${o.order_status}`}>{o.order_status.replace(/_/g, ' ')}</span></td><td>{new Date(o.created_at).toLocaleDateString('en-IN')}</td></tr>)}</tbody></table>}
+                    : <ResizableTable className="portal-table"><thead><tr><th>Order ID</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>{orders.slice(0, 3).map(o => <tr key={o.id}><td className="portal-table__mono">{o.razorpay_order_id?.slice(0, 18) || o.id.slice(0, 8)}</td><td>{o.plan_name || '—'}</td><td>₹{((o.amount || 0) / 100).toLocaleString('en-IN')}</td><td><span className={`status-badge status-badge--${o.order_status}`}>{o.order_status.replace(/_/g, ' ')}</span></td><td>{new Date(o.created_at).toLocaleDateString('en-IN')}</td></tr>)}</tbody></ResizableTable>}
             </div>
         </>
     )
@@ -769,7 +770,7 @@ function PatientView({ tab, user, profile }) {
 
                 {searchResults.length > 0 && (
                     <div style={{ marginTop: 'var(--space-lg)', overflowX: 'auto' }}>
-                        <table className="portal-table">
+                        <ResizableTable className="portal-table">
                             <thead><tr><th>Doctor ID</th><th>Name</th><th>Specialization</th><th>Experience</th><th>Action</th></tr></thead>
                             <tbody>
                                 {searchResults.map(d => {
@@ -791,7 +792,7 @@ function PatientView({ tab, user, profile }) {
                                     )
                                 })}
                             </tbody>
-                        </table>
+                        </ResizableTable>
                     </div>
                 )}
             </div>
@@ -800,7 +801,7 @@ function PatientView({ tab, user, profile }) {
             <div className="glass-card glass-card--flush">
                 <div className="glass-card__header" style={{ padding: 'var(--space-lg) var(--space-xl) 0' }}><h2>Connected Doctors ({connectedDoctors.length})</h2></div>
                 {connectedDoctors.length === 0 ? <div className="empty-state"><div className="empty-state__icon">{ICONS.doctors}</div><h3 className="empty-state__title">No connected doctors</h3><p className="empty-state__text">Search for doctors above or use a Doctor ID to connect.</p></div>
-                    : <table className="portal-table"><thead><tr><th>Doctor ID</th><th>Name</th><th>Specialization</th><th>Experience</th><th>Connected On</th><th></th></tr></thead><tbody>{connectedDoctors.map(c => <tr key={c.doctor_id}><td><span className="id-chip">{c.evionex_doctors?.doctor_id}</span></td><td>{c.evionex_doctors?.evionex_profiles?.full_name || '—'}</td><td style={{ textTransform: 'capitalize' }}>{c.evionex_doctors?.specialization || '—'}</td><td>{c.evionex_doctors?.experience_years ? `${c.evionex_doctors.experience_years} yrs` : '—'}</td><td>{new Date(c.assigned_at).toLocaleDateString('en-IN')}</td><td><ActionMenu onDisconnect={() => handleDisconnectDoctor(c.doctor_id, c.evionex_doctors?.evionex_profiles?.full_name)} /></td></tr>)}</tbody></table>}
+                    : <ResizableTable className="portal-table"><thead><tr><th>Doctor ID</th><th>Name</th><th>Specialization</th><th>Experience</th><th>Connected On</th><th></th></tr></thead><tbody>{connectedDoctors.map(c => <tr key={c.doctor_id}><td><span className="id-chip">{c.evionex_doctors?.doctor_id}</span></td><td>{c.evionex_doctors?.evionex_profiles?.full_name || '—'}</td><td style={{ textTransform: 'capitalize' }}>{c.evionex_doctors?.specialization || '—'}</td><td>{c.evionex_doctors?.experience_years ? `${c.evionex_doctors.experience_years} yrs` : '—'}</td><td>{new Date(c.assigned_at).toLocaleDateString('en-IN')}</td><td><ActionMenu onDisconnect={() => handleDisconnectDoctor(c.doctor_id, c.evionex_doctors?.evionex_profiles?.full_name)} /></td></tr>)}</tbody></ResizableTable>}
             </div>
 
             {/* Pending Requests */}
@@ -832,7 +833,7 @@ function PatientView({ tab, user, profile }) {
             </div>
             <div className="glass-card glass-card--flush">
                 {orders.length === 0 ? <div className="empty-state"><div className="empty-state__icon">{ICONS.orders}</div><h3 className="empty-state__title">No orders yet</h3></div>
-                    : <table className="portal-table"><thead><tr><th>Order ID</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>{orders.map(o => <tr key={o.id}><td className="portal-table__mono">{o.razorpay_order_id?.slice(0, 22) || o.id.slice(0, 8)}</td><td>{o.plan_name || '—'}</td><td>₹{((o.amount || 0) / 100).toLocaleString('en-IN')}</td><td><span className={`status-badge status-badge--${o.order_status}`}>{o.order_status.replace(/_/g, ' ')}</span></td><td>{new Date(o.created_at).toLocaleDateString('en-IN')}</td></tr>)}</tbody></table>}
+                    : <ResizableTable className="portal-table"><thead><tr><th>Order ID</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>{orders.map(o => <tr key={o.id}><td className="portal-table__mono">{o.razorpay_order_id?.slice(0, 22) || o.id.slice(0, 8)}</td><td>{o.plan_name || '—'}</td><td>₹{((o.amount || 0) / 100).toLocaleString('en-IN')}</td><td><span className={`status-badge status-badge--${o.order_status}`}>{o.order_status.replace(/_/g, ' ')}</span></td><td>{new Date(o.created_at).toLocaleDateString('en-IN')}</td></tr>)}</tbody></ResizableTable>}
             </div>
         </>
     )
@@ -1058,7 +1059,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
             <div className="glass-card glass-card--flush">
                 <div className="glass-card__header" style={{ padding: 'var(--space-lg) var(--space-xl) 0' }}><h2>Recent Orders</h2></div>
                 {orders.length === 0 ? <div className="empty-state"><div className="empty-state__icon">{ICONS.orders}</div><h3 className="empty-state__title">No orders</h3></div>
-                    : <table className="portal-table"><thead><tr><th>Patient</th><th>Order</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>{orders.slice(0, 5).map(o => <tr key={o.id}><td><span className="id-chip">{o.evionex_patients?.patient_id || '—'}</span></td><td className="portal-table__mono">{o.razorpay_order_id?.slice(0, 16) || o.id.slice(0, 8)}</td><td>{o.plan_name || '—'}</td><td>₹{((o.amount || 0) / 100).toLocaleString('en-IN')}</td><td><span className={`status-badge status-badge--${o.order_status}`}>{o.order_status.replace(/_/g, ' ')}</span></td><td>{new Date(o.created_at).toLocaleDateString('en-IN')}</td></tr>)}</tbody></table>}
+                    : <ResizableTable className="portal-table"><thead><tr><th>Patient</th><th>Order</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>{orders.slice(0, 5).map(o => <tr key={o.id}><td><span className="id-chip">{o.evionex_patients?.patient_id || '—'}</span></td><td className="portal-table__mono">{o.razorpay_order_id?.slice(0, 16) || o.id.slice(0, 8)}</td><td>{o.plan_name || '—'}</td><td>₹{((o.amount || 0) / 100).toLocaleString('en-IN')}</td><td><span className={`status-badge status-badge--${o.order_status}`}>{o.order_status.replace(/_/g, ' ')}</span></td><td>{new Date(o.created_at).toLocaleDateString('en-IN')}</td></tr>)}</tbody></ResizableTable>}
             </div>
         </>
     )
@@ -1069,7 +1070,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
             <div className="portal-main__header"><h1>Order Management</h1><p>Update order statuses and track progress</p></div>
             <div className="glass-card glass-card--flush">
                 {orders.length === 0 ? <div className="empty-state"><div className="empty-state__icon">{ICONS.orders}</div><h3 className="empty-state__title">No orders</h3></div>
-                    : <table className="portal-table"><thead><tr><th>Patient</th><th>Order ID</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th><th>Update</th></tr></thead><tbody>{orders.map(o => <tr key={o.id}><td><span className="id-chip">{o.evionex_patients?.patient_id || '—'}</span></td><td className="portal-table__mono">{o.razorpay_order_id?.slice(0, 18) || o.id.slice(0, 8)}</td><td>{o.plan_name || '—'}</td><td>₹{((o.amount || 0) / 100).toLocaleString('en-IN')}</td><td><span className={`status-badge status-badge--${o.order_status}`}>{o.order_status.replace(/_/g, ' ')}</span></td><td>{new Date(o.created_at).toLocaleDateString('en-IN')}</td><td><select className="status-select" value={o.order_status} onChange={e => updateStatus(o.id, e.target.value)} disabled={updatingId === o.id}>{statuses.map(s => <option key={s} value={s}>{s.replace(/_/g, ' ')}</option>)}</select></td></tr>)}</tbody></table>}
+                    : <ResizableTable className="portal-table"><thead><tr><th>Patient</th><th>Order ID</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th><th>Update</th></tr></thead><tbody>{orders.map(o => <tr key={o.id}><td><span className="id-chip">{o.evionex_patients?.patient_id || '—'}</span></td><td className="portal-table__mono">{o.razorpay_order_id?.slice(0, 18) || o.id.slice(0, 8)}</td><td>{o.plan_name || '—'}</td><td>₹{((o.amount || 0) / 100).toLocaleString('en-IN')}</td><td><span className={`status-badge status-badge--${o.order_status}`}>{o.order_status.replace(/_/g, ' ')}</span></td><td>{new Date(o.created_at).toLocaleDateString('en-IN')}</td><td><select className="status-select" value={o.order_status} onChange={e => updateStatus(o.id, e.target.value)} disabled={updatingId === o.id}>{statuses.map(s => <option key={s} value={s}>{s.replace(/_/g, ' ')}</option>)}</select></td></tr>)}</tbody></ResizableTable>}
             </div>
         </>
     )
@@ -1095,7 +1096,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
                 {/* Patients */}
                 {userSubTab === 'patients' && (
                     patients.length === 0 ? <div className="empty-state"><div className="empty-state__icon">{ICONS.users}</div><h3 className="empty-state__title">No patients</h3></div>
-                        : <table className="portal-table portal-table--accounts"><thead><tr><th>Patient Account</th><th>Blood Group</th><th>Status</th><th>Joined</th><th></th></tr></thead>
+                        : <ResizableTable className="portal-table portal-table--accounts"><thead><tr><th>Patient Account</th><th>Blood Group</th><th>Status</th><th>Joined</th><th></th></tr></thead>
                             <tbody>{patients.map(p => (
                                 <tr key={p.id}><td>
                                     <div className="account-cell">
@@ -1112,13 +1113,13 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
                                 </td><td>{p.blood_group || '—'}</td><td><span className={`status-badge status-badge--${p.evionex_profiles?.account_status}`}>{p.evionex_profiles?.account_status || '—'}</span></td><td>{new Date(p.created_at).toLocaleDateString('en-IN')}</td>
                                     <td><ActionMenu onEdit={() => handleEditPatient(p)} onDelete={() => { setDeletingUser(p.id); setDeleteUserName(p.evionex_profiles?.full_name || p.patient_id) }} onViewMore={() => { setViewingUserId(p.id); setViewingUserType('patient') }} /></td>
                                 </tr>
-                            ))}</tbody></table>
+                            ))}</tbody></ResizableTable>
                 )}
 
                 {/* Partners */}
                 {userSubTab === 'partners' && (
                     partners.length === 0 ? <div className="empty-state"><div className="empty-state__icon">{ICONS.handshake}</div><h3 className="empty-state__title">No partners</h3></div>
-                        : <table className="portal-table portal-table--accounts"><thead><tr><th>Partner Account</th><th>Type</th><th>Status</th><th>Joined</th><th></th></tr></thead>
+                        : <ResizableTable className="portal-table portal-table--accounts"><thead><tr><th>Partner Account</th><th>Type</th><th>Status</th><th>Joined</th><th></th></tr></thead>
                             <tbody>{partners.map(p => (
                                 <tr key={p.id}><td>
                                     <div className="account-cell">
@@ -1131,7 +1132,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
                                 </td><td style={{ textTransform: 'capitalize' }}><span className={`status-badge status-badge--${p.sub_role === 'doctor' ? 'processing' : 'pending'}`}>{formatRoleLabel(p.sub_role)}</span></td><td><span className={`status-badge status-badge--${p.account_status}`}>{p.account_status}</span></td><td>{new Date(p.created_at).toLocaleDateString('en-IN')}</td>
                                     <td><ActionMenu onEdit={() => handleEditPartner(p)} onDelete={() => { setDeletingUser(p.id); setDeleteUserName(p.full_name || 'User') }} onViewMore={() => { setViewingUserId(p.id); setViewingUserType('partner') }} /></td>
                                 </tr>
-                            ))}</tbody></table>
+                            ))}</tbody></ResizableTable>
                 )}
 
                 {/* Employees */}
@@ -1182,7 +1183,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
                             </div>
                         ) : (
                             employees.length === 0 ? <div className="empty-state"><div className="empty-state__icon">{ICONS.briefcase}</div><h3 className="empty-state__title">No employees</h3></div>
-                                : <table className="portal-table portal-table--accounts"><thead><tr><th>Employee Account</th><th>Employment Type</th><th>Status</th><th>Joined</th><th></th></tr></thead>
+                                : <ResizableTable className="portal-table portal-table--accounts"><thead><tr><th>Employee Account</th><th>Employment Type</th><th>Status</th><th>Joined</th><th></th></tr></thead>
                                     <tbody>{employees.map(e => (
                                         <tr key={e.id}><td>
                                             <div className="account-cell">
@@ -1195,7 +1196,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
                                         </td><td style={{ textTransform: 'capitalize' }}><span className={`status-badge status-badge--${e.sub_role === 'admin' ? 'cancelled' : 'processing'}`}>{formatRoleLabel(e.sub_role)}</span></td><td><span className={`status-badge status-badge--${e.account_status}`}>{e.account_status}</span></td><td>{new Date(e.created_at).toLocaleDateString('en-IN')}</td>
                                             <td><ActionMenu onEdit={() => handleEditEmployee(e)} onDelete={() => { setDeletingUser(e.id); setDeleteUserName(e.full_name || 'User') }} onViewMore={() => { setViewingUserId(e.id); setViewingUserType('employee') }} /></td>
                                         </tr>
-                                    ))}</tbody></table>
+                                    ))}</tbody></ResizableTable>
                         )}
                     </>
                 )}
@@ -1370,7 +1371,7 @@ function InstitutionManager({ user, session }) {
                 {institutions.length === 0 ? (
                     <div className="empty-state"><div className="empty-state__icon">{ICONS.institutions}</div><h3 className="empty-state__title">No institutions yet</h3><p className="empty-state__text">Create your first institution using the form above.</p></div>
                 ) : (
-                    <table className="portal-table">
+                    <ResizableTable className="portal-table">
                         <thead><tr><th>Code</th><th>Name</th><th>Username</th><th>Status</th><th>Created</th></tr></thead>
                         <tbody>{institutions.map(inst => (
                             <tr key={inst.id}>
@@ -1381,7 +1382,7 @@ function InstitutionManager({ user, session }) {
                                 <td>{new Date(inst.created_at).toLocaleDateString('en-IN')}</td>
                             </tr>
                         ))}</tbody>
-                    </table>
+                    </ResizableTable>
                 )}
             </div>
         </>
@@ -1571,7 +1572,7 @@ function DoctorView({ tab, user, profile }) {
             <div className="glass-card glass-card--flush">
                 <div className="glass-card__header" style={{ padding: 'var(--space-lg) var(--space-xl) 0' }}><h2>Connected Patients ({patients.length})</h2></div>
                 {patients.length === 0 ? <div className="empty-state"><div className="empty-state__icon">{ICONS.users}</div><h3 className="empty-state__title">No patients connected</h3><p className="empty-state__text">Patients can find you and send connection requests.</p></div>
-                    : <table className="portal-table"><thead><tr><th>Patient ID</th><th>Name</th><th>Gender</th><th>Blood Group</th><th>Connected On</th><th></th></tr></thead><tbody>{patients.map(a => <tr key={a.patient_id}><td><span className="id-chip">{a.evionex_patients?.patient_id}</span></td><td>{a.evionex_patients?.evionex_profiles?.full_name || '—'}</td><td style={{ textTransform: 'capitalize' }}>{a.evionex_patients?.gender || '—'}</td><td>{a.evionex_patients?.blood_group || '—'}</td><td>{new Date(a.assigned_at).toLocaleDateString('en-IN')}</td><td><ActionMenu onViewMore={() => setViewingPatientId(a.patient_id)} onDisconnect={() => handleDisconnectPatient(a.patient_id, a.evionex_patients?.evionex_profiles?.full_name)} /></td></tr>)}</tbody></table>}
+                    : <ResizableTable className="portal-table"><thead><tr><th>Patient ID</th><th>Name</th><th>Gender</th><th>Blood Group</th><th>Connected On</th><th></th></tr></thead><tbody>{patients.map(a => <tr key={a.patient_id}><td><span className="id-chip">{a.evionex_patients?.patient_id}</span></td><td>{a.evionex_patients?.evionex_profiles?.full_name || '—'}</td><td style={{ textTransform: 'capitalize' }}>{a.evionex_patients?.gender || '—'}</td><td>{a.evionex_patients?.blood_group || '—'}</td><td>{new Date(a.assigned_at).toLocaleDateString('en-IN')}</td><td><ActionMenu onViewMore={() => setViewingPatientId(a.patient_id)} onDisconnect={() => handleDisconnectPatient(a.patient_id, a.evionex_patients?.evionex_profiles?.full_name)} /></td></tr>)}</tbody></ResizableTable>}
             </div>
         </>
     )
@@ -1621,7 +1622,7 @@ function DoctorView({ tab, user, profile }) {
                         <p className="empty-state__text">Enter an institution code or ID above to send a connection request.</p>
                     </div>
                 ) : (
-                    <table className="portal-table">
+                    <ResizableTable className="portal-table">
                         <thead><tr><th>Code</th><th>Name</th><th>Phone</th><th>Website</th><th>Connected On</th></tr></thead>
                         <tbody>
                             {connectedInstitutions.map(r => (
@@ -1638,7 +1639,7 @@ function DoctorView({ tab, user, profile }) {
                                 </tr>
                             ))}
                         </tbody>
-                    </table>
+                    </ResizableTable>
                 )}
             </div>
 
@@ -1849,7 +1850,7 @@ function InstitutionView({ tab, user }) {
                         <p className="empty-state__text">Doctors will appear here once they send and you accept connection requests above.</p>
                     </div>
                 ) : (
-                    <table className="portal-table">
+                    <ResizableTable className="portal-table">
                         <thead><tr><th>Doctor ID</th><th>Name</th><th>Specialization</th><th>License</th><th>Experience</th><th>Patients</th><th></th></tr></thead>
                         <tbody>
                             {connectedDoctors.map(r => {
@@ -1867,7 +1868,7 @@ function InstitutionView({ tab, user }) {
                                 )
                             })}
                         </tbody>
-                    </table>
+                    </ResizableTable>
                 )}
             </div>
         </>

@@ -1,4 +1,4 @@
-﻿/* ===========================
+/* ===========================
    EVIONEX PORTAL — PREMIUM UI
    Clinical Luxe Dashboard
    =========================== */
@@ -472,8 +472,6 @@
     color: var(--primary-cyan);
 }
 
-.stat-card__icon--cyan~.stat-card__info {}
-
 .stat-card:has(.stat-card__icon--cyan)::before {
     background: var(--primary-cyan);
 }
@@ -602,7 +600,9 @@
    =========================== */
 .portal-table {
     width: 100%;
+    min-width: max-content;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 .portal-table th {
@@ -615,6 +615,9 @@
     color: rgba(148, 163, 184, 0.8);
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     background: rgba(15, 28, 50, 0.3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .portal-table td {
@@ -624,6 +627,10 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     vertical-align: middle;
     transition: background 150ms ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 0;
 }
 
 .portal-table tr:last-child td {
@@ -643,6 +650,36 @@
     font-size: var(--text-xs);
     color: var(--text-muted);
     letter-spacing: -0.02em;
+}
+
+/* Column Resize Handles */
+.col-resize-handle {
+    position: absolute;
+    top: 0;
+    right: -1px;
+    width: 5px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 2;
+    transition: background 150ms ease;
+}
+
+.col-resize-handle::after {
+    content: '';
+    position: absolute;
+    top: 25%;
+    right: 2px;
+    width: 1px;
+    height: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 1px;
+    transition: background 150ms ease, box-shadow 150ms ease;
+}
+
+.col-resize-handle:hover::after,
+.col-resize-handle--active::after {
+    background: var(--primary-cyan);
+    box-shadow: 0 0 6px rgba(0, 212, 200, 0.4);
 }
 
 .portal-table--accounts td {
@@ -735,6 +772,10 @@
     font-weight: var(--weight-semibold);
     letter-spacing: 0.03em;
     text-transform: capitalize;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .status-badge::before {
@@ -813,6 +854,10 @@
     cursor: pointer;
     outline: none;
     transition: border-color 200ms ease, box-shadow 200ms ease;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .status-select:focus {
@@ -836,6 +881,10 @@
     color: var(--primary-cyan);
     letter-spacing: 0.02em;
     font-weight: var(--weight-semibold);
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ===========================

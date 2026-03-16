@@ -1,5 +1,7 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
 import { initiatePayment } from '../utils/razorpay'
 import './Pricing.css'
 
@@ -177,21 +179,61 @@ const plans = [
 
 export default function Pricing() {
     const [activeProduct, setActiveProduct] = useState(0)
-
+    const { user, loading } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
+    const paymentTriggered = useRef(false)
 
-    const handlePayOrQuote = (tierName, priceAmount, productName, isEnterprise) => {
-        // Enterprise tiers and non-Gene Setu products -> contact page
-        if (isEnterprise || productName !== 'Gene Setu') {
-            navigate('/contact')
-            return
+    // After login redirect: auto-trigger payment if params are present
+    useEffect(() => {
+        if (loading || paymentTriggered.current) return
+
+        const params = new URLSearchParams(location.search)
+        const pendingTier = params.get('pay_tier')
+        const pendingAmount = params.get('pay_amount')
+        const pendingProduct = params.get('pay_product')
+
+        if (user && pendingTier && pendingAmount && pendingProduct) {
+            paymentTriggered.current = true
+
+            // Clean the URL so a page refresh won't re-trigger
+            navigate('/pricing', { replace: true })
+
+            // Small delay to let the navigate settle before opening Razorpay
+            setTimeout(() => {
+                startPayment(pendingTier, Number(pendingAmount), pendingProduct)
+            }, 300)
         }
+    }, [user, loading, location.search])
 
-        // Gene Setu one-time payment via Razorpay
+    /** Actually initiate the Razorpay flow */
+    const startPayment = (tierName, priceAmount, productName) => {
         initiatePayment({
             planName: `${productName} - ${tierName}`,
             amount: priceAmount,
-            onSuccess: (response) => {
+            customerEmail: user?.email || '',
+            onSuccess: async (response) => {
+                // Create the order in Gene Setu's evionex_wes_orders table
+                try {
+                    const { error: wesError } = await supabaseGeneSetu
+                        .from('evionex_wes_orders')
+                        .insert({
+                            patient_id: user.id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            amount: priceAmount,
+                            plan_name: `${productName} - ${tierName}`,
+                            payment_verified: true,
+                            order_status: 'pending',
+                        })
+
+                    if (wesError) {
+                        console.error('Failed to create WES order:', wesError)
+                    }
+                } catch (err) {
+                    console.error('Error creating WES order:', err)
+                }
+
                 alert(
                     `✅ Payment Successful!\n\n` +
                     `Your ${tierName} plan for ${productName} is now active.\n` +
@@ -205,6 +247,24 @@ export default function Pricing() {
                 }
             },
         })
+    }
+
+    const handlePayOrQuote = (tierName, priceAmount, productName, isEnterprise) => {
+        // Enterprise tiers and non-Gene Setu products -> contact page
+        if (isEnterprise || productName !== 'Gene Setu') {
+            navigate('/contact')
+            return
+        }
+
+        // If user is NOT logged in, redirect to login with a return URL
+        if (!user) {
+            const returnUrl = `/pricing?pay_tier=${encodeURIComponent(tierName)}&pay_amount=${priceAmount}&pay_product=${encodeURIComponent(productName)}`
+            navigate(`/portal/login?redirect=${encodeURIComponent(returnUrl)}`)
+            return
+        }
+
+        // User is logged in — proceed with payment
+        startPayment(tierName, priceAmount, productName)
     }
 
     const currentPlan = plans[activeProduct]
