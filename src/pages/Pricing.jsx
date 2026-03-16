@@ -11,9 +11,9 @@ const plans = [
         tiers: [
             {
                 name: 'Genetic Testing Package',
-                price: '18,000',
-                originalPrice: '25,000',
-                priceAmount: 1800000,
+                price: '19,500',
+                originalPrice: '24,000',
+                priceAmount: 1950000,
                 period: '/person',
                 description: 'One Package, life long benefits',
                 features: [
@@ -45,6 +45,7 @@ const plans = [
 
                 ],
                 highlighted: false,
+                hideButton: true,
             },
             {
                 name: 'Health Network',
@@ -286,17 +287,19 @@ export default function Pricing() {
                                         </li>
                                     ))}
                                 </ul>
-                                <button
-                                    className={`btn ${tier.highlighted ? 'btn-primary' : 'btn-secondary'} pricing-card__btn`}
-                                    style={tier.highlighted ? { background: currentPlan.tagColor } : {}}
-                                    onClick={() => handlePayOrQuote(tier.name, tier.priceAmount, currentPlan.product, tier.isEnterprise)}
-                                >
-                                    {tier.isEnterprise
-                                        ? 'Contact Sales'
-                                        : currentPlan.product === 'Gene Setu'
-                                            ? 'Pay Now'
-                                            : 'Get Quote'}
-                                </button>
+                                {!tier.hideButton && (
+                                    <button
+                                        className={`btn ${tier.highlighted ? 'btn-primary' : 'btn-secondary'} pricing-card__btn`}
+                                        style={tier.highlighted ? { background: currentPlan.tagColor } : {}}
+                                        onClick={() => handlePayOrQuote(tier.name, tier.priceAmount, currentPlan.product, tier.isEnterprise)}
+                                    >
+                                        {tier.isEnterprise
+                                            ? 'Contact Sales'
+                                            : currentPlan.product === 'Gene Setu'
+                                                ? 'Pay Now'
+                                                : 'Get Quote'}
+                                    </button>
+                                )}
                             </div>
                         ))}
                     </div>
