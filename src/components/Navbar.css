@@ -1,4 +1,4 @@
-﻿/* ============================================
+/* ============================================
    GLASSMORPHIC NAVBAR â€” Apple Vision Pro Feel
    ============================================ */
 
@@ -223,7 +223,7 @@
 
 .gn-navbar__hamburger--open span:nth-child(2) {
     opacity: 0;
-    width: 0;
+    transform: scaleX(0);
 }
 
 .gn-navbar__hamburger--open span:nth-child(3) {

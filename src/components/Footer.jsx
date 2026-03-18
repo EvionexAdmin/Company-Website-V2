@@ -11,8 +11,8 @@ export default function Footer() {
                     {/* Brand Column */}
                     <div className="footer__brand">
                         <Link to="/" className="footer__logo">
-                            <img src={evionexLogo} alt="Evionex Logo" style={{ height: '28px', width: 'auto' }} />
-                            <img src={evionexText} alt="Evionex" style={{ height: '18px', width: 'auto' }} />
+                            <img src={evionexLogo} alt="Evionex Logo" width="28" height="28" style={{ height: '28px', width: 'auto' }} />
+                            <img src={evionexText} alt="Evionex" width="80" height="18" style={{ height: '18px', width: 'auto' }} />
                         </Link>
                         <p className="footer__tagline">
                             Transforming your life through relevant AI-powered digital solutions.

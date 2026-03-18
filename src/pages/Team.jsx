@@ -72,7 +72,7 @@ export default function Team() {
                             >
                                 <div className="team-card__glow" style={{ background: member.gradient }}></div>
                                 <div className="team-card__photo">
-                                    <img src={member.photo} alt={member.name} />
+                                    <img src={member.photo} alt={member.name} width="300" height="300" loading="lazy" />
                                 </div>
                                 <div className="team-card__inner">
                                     <h3 className="team-card__name">{member.name}</h3>

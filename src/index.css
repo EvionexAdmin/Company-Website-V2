@@ -217,7 +217,8 @@ img {
   margin-bottom: var(--space-3xl);
 }
 
-.section-header h1 {
+.section-header h1,
+.section-header h2 {
   font-size: var(--text-h1);
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-tight);

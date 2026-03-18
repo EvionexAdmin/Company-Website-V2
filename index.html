@@ -16,16 +16,21 @@
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://api.razorpay.com; frame-src https://challenges.cloudflare.com https://api.razorpay.com; object-src 'none'; base-uri 'self';" />
+  <!-- Permissions-Policy: restrict sensitive browser APIs -->
+  <meta http-equiv="Permissions-Policy"
+    content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
 
-  <!-- Cloudflare Turnstile (explicit rendering for SPA) -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
-
-  <!-- Google Fonts -->
+  <!-- Google Fonts — preload strategy to eliminate render-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
+  <link rel="preload" as="style"
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-    rel="stylesheet" />
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet" />
+  </noscript>
 
   <title>Evionex - Transforming Research & Education</title>
 </head>
@@ -33,6 +38,9 @@
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
+
+  <!-- Cloudflare Turnstile — deferred (non-critical, only needed on portal pages) -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
 </body>
 
 </html>

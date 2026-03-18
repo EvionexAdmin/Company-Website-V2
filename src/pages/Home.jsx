@@ -68,7 +68,7 @@ export default function Home() {
                 <div className="container">
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">Why Evionex</span>
-                        <h1>The Evionex <span className="text-gradient">Advantage</span></h1>
+                        <h2>The Evionex <span className="text-gradient">Advantage</span></h2>
                         <p>Bringing state-of-the-art solutions to your life</p>
                     </div>
 
@@ -105,7 +105,7 @@ export default function Home() {
                 <div className="container">
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">Our Solutions</span>
-                        <h1>Products Built for <span className="text-gradient">Impact</span></h1>
+                        <h2>Products Built for <span className="text-gradient">Impact</span></h2>
                         <p>Three powerful platforms addressing research, education, and healthcare</p>
                     </div>
 

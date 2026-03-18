@@ -81,11 +81,15 @@ export default function Navbar() {
                             src={evionexLogo}
                             alt=""
                             className="gn-navbar__logo-icon"
+                            width="30"
+                            height="30"
                         />
                         <img
                             src={evionexText}
                             alt="Evionex"
                             className="gn-navbar__logo-text"
+                            width="80"
+                            height="18"
                         />
                     </Link>
 

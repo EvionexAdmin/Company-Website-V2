@@ -108,7 +108,7 @@ export default function Products() {
                                 {product.type}
                             </span>
                             <div className="product-title-row" style={{ display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'center' }}>
-                                <img src={product.logo} alt={`${product.name} Logo`} style={{ height: '48px', width: '48px', objectFit: 'contain', filter: 'drop-shadow(0 0 12px ' + product.tagColor + '50)' }} />
+                                <img src={product.logo} alt={`${product.name} Logo`} width="48" height="48" loading="lazy" style={{ height: '48px', width: '48px', objectFit: 'contain', filter: 'drop-shadow(0 0 12px ' + product.tagColor + '50)' }} />
                                 <h2 className="product-title" style={{ margin: 0 }}>{product.name}</h2>
                             </div>
                             <p className="product-desc">{product.description}</p>

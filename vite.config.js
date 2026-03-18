@@ -10,4 +10,19 @@ export default defineConfig({
             '@': '/src',
         },
     },
+    build: {
+        // Never expose source maps to production — prevents code leaks
+        sourcemap: false,
+        // Split vendor chunks to improve cacheability
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    react: ['react', 'react-dom'],
+                    router: ['react-router-dom'],
+                    supabase: ['@supabase/supabase-js'],
+                    motion: ['motion', 'gsap'],
+                },
+            },
+        },
+    },
 })
