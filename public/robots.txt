@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Disallow all private portal/authentication routes from being indexed
+Disallow: /portal/
+Disallow: /portal/login
+Disallow: /portal/signup
+Disallow: /portal/verify-email
+Disallow: /portal/dashboard
+
+# Sitemap location
+Sitemap: https://www.evionex.com/sitemap.xml
