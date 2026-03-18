@@ -1,0 +1,32 @@
+# Evionex
+
+> Evionex Private Limited is an Indian AI technology startup transforming research, education, and healthcare through three flagship AI-powered platforms: EviNote (lab management), Luminary (education), and Gene Setu (genomic healthcare). All products are built for Indian regulatory compliance while meeting global standards of data security and user experience.
+
+Evionex develops intelligent software platforms for institutions — universities, research laboratories, and healthcare facilities. Its products replace fragmented, manual workflows with unified, AI-driven ecosystems. The company is headquartered in India and targets both Indian institutions and global markets.
+
+Key facts:
+- 3 flagship products across research, education, and healthcare verticals
+- All platforms are AI-powered and built for Indian compliance (e.g., data localisation, regulatory frameworks)
+- The patient portal and employee dashboard are private/authenticated and not publicly accessible
+- Contact and partnership enquiries can be submitted at https://www.evionex.com/contact
+
+## Company
+
+- [Home](https://www.evionex.com/): Overview of Evionex's mission — "Strengthening Research, Accelerating Education and Securing Families in the era of Artificial Intelligence"
+- [Who We Are](https://www.evionex.com/who-we-are): Company background, mission (democratizing AI for scientific progress), founding story, and three pillars of innovation
+- [Team](https://www.evionex.com/team): Leadership and founding team profiles with LinkedIn links
+- [Careers](https://www.evionex.com/careers): Open positions and information for prospective employees
+- [Contact](https://www.evionex.com/contact): Contact form and partnership enquiry page
+
+## Products
+
+- [Products Overview](https://www.evionex.com/products): All three Evionex products — Gene Setu, EviNote, and Luminary — with feature highlights and demo links
+- [Gene Setu](https://www.evionex.com/products/genesetu): AI-enabled Electronic Health Record platform using Whole Exome Sequencing (WES) to analyse 6,000+ diseases, with biomarker tracking, nutrigenomics, pharmacogenomics, medication tracking, and life-long health records
+- [EviNote](https://www.evionex.com/products/evinote): Complete Laboratory Management Platform — electronic lab notebook, scientific illustrator, resource and equipment management, budget tracking, lab duties, and project tracking; includes AI-powered features
+- [Luminary](https://www.evionex.com/products/luminary): World's first AI-powered Learning Enhancement System (AILES) for universities — AI-driven quizzes, digital journals, interview practice, competitive exam prep, performance leaderboards, and comprehensive testing tools
+- [Pricing](https://www.evionex.com/pricing): Subscription plans and pricing tiers for all three products, designed for institutions of all sizes
+
+## Optional
+
+- [Privacy Policy](https://www.evionex.com/privacy-policy): Full privacy policy governing user data collection, storage, and usage across all Evionex products and the website
+- [Sitemap](https://www.evionex.com/sitemap.xml): Machine-readable XML sitemap of all public pages
