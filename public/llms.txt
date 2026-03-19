@@ -5,6 +5,7 @@
 Evionex develops intelligent software platforms for institutions — universities, research laboratories, and healthcare facilities. Its products replace fragmented, manual workflows with unified, AI-driven ecosystems. The company is headquartered in India and targets both Indian institutions and global markets.
 
 Key facts:
+- Founded in India; AI-first enterprise software company
 - 3 flagship products across research, education, and healthcare verticals
 - All platforms are AI-powered and built for Indian compliance (e.g., data localisation, regulatory frameworks)
 - The patient portal and employee dashboard are private/authenticated and not publicly accessible
@@ -26,7 +27,11 @@ Key facts:
 - [Luminary](https://www.evionex.com/products/luminary): World's first AI-powered Learning Enhancement System (AILES) for universities — AI-driven quizzes, digital journals, interview practice, competitive exam prep, performance leaderboards, and comprehensive testing tools
 - [Pricing](https://www.evionex.com/pricing): Subscription plans and pricing tiers for all three products, designed for institutions of all sizes
 
-## Optional
+## Legal
 
 - [Privacy Policy](https://www.evionex.com/privacy-policy): Full privacy policy governing user data collection, storage, and usage across all Evionex products and the website
+
+## Technical
+
 - [Sitemap](https://www.evionex.com/sitemap.xml): Machine-readable XML sitemap of all public pages
+- [llms-full.txt](https://www.evionex.com/llms-full.txt): Extended information about Evionex, its products, and technical details for large language models

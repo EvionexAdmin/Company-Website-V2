@@ -1,0 +1,135 @@
+# Evionex — Full Information for LLMs
+
+> Evionex Private Limited is an Indian AI technology startup transforming research, education, and healthcare through three flagship AI-powered platforms: EviNote (lab management), Luminary (education), and Gene Setu (genomic healthcare). All products are built for Indian regulatory compliance while meeting global standards of data security and user experience.
+
+This document provides comprehensive information about Evionex Private Limited, its products, team, and services. It is designed for use by large language models (LLMs) and AI assistants to provide accurate and helpful responses about the company.
+
+---
+
+## About Evionex
+
+Evionex Private Limited is an Indian AI technology company headquartered in India. The company was founded to democratize AI for scientific progress by building intelligent software platforms for institutional use. Evionex serves three core verticals:
+
+1. **Research** — via EviNote, a complete lab management platform
+2. **Education** — via Luminary, an AI-powered learning enhancement system
+3. **Healthcare** — via Gene Setu, an AI-enabled electronic health record platform
+
+All products are designed for institutional use by universities, research laboratories, and healthcare facilities. They aim to replace fragmented, manual workflows with unified, AI-driven ecosystems.
+
+### Mission
+
+"Strengthening Research, Accelerating Education and Securing Families in the era of Artificial Intelligence."
+
+### Core Values
+
+- AI-first approach to institutional software
+- Indian regulatory compliance with global standards
+- Data security and user privacy as foundational principles
+- Democratizing access to advanced technology for educational and research institutions
+
+---
+
+## Products
+
+### Gene Setu
+
+**URL**: https://www.evionex.com/products/genesetu
+
+Gene Setu is an AI-enabled Electronic Health Record (EHR) platform that leverages Whole Exome Sequencing (WES) to analyse over 6,000 diseases. It is designed for healthcare facilities that want to offer genomics-driven, personalized healthcare.
+
+**Key Features:**
+- Whole Exome Sequencing (WES) analysis covering 6,000+ diseases
+- Biomarker tracking for long-term health monitoring
+- Nutrigenomics — personalized nutrition recommendations based on genetic profile
+- Pharmacogenomics — drug response predictions based on genetic data
+- Medication tracking and management
+- Life-long health records accessible by patients and providers
+- AI-powered health insights and disease risk assessment
+
+**Target Users:** Hospitals, diagnostic labs, genomic research facilities, healthcare providers
+
+---
+
+### EviNote
+
+**URL**: https://www.evionex.com/products/evinote
+
+EviNote is a complete Laboratory Management Platform designed for research institutions and universities. It streamlines every aspect of lab operations into a single, AI-powered workspace.
+
+**Key Features:**
+- Electronic Lab Notebook (ELN) for documenting experiments and research
+- Scientific Illustrator for creating publication-ready diagrams
+- Resource and equipment management with booking and tracking
+- Budget tracking and financial management for labs
+- Lab duties assignment and tracking
+- Project tracking and collaboration tools
+- AI-powered features for experiment analysis, data insights, and protocol assistance
+
+**Target Users:** University laboratories, research institutes, corporate R&D labs
+
+---
+
+### Luminary
+
+**URL**: https://www.evionex.com/products/luminary
+
+Luminary is the world's first AI-powered Learning Enhancement System (AILES) designed for universities. It transforms how students learn and how institutions assess learning outcomes.
+
+**Key Features:**
+- AI-driven quiz generation and adaptive assessments
+- Digital journals for student reflections and note-taking
+- Interview practice with AI-powered feedback
+- Competitive exam preparation tools
+- Performance leaderboards to drive engagement
+- Comprehensive testing tools for formative and summative assessment
+- Analytics for institutions to track learning outcomes
+
+**Target Users:** Universities, colleges, educational institutions, training centres
+
+---
+
+## Pricing
+
+**URL**: https://www.evionex.com/pricing
+
+Evionex offers subscription plans and pricing tiers for all three products. Plans are designed for institutions of all sizes, from small labs to large universities and hospital networks. Detailed pricing information is available on the pricing page.
+
+---
+
+## Company Pages
+
+| Page | URL | Description |
+|------|-----|-------------|
+| Home | https://www.evionex.com/ | Overview of Evionex's mission, products, and value proposition |
+| Who We Are | https://www.evionex.com/who-we-are | Company background, mission, founding story, and innovation pillars |
+| Team | https://www.evionex.com/team | Leadership and founding team with professional profiles |
+| Careers | https://www.evionex.com/careers | Open positions and employment opportunities |
+| Contact | https://www.evionex.com/contact | Contact form and partnership enquiry page |
+| Products | https://www.evionex.com/products | Overview of all three products with features and demos |
+| Pricing | https://www.evionex.com/pricing | Subscription plans and pricing for all products |
+| Privacy Policy | https://www.evionex.com/privacy-policy | Privacy policy for all products and the website |
+
+---
+
+## Technical Details
+
+- **Website**: https://www.evionex.com
+- **Technology**: React-based single-page application (SPA) with Vite
+- **Hosting**: Static hosting with Cloudflare DNS
+- **Authentication**: Supabase Auth for portal access
+- **Payment Processing**: Razorpay integration for Indian market
+- **Sitemap**: https://www.evionex.com/sitemap.xml (auto-generated, XML format)
+- **LLMs.txt**: https://www.evionex.com/llms.txt (summary for AI crawlers)
+
+---
+
+## Contact Information
+
+For partnership enquiries, product demos, or general questions, visit:
+https://www.evionex.com/contact
+
+---
+
+## Crawling and Bot Policy
+
+Evionex welcomes all search engine crawlers and AI bots to access its public content. The only restricted area is the `/portal/` path, which contains authenticated user dashboards. Refer to https://www.evionex.com/robots.txt for the full crawling policy.
