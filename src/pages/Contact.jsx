@@ -47,21 +47,41 @@ export default function Contact() {
         setSubmitStatus({ loading: true, error: null, success: false })
 
         try {
-            const { error } = await supabase
+            // Save to Supabase
+            const { error: dbError } = await supabase
                 .from('contact_messages')
                 .insert([
                     {
-                        first_name: formData.firstName,
-                        last_name: formData.lastName,
-                        email: formData.email,
-                        designation: formData.designation,
-                        phone_number: formData.phone,
-                        interest: formData.interest,
-                        message: formData.message,
+                        first_name: formData.firstName.trim(),
+                        last_name: formData.lastName.trim(),
+                        email: formData.email.trim(),
+                        designation: formData.designation.trim(), // Kept existing field
+                        phone_number: formData.phone.trim(),     // Kept existing field
+                        interest: formData.interest.trim(),       // Kept existing field
+                        message: formData.message.trim(),
                     }
                 ])
 
-            if (error) throw error
+            if (dbError) throw dbError
+
+            // Send Email Notification via Edge Function
+            const { error: fnError } = await supabase.functions.invoke('process-contact', {
+                body: {
+                    firstName: formData.firstName.trim(),
+                    lastName: formData.lastName.trim(),
+                    email: formData.email.trim(),
+                    designation: formData.designation.trim(), // Kept existing field
+                    phone: formData.phone.trim(),             // Kept existing field
+                    interest: formData.interest.trim(),       // Kept existing field
+                    message: formData.message.trim(),
+                }
+            })
+
+            if (fnError) {
+                console.error("Email sending failed:", fnError);
+                // We won't throw because the message was saved successfully.
+                // But in a stricter system, you could alert the user.
+            }
 
             setSubmitStatus({ loading: false, error: null, success: true })
             setFormData({

@@ -35,12 +35,12 @@ export default function TurnstileWidget({ onVerify, onError, onExpire }) {
     }, [onExpire])
 
     useEffect(() => {
-        // Bail out if the Turnstile script hasn't loaded yet
-        if (!window.turnstile || !containerRef.current) return
+        if (!containerRef.current) return
 
         const renderWidget = () => {
             // Prevent duplicate renders
             if (widgetIdRef.current != null) return
+            if (!containerRef.current) return
 
             widgetIdRef.current = window.turnstile.render(containerRef.current, {
                 sitekey: siteKey,
@@ -52,12 +52,19 @@ export default function TurnstileWidget({ onVerify, onError, onExpire }) {
             })
         }
 
-        // turnstile.ready ensures the API is fully initialised
-        if (window.turnstile.ready) {
-            window.turnstile.ready(renderWidget)
-        } else {
-            renderWidget()
+        // If the deferred Turnstile script hasn't loaded yet, poll until ready
+        if (!window.turnstile) {
+            const interval = setInterval(() => {
+                if (window.turnstile && containerRef.current) {
+                    clearInterval(interval)
+                    renderWidget()
+                }
+            }, 200)
+            return () => clearInterval(interval)
         }
+
+        // Script already loaded — render immediately (no turnstile.ready)
+        renderWidget()
 
         // Cleanup on unmount — remove the widget from the DOM
         return () => {

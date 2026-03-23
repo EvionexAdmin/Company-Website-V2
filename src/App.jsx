@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import ProtectedRoute from './components/ProtectedRoute'
+import ErrorBoundary from './components/ErrorBoundary'
 
 // Lazy-loaded pages — only downloaded when the route is visited.
 // This dramatically reduces the initial JS bundle (Dashboard alone is ~143 KB).
@@ -23,26 +24,28 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
 
 export default function App() {
     return (
-        <Suspense fallback={null}>
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<Home />} />
-                    <Route path="who-we-are" element={<WhoWeAre />} />
-                    <Route path="products" element={<Products />} />
-                    <Route path="products/genesetu" element={<GeneSetuDetail />} />
-                    <Route path="products/evinote" element={<EviNoteDetail />} />
-                    <Route path="products/luminary" element={<LuminaryDetail />} />
-                    <Route path="team" element={<Team />} />
-                    <Route path="careers" element={<Careers />} />
-                    <Route path="contact" element={<Contact />} />
-                    <Route path="pricing" element={<Pricing />} />
-                    <Route path="portal/login" element={<Login />} />
-                    <Route path="portal/signup" element={<Signup />} />
-                    <Route path="portal/verify-email" element={<VerifyEmail />} />
-                    <Route path="portal/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                    <Route path="privacy-policy" element={<PrivacyPolicy />} />
-                </Route>
-            </Routes>
-        </Suspense>
+        <ErrorBoundary>
+            <Suspense fallback={null}>
+                <Routes>
+                    <Route path="/" element={<Layout />}>
+                        <Route index element={<Home />} />
+                        <Route path="who-we-are" element={<WhoWeAre />} />
+                        <Route path="products" element={<Products />} />
+                        <Route path="products/genesetu" element={<GeneSetuDetail />} />
+                        <Route path="products/evinote" element={<EviNoteDetail />} />
+                        <Route path="products/luminary" element={<LuminaryDetail />} />
+                        <Route path="team" element={<Team />} />
+                        <Route path="careers" element={<Careers />} />
+                        <Route path="contact" element={<Contact />} />
+                        <Route path="pricing" element={<Pricing />} />
+                        <Route path="portal/login" element={<Login />} />
+                        <Route path="portal/signup" element={<Signup />} />
+                        <Route path="portal/verify-email" element={<VerifyEmail />} />
+                        <Route path="portal/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                        <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                    </Route>
+                </Routes>
+            </Suspense>
+        </ErrorBoundary>
     )
 }
