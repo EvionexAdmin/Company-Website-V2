@@ -1,6 +1,15 @@
+import usePageMetadata from '../lib/usePageMetadata'
 import './WhoWeAre.css'
 
 export default function WhoWeAre() {
+    const defaultOgImage = new URL('../assets/images/logo/evionex-logo.png', import.meta.url).href
+
+    usePageMetadata({
+        title: 'Who We Are — Evionex',
+        description: 'Learn about Evionex: an AI-first company building platforms for research, education, and healthcare with Indian compliance and global standards.',
+        canonicalPath: '/who-we-are',
+        image: defaultOgImage,
+    })
     return (
         <div className="who-we-are">
             {/* Hero Section */}

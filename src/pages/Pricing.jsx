@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
 import { initiatePayment } from '../utils/razorpay'
+import usePageMetadata from '../lib/usePageMetadata'
 import './Pricing.css'
 
 const plans = [
@@ -183,6 +184,14 @@ export default function Pricing() {
     const navigate = useNavigate()
     const location = useLocation()
     const paymentTriggered = useRef(false)
+    const defaultOgImage = new URL('../assets/images/logo/evionex-logo.png', import.meta.url).href
+
+    usePageMetadata({
+        title: 'Pricing — Gene Setu, EviNote, Luminary | Evionex',
+        description: 'Compare pricing for Gene Setu genomic screening, EviNote electronic lab notebook, and Luminary AI learning platform. Flexible plans for institutions and individuals.',
+        canonicalPath: '/pricing',
+        image: defaultOgImage,
+    })
 
     // After login redirect: auto-trigger payment if params are present
     useEffect(() => {

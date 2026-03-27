@@ -2,9 +2,19 @@ import { Link } from 'react-router-dom'
 import GradientText from '../components/ui/GradientText/GradientText'
 import StarBorder from '../components/ui/StarBorder/StarBorder'
 import Orb from '../components/ui/Orb/Orb'
+import usePageMetadata from '../lib/usePageMetadata'
 import './Home.css'
 
 export default function Home() {
+    const defaultOgImage = new URL('../assets/images/logo/evionex-logo.png', import.meta.url).href
+
+    usePageMetadata({
+        title: 'Evionex — Transforming Research, Education & Healthcare with AI',
+        description: 'Evionex builds AI-powered platforms for research labs (EviNote), universities (Luminary), and healthcare facilities (Gene Setu). Headquartered in India and serving institutions globally.',
+        canonicalPath: '/',
+        image: defaultOgImage,
+    })
+
     return (
         <div className="home">
             {/* Hero Section */}
@@ -15,6 +25,8 @@ export default function Home() {
                         loop
                         muted
                         playsInline
+                        preload="none"
+                        aria-hidden="true"
                         className="hero__video"
                     >
                         <source src="/hero-bg.mp4" type="video/mp4" />

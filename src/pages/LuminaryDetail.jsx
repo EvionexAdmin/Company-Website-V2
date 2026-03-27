@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import luminaryLogo from '../assets/images/products/luminary-logo.png'
+import usePageMetadata from '../lib/usePageMetadata'
 import './ProductDetail.css'
 
 const accentColor = '#ffae00'
@@ -36,7 +37,45 @@ const features = [
     { title: 'Competitive Exam Prep', desc: 'Purpose-built tools for national competitive exam preparation. Luminary offers curated question banks for GATE, NET, NEET, JEE, and other major exams, with previous-year papers, topic-wise practice, timed mock tests, and AI-generated difficulty progression. The platform tracks readiness scores and suggests personalized study plans to maximize performance on exam day.', media: { src: '/media/luminary/national-exams-prep.mp4', type: 'video' } },
 ]
 
+const luminaryOgImage = new URL('../assets/images/products/luminary-logo.png', import.meta.url).href
+
+const luminaryProductLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Luminary',
+    applicationCategory: 'EducationalApplication',
+    operatingSystem: 'Web',
+    url: 'https://www.evionex.com/products/luminary',
+    image: luminaryOgImage,
+    description: 'AI-powered learning platform with adaptive quizzes, digital journals, interview practice, and competitive exam preparation.',
+    offers: {
+        '@type': 'Offer',
+        price: '300',
+        priceCurrency: 'INR',
+        priceSpecification: {
+            '@type': 'UnitPriceSpecification',
+            price: '300',
+            priceCurrency: 'INR',
+            unitText: 'per student per month',
+        },
+        url: 'https://www.evionex.com/products/luminary',
+    },
+    brand: {
+        '@type': 'Brand',
+        name: 'Evionex',
+    },
+}
+
 export default function LuminaryDetail() {
+    usePageMetadata({
+        title: 'Luminary — AI-Powered Learning Enhancement System | Evionex',
+        description: 'Personalized AI-driven quizzes, digital journals, interview practice, and competitive exam preparation for universities and institutes.',
+        canonicalPath: '/products/luminary',
+        image: luminaryOgImage,
+        ogType: 'product',
+        jsonLd: [luminaryProductLd],
+    })
+
     return (
         <div className="product-detail">
             {/* Hero */}

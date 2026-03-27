@@ -4,6 +4,7 @@ import MagicBento from '../components/ui/MagicBento/MagicBento'
 import evinoteIcon from '../assets/images/products/evinote-icon.png'
 import luminaryLogo from '../assets/images/products/luminary-logo.png'
 import genesetuLogo from '../assets/images/products/genesetu-logo.png'
+import usePageMetadata from '../lib/usePageMetadata'
 import './Products.css'
 
 // Convert hex color to RGB string for MagicBento glowColor prop
@@ -71,6 +72,14 @@ const products = [
 ]
 
 export default function Products() {
+    const defaultOgImage = new URL('../assets/images/logo/evionex-logo.png', import.meta.url).href
+
+    usePageMetadata({
+        title: 'Evionex Products — Gene Setu, EviNote, Luminary',
+        description: 'Explore Evionex products: Gene Setu (genomic healthcare), EviNote (electronic lab notebook), and Luminary (AI-powered learning platform).',
+        canonicalPath: '/products',
+        image: defaultOgImage,
+    })
 
     return (
         <div className="products-page">
@@ -83,6 +92,7 @@ export default function Products() {
                         loop
                         muted
                         playsInline
+                        preload="none"
                         className="hero__video"
                     >
                         <source src="/media/happy-family.mp4" type="video/mp4" />

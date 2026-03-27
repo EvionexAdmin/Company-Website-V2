@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import evinoteIcon from '../assets/images/products/evinote-icon.png'
+import usePageMetadata from '../lib/usePageMetadata'
 import './ProductDetail.css'
 
 const accentColor = '#00D4C8'
@@ -36,7 +37,45 @@ const features = [
     { title: 'Project Tracker', desc: 'Stay updated with a bird\'s-eye view of every research project\'s progress. Track milestones, deliverables, team contributions, and timelines in one dashboard. The Project Tracker integrates with ELN entries and resource bookings so you always know where a project stands — from initial proposal to publication.', media: { src: '/media/evinote/project-tracker.mp4', type: 'video' } },
 ]
 
+const eviNoteOgImage = new URL('../assets/images/products/evinote-icon.png', import.meta.url).href
+
+const eviNoteProductLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'EviNote',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    url: 'https://www.evionex.com/products/evinote',
+    image: eviNoteOgImage,
+    description: 'Comprehensive electronic lab notebook with resource scheduling, budget tracking, and collaboration for research institutions.',
+    offers: {
+        '@type': 'Offer',
+        price: '700',
+        priceCurrency: 'INR',
+        priceSpecification: {
+            '@type': 'UnitPriceSpecification',
+            price: '700',
+            priceCurrency: 'INR',
+            unitText: 'per user per month',
+        },
+        url: 'https://www.evionex.com/products/evinote',
+    },
+    brand: {
+        '@type': 'Brand',
+        name: 'Evionex',
+    },
+}
+
 export default function EviNoteDetail() {
+    usePageMetadata({
+        title: 'EviNote — Electronic Lab Notebook & Lab Management | Evionex',
+        description: 'Digitize research workflows with EviNote: ELN, scientific illustrator, resource scheduling, budget tracking, and project management for modern labs.',
+        canonicalPath: '/products/evinote',
+        image: eviNoteOgImage,
+        ogType: 'product',
+        jsonLd: [eviNoteProductLd],
+    })
+
     return (
         <div className="product-detail">
             {/* Hero */}

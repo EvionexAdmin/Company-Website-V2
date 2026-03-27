@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import genesetuLogo from '../assets/images/products/genesetu-logo.png'
+import usePageMetadata from '../lib/usePageMetadata'
 import './ProductDetail.css'
 
 const accentColor = '#00bafd'
@@ -46,6 +47,69 @@ const featureLabels = [
     'Medication Tracking',
     'NutriLogging',
 ]
+
+const geneSetuOgImage = new URL('../assets/images/products/genesetu-logo.png', import.meta.url).href
+
+const geneSetuProductLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Gene Setu',
+    applicationCategory: 'HealthApplication',
+    operatingSystem: 'Web',
+    url: 'https://www.evionex.com/products/genesetu',
+    image: geneSetuOgImage,
+    description: 'AI-enabled Electronic Health Record platform using Whole Exome Sequencing to screen 6,000+ diseases with biomarker tracking, nutrigenomics, and pharmacogenomics.',
+    offers: {
+        '@type': 'Offer',
+        price: '19500',
+        priceCurrency: 'INR',
+        availability: 'https://schema.org/PreOrder',
+        url: 'https://www.evionex.com/products/genesetu',
+    },
+    brand: {
+        '@type': 'Brand',
+        name: 'Evionex',
+    },
+}
+
+const geneSetuFaqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+        {
+            '@type': 'Question',
+            name: 'What happens after I place my Gene Setu order?',
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'After ordering, the team contacts you to schedule sample collection. The sample goes to an NABL-accredited lab for Whole Exome Sequencing, is reviewed by a geneticist, and results arrive in about 3–4 weeks with platform access.',
+            },
+        },
+        {
+            '@type': 'Question',
+            name: 'How is the genetic sample collected?',
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'A small blood or saliva sample is collected (heel prick for infants). The process is quick and minimally invasive.',
+            },
+        },
+        {
+            '@type': 'Question',
+            name: 'Is Gene Setu compliant with Indian health data rules?',
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Gene Setu is built with privacy-first architecture, follows DISHA-aligned practices, encrypts data in transit and at rest, and uses access controls to protect genomic data.',
+            },
+        },
+        {
+            '@type': 'Question',
+            name: 'Is the laboratory accredited?',
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Gene Setu uses its own NABL-accredited lab and follows CLIA and CAP grade processes to ensure accurate Whole Exome Sequencing and reporting.',
+            },
+        },
+    ],
+}
 
 const faqCategories = [
     {
@@ -187,6 +251,15 @@ const trustBarItems = [
 
 export default function GeneSetuDetail() {
     const [openFaqIndex, setOpenFaqIndex] = useState(null)
+
+    usePageMetadata({
+        title: 'Gene Setu — AI-enabled Electronic Health Record | Evionex',
+        description: 'Screen 6,000+ genetic conditions, track biomarkers, and manage lifelong health records with Gene Setu, the AI-enabled EHR from Evionex.',
+        canonicalPath: '/products/genesetu',
+        image: geneSetuOgImage,
+        ogType: 'product',
+        jsonLd: [geneSetuProductLd, geneSetuFaqLd],
+    })
 
     const toggleFaq = (categoryIdx, faqIdx) => {
         const key = `${categoryIdx}-${faqIdx}`

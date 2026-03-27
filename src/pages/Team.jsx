@@ -3,6 +3,7 @@ import kedarPhoto from '../assets/images/team/kedar.jpeg'
 import mrunalPhoto from '../assets/images/team/mrunal.png'
 import atharvaPhoto from '../assets/images/team/atharva.png'
 import dhrumilPhoto from '../assets/images/team/dhrumil.png'
+import usePageMetadata from '../lib/usePageMetadata'
 import './Team.css'
 
 const teamMembers = [
@@ -41,6 +42,15 @@ const teamMembers = [
 ]
 
 export default function Team() {
+    const defaultOgImage = new URL('../assets/images/logo/evionex-logo.png', import.meta.url).href
+
+    usePageMetadata({
+        title: 'Evionex Leadership Team',
+        description: 'Meet the Evionex founding team leading AI innovation across research, education, and healthcare.',
+        canonicalPath: '/team',
+        image: defaultOgImage,
+    })
+
     return (
         <div className="team-page">
             <section className="page-hero">

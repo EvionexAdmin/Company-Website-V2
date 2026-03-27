@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
+import usePageMetadata from '../lib/usePageMetadata'
 import './Careers.css'
 
 const ALLOWED_TYPES = [
@@ -22,6 +23,14 @@ export default function Careers() {
     const [status, setStatus] = useState('idle') // idle | uploading | success | error
     const [errorMsg, setErrorMsg] = useState('')
     const fileInputRef = useRef(null)
+    const defaultOgImage = new URL('../assets/images/logo/evionex-logo.png', import.meta.url).href
+
+    usePageMetadata({
+        title: 'Careers at Evionex',
+        description: 'Explore career opportunities at Evionex. Submit your resume to join our AI-driven teams in research, education, and healthcare technology.',
+        canonicalPath: '/careers',
+        image: defaultOgImage,
+    })
 
     const resetForm = () => {
         setName('')

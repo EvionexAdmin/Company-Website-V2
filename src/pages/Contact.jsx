@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import usePageMetadata from '../lib/usePageMetadata'
 import doctorBg from '../assets/doctor-handshake.jpg'
 import './Contact.css'
 
@@ -14,6 +15,14 @@ export default function Contact() {
         message: '',
     })
     const [submitStatus, setSubmitStatus] = useState({ loading: false, error: null, success: false })
+    const defaultOgImage = new URL('../assets/images/logo/evionex-logo.png', import.meta.url).href
+
+    usePageMetadata({
+        title: 'Contact Evionex — Partnerships, Demos, Support',
+        description: 'Get in touch with Evionex for product demos, partnerships, or support across Gene Setu, EviNote, and Luminary.',
+        canonicalPath: '/contact',
+        image: defaultOgImage,
+    })
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
