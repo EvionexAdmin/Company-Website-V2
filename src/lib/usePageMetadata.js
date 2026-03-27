@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react'
 
 const BASE_URL = 'https://www.evionex.com'
+const HASH_BASE = `${BASE_URL}/#/`
 
 const upsertMeta = ({ key, attr, value }) => {
     if (!value) return
@@ -41,7 +42,10 @@ export default function usePageMetadata({
     additionalMeta = [],
     jsonLd = [],
 }) {
-    const canonicalUrl = useMemo(() => `${BASE_URL}${canonicalPath === '/' ? '' : canonicalPath}`, [canonicalPath])
+    const canonicalUrl = useMemo(() => {
+        const normalized = canonicalPath === '/' ? '' : canonicalPath.replace(/^\//, '')
+        return `${HASH_BASE}${normalized}`
+    }, [canonicalPath])
 
     useEffect(() => {
         if (title) document.title = title
