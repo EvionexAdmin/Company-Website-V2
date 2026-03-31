@@ -37,7 +37,7 @@ Deno.serve(async (req: Request) => {
         Authorization: `Bearer ${resendApiKey}`,
       },
       body: JSON.stringify({
-        from: "Evionex Contact <onboarding@resend.dev>",
+        from: "Evionex Contact <info@evionex.com>",
         to: ["evionex.info@gmail.com"],
         subject: `New Contact Form Submission: ${fullName}`,
         html: `

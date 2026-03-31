@@ -64,7 +64,7 @@ Deno.serve(async (req: Request) => {
         Authorization: `Bearer ${resendApiKey}`,
       },
       body: JSON.stringify({
-        from: "Evionex Careers <onboarding@resend.dev>",
+        from: "Evionex Careers <info@evionex.com>",
         to: ["evionex.info@gmail.com"],
         subject: `New Resume Submission: ${applicantName} — ${applicantPosition}`,
         html: `
