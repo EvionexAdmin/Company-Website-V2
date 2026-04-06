@@ -1,8 +1,22 @@
 .footer {
+    position: relative;
+    z-index: 20;
+    isolation: isolate;
     background: var(--bg-deep-navy);
-    border-top: 1px solid var(--border-subtle);
+    background-color: var(--bg-deep-navy);
+    background-image: none;
+    border-top: 0;
     padding: var(--space-3xl) 0 var(--space-xl);
     margin-top: auto;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    inset: -28px 0 0;
+    background: var(--bg-deep-navy);
+    z-index: -1;
+    pointer-events: none;
 }
 
 .footer__grid {
