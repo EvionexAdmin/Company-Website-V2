@@ -1,0 +1,4 @@
+# Ads.txt file for Evionex
+# Replace pub-0000000000000000 with your real AdMob Publisher ID 
+# (find it in AdMob > Settings > Account Information)
+google.com, pub-9793351839197946, DIRECT, f08c47fec0942fa0

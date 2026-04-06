@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import GradientText from '../components/ui/GradientText/GradientText'
-import StarBorder from '../components/ui/StarBorder/StarBorder'
 import usePageMetadata from '../lib/usePageMetadata'
 import './Home.css'
 
@@ -38,7 +37,7 @@ export default function Home() {
                         <h1 className="hero-display">
                             Transforming<br />
                             <GradientText
-                                colors={['#00D4C8', '#1FC7BE', '#00E5D4', '#00D4C8']}
+                                colors={['#FFFFFF', '#F5F8FF', '#FFFFFF', '#EEF4FF']}
                                 animationSpeed={4}
                                 className="hero-gradient-text"
                             >
@@ -49,13 +48,11 @@ export default function Home() {
                             Strengthening Research, Accelerating Education and Securing Families in the era of Artificial Intelligence.
                         </p>
                         <div className="btn-group" style={{ marginBottom: '3rem' }}>
-                            <StarBorder as="div" color="#00D4C8" speed="5s" className="star-cta-wrapper">
-                                <Link to="/products" className="btn btn-primary btn-large star-btn">
-                                    Explore Our Products
-                                    <span className="btn-arrow">→</span>
-                                </Link>
-                            </StarBorder>
-                            <Link to="/contact" className="btn btn-secondary btn-large">
+                            <Link to="/products" className="btn btn-primary btn-large hero-cta-primary">
+                                Explore Our Products
+                                <span className="btn-arrow">→</span>
+                            </Link>
+                            <Link to="/contact" className="btn btn-secondary btn-large hero-cta-secondary">
                                 Partner With Us
                             </Link>
                         </div>

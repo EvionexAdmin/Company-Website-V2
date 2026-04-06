@@ -59,7 +59,7 @@
 
 .hero__subtitle {
     font-size: var(--text-lg);
-    color: var(--text-secondary);
+    color: var(--text-primary);
     line-height: var(--leading-relaxed);
     max-width: 520px;
     margin: var(--space-xl) 0 var(--space-2xl);
@@ -71,6 +71,32 @@
 
 .btn:hover .btn-arrow {
     transform: translateX(4px);
+}
+
+.hero .btn-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: clamp(0.5rem, 1.8vw, 1rem);
+    width: min(100%, 48rem);
+}
+
+.hero .btn-group > * {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.hero .btn-group .btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 3.5rem;
+    font-size: clamp(0.9rem, 2.6vw, 1.125rem);
+    padding-inline: clamp(0.75rem, 3.6vw, 2rem);
+    white-space: normal;
+    text-wrap: balance;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
 }
 
 /* Orb visual */
@@ -194,21 +220,56 @@
     }
 }
 
-/* StarBorder overrides */
-.star-cta-wrapper {
-    border-radius: var(--radius-lg) !important;
+/* Hero CTA sizing */
+.hero .btn-group .hero-cta-primary,
+.hero .btn-group .hero-cta-secondary {
+    border-radius: var(--radius-lg);
 }
 
-.star-cta-wrapper .inner-content {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    border-radius: var(--radius-lg) !important;
+@media (min-width: 768px) {
+    .hero .btn-group .hero-cta-primary {
+        flex: 1.2 1 0;
+        min-height: 3.85rem;
+        font-size: clamp(1.05rem, 1.35vw, 1.2rem);
+        padding-inline: clamp(1.2rem, 2.6vw, 2.6rem);
+        white-space: nowrap;
+        text-wrap: nowrap;
+    }
+
+    .hero .btn-group .hero-cta-secondary {
+        flex: 0.8 1 0;
+    }
 }
 
-.star-btn {
-    position: relative;
-    z-index: 2;
+@media (max-width: 767px) {
+    .hero .hero-display,
+    .hero .hero-gradient-text .text-content {
+        font-size: clamp(2.9rem, 12vw, 4rem);
+        line-height: 1;
+    }
+
+    .hero__subtitle {
+        font-size: clamp(1.05rem, 4.8vw, 1.35rem);
+        max-width: min(96vw, 34rem);
+    }
+
+    .hero .btn-group {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: clamp(0.4rem, 1.8vw, 0.75rem);
+    }
+
+    .hero .btn-group .hero-cta-primary,
+    .hero .btn-group .hero-cta-secondary {
+        width: 100%;
+        font-size: clamp(0.84rem, 2.9vw, 1rem);
+        padding-inline: clamp(0.55rem, 2.4vw, 1rem);
+    }
+
+    .hero .btn-group .hero-cta-primary {
+        min-height: 3.25rem;
+    }
 }
 
 /* GradientText overrides */
