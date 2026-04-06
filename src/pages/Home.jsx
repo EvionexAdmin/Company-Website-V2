@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import GradientText from '../components/ui/GradientText/GradientText'
 import StarBorder from '../components/ui/StarBorder/StarBorder'
-import Orb from '../components/ui/Orb/Orb'
 import usePageMetadata from '../lib/usePageMetadata'
 import './Home.css'
 
@@ -29,7 +28,7 @@ export default function Home() {
                         aria-hidden="true"
                         className="hero__video"
                     >
-                        <source src="/hero-bg.mp4" type="video/mp4" />
+                        <source src="/DNA Hero bg.mp4" type="video/mp4" />
                     </video>
                     <div className="hero__video-overlay"></div>
                 </div>
@@ -63,13 +62,6 @@ export default function Home() {
                     </div>
                     <div className="hero__visual animate-fade-in-up animate-delay-2">
                         <div className="hero__orb-wrapper">
-                            <Orb
-                                hue={0}
-                                hoverIntensity={0.25}
-                                rotateOnHover={true}
-                                forceHoverState={false}
-                                backgroundColor="#0a1628"
-                            />
                         </div>
                     </div>
                 </div>
