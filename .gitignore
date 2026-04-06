@@ -6,3 +6,4 @@ dist
 skills
 .agent
 .vscode
+.github/agents/
