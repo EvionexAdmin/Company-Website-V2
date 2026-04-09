@@ -78,18 +78,18 @@ export default function Home() {
                 <section className="hero">
                     <div className="hero__bg-glow"></div>
                     <div className="container hero__container">
-                        <div className="hero__content animate-fade-in-up">
-                            <h1 className="hero-display">
-                                Transforming<br />
+                        <div className="hero__content">
+                            <h1 className="hero-display hero__headline">
+                                <span className="hero-transforming">Transforming</span>
                                 <GradientText
                                     colors={['#FFFFFF', '#F5F8FF', '#FFFFFF', '#EEF4FF']}
                                     animationSpeed={4}
-                                    className="hero-gradient-text"
+                                    className="hero-gradient-text hero-headline-line-two"
                                 >
                                     Research, Education & Healthcare
                                 </GradientText>
                             </h1>
-                            <p className="hero__subtitle">
+                            <p className="hero__subtitle hero__subtitle--intro">
                                 Strengthening Research, Accelerating Education and Securing Families in the era of Artificial Intelligence.
                             </p>
                             <div className="btn-group" style={{ marginBottom: '3rem' }}>
@@ -100,10 +100,6 @@ export default function Home() {
                                 <Link to="/contact" className="btn btn-secondary btn-large hero-cta-secondary">
                                     Partner With Us
                                 </Link>
-                            </div>
-                        </div>
-                        <div className="hero__visual animate-fade-in-up animate-delay-2">
-                            <div className="hero__orb-wrapper">
                             </div>
                         </div>
                     </div>
