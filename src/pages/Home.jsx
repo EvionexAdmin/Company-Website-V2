@@ -57,6 +57,85 @@ export default function Home() {
         }
     }, [])
 
+    useEffect(() => {
+        const homeElement = homeRef.current
+        if (!homeElement) return
+
+        const blurTargets = Array.from(homeElement.querySelectorAll('[data-blur-in]'))
+        if (blurTargets.length === 0) return
+
+        let frameRequested = false
+        let visibilityFrameId = null
+        let bootstrapFrameId = null
+
+        const computeVisibility = (target) => {
+            const rect = target.getBoundingClientRect()
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0
+            const enterTop = viewportHeight * 0.9
+            const enterBottom = viewportHeight * 0.12
+            return rect.top <= enterTop && rect.bottom >= enterBottom
+        }
+
+        const applyVisibility = () => {
+            frameRequested = false
+
+            blurTargets.forEach((target) => {
+                const isVisible = computeVisibility(target)
+                const hasClass = target.classList.contains('is-in-view')
+
+                if (isVisible && !hasClass) {
+                    target.classList.add('is-in-view')
+                }
+
+                if (!isVisible && hasClass) {
+                    target.classList.remove('is-in-view')
+                }
+            })
+        }
+
+        const requestVisibilityUpdate = () => {
+            if (frameRequested) return
+            frameRequested = true
+            visibilityFrameId = requestAnimationFrame(() => {
+                visibilityFrameId = null
+                applyVisibility()
+            })
+        }
+
+        blurTargets.forEach((target) => {
+            const parsedDelay = Number.parseInt(target.dataset.blurDelay || '0', 10)
+            const safeDelay = Number.isNaN(parsedDelay) ? 0 : Math.max(parsedDelay, 0)
+            target.style.setProperty('--blur-in-delay', `${safeDelay}ms`)
+        })
+
+        homeElement.classList.add('home--blur-observe-ready')
+
+        // Wait for one painted frame before first reveal so initial load always animates.
+        bootstrapFrameId = requestAnimationFrame(() => {
+            bootstrapFrameId = null
+            requestVisibilityUpdate()
+        })
+
+        window.addEventListener('scroll', requestVisibilityUpdate, { passive: true })
+        window.addEventListener('resize', requestVisibilityUpdate)
+
+        return () => {
+            window.removeEventListener('scroll', requestVisibilityUpdate)
+            window.removeEventListener('resize', requestVisibilityUpdate)
+
+            if (bootstrapFrameId !== null) {
+                cancelAnimationFrame(bootstrapFrameId)
+            }
+
+            if (visibilityFrameId !== null) {
+                cancelAnimationFrame(visibilityFrameId)
+            }
+
+            homeElement.classList.remove('home--blur-observe-ready')
+            blurTargets.forEach((target) => target.classList.remove('is-in-view'))
+        }
+    }, [])
+
     return (
         <div className="home" ref={homeRef}>
             <div className="home__video-shell" aria-hidden="true">
@@ -80,26 +159,32 @@ export default function Home() {
                     <div className="container hero__container">
                         <div className="hero__content">
                             <h1 className="hero-display hero__headline">
-                                <span className="hero-transforming">Transforming</span>
-                                <GradientText
-                                    colors={['#FFFFFF', '#F5F8FF', '#FFFFFF', '#EEF4FF']}
-                                    animationSpeed={4}
-                                    className="hero-gradient-text hero-headline-line-two"
-                                >
-                                    Research, Education & Healthcare
-                                </GradientText>
+                                <span className="hero-transforming blur-in-on-view" data-blur-in data-blur-delay="0">Transforming</span>
+                                <span className="hero-headline-line-two blur-in-on-view" data-blur-in data-blur-delay="90">
+                                    <GradientText
+                                        colors={['#FFFFFF', '#F5F8FF', '#FFFFFF', '#EEF4FF']}
+                                        animationSpeed={4}
+                                        className="hero-gradient-text"
+                                    >
+                                        Research, Education & Healthcare
+                                    </GradientText>
+                                </span>
                             </h1>
-                            <p className="hero__subtitle hero__subtitle--intro">
+                            <p className="hero__subtitle hero__subtitle--intro blur-in-on-view" data-blur-in data-blur-delay="160">
                                 Strengthening Research, Accelerating Education and Securing Families in the era of Artificial Intelligence.
                             </p>
                             <div className="btn-group" style={{ marginBottom: '3rem' }}>
-                                <Link to="/products" className="btn btn-primary btn-large hero-cta-primary">
-                                    Explore Our Products
-                                    <span className="btn-arrow">→</span>
-                                </Link>
-                                <Link to="/contact" className="btn btn-secondary btn-large hero-cta-secondary">
-                                    Partner With Us
-                                </Link>
+                                <div className="blur-in-on-view" data-blur-in data-blur-delay="220">
+                                    <Link to="/products" className="btn btn-primary btn-large hero-cta-primary">
+                                        Explore Our Products
+                                        <span className="btn-arrow">→</span>
+                                    </Link>
+                                </div>
+                                <div className="blur-in-on-view" data-blur-in data-blur-delay="290">
+                                    <Link to="/contact" className="btn btn-secondary btn-large hero-cta-secondary">
+                                        Partner With Us
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -108,7 +193,7 @@ export default function Home() {
                 {/* Advantage Section */}
                 <section className="section advantage">
                     <div className="container">
-                        <div className="section-header animate-fade-in-up">
+                        <div className="section-header blur-in-on-view" data-blur-in data-blur-delay="40">
                             <span className="tag">Why Evionex</span>
                             <h2>The Evionex <span className="text-gradient">Advantage</span></h2>
                             <p>Bringing state-of-the-art solutions to your life</p>
@@ -132,7 +217,7 @@ export default function Home() {
                                     description: 'Streamline operations with a single platform that integrates lab management, learning tools, and health records into one cohesive ecosystem.'
                                 }
                             ].map((item, i) => (
-                                <div key={i} className={`card advantage__card animate-fade-in-up animate-delay-${i + 1}`}>
+                                <div key={i} className="card advantage__card blur-in-on-view" data-blur-in data-blur-delay={String(80 + i * 80)}>
                                     <div className="feature-icon">{item.icon}</div>
                                     <h3>{item.title}</h3>
                                     <p>{item.description}</p>
@@ -145,7 +230,7 @@ export default function Home() {
                 {/* Products Preview */}
                 <section className="section products-preview">
                     <div className="container">
-                        <div className="section-header animate-fade-in-up">
+                        <div className="section-header blur-in-on-view" data-blur-in data-blur-delay="40">
                             <span className="tag">Our Solutions</span>
                             <h2>Products Built for <span className="text-gradient">Impact</span></h2>
                             <p>Three powerful platforms addressing research, education, and healthcare</p>
@@ -172,7 +257,7 @@ export default function Home() {
                                     color: '#00bafd'
                                 }
                             ].map((product, i) => (
-                                <div key={i} className="card product-preview__card">
+                                <div key={i} className="card product-preview__card blur-in-on-view" data-blur-in data-blur-delay={String(80 + i * 80)}>
                                     <div className="product-preview__badge" style={{ color: product.color, borderColor: product.color + '40', background: product.color + '15' }}>
                                         {product.type}
                                     </div>
@@ -185,7 +270,7 @@ export default function Home() {
                             ))}
                         </div>
 
-                        <div className="products-preview__cta animate-fade-in-up">
+                        <div className="products-preview__cta blur-in-on-view" data-blur-in data-blur-delay="130">
                             <Link to="/pricing" className="btn btn-primary btn-large">View Pricing Plans</Link>
                         </div>
                     </div>
@@ -194,12 +279,16 @@ export default function Home() {
                 {/* CTA Section */}
                 <section className="section cta-section">
                     <div className="container">
-                        <div className="cta-box">
+                        <div className="cta-box blur-in-on-view" data-blur-in data-blur-delay="40">
                             <h2>Ready to Transform Your Life?</h2>
                             <p>Partner with Evionex and experience the future of research, education, and healthcare technology.</p>
                             <div className="btn-group" style={{ justifyContent: 'center' }}>
-                                <Link to="/contact" className="btn btn-primary btn-large">Get Started Today</Link>
-                                <Link to="/who-we-are" className="btn btn-secondary btn-large">Learn About Us</Link>
+                                <div className="blur-in-on-view" data-blur-in data-blur-delay="120">
+                                    <Link to="/contact" className="btn btn-primary btn-large">Get Started Today</Link>
+                                </div>
+                                <div className="blur-in-on-view" data-blur-in data-blur-delay="190">
+                                    <Link to="/who-we-are" className="btn btn-secondary btn-large">Learn About Us</Link>
+                                </div>
                             </div>
                         </div>
                     </div>
