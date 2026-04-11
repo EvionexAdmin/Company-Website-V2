@@ -3,7 +3,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
 import TurnstileWidget from '../components/TurnstileWidget'
-import './Portal.css'
+import loginBackground from '../assets/images/auth/login-background.webp'
+import './Auth.css'
 
 export default function Login() {
     const [identifier, setIdentifier] = useState('')
@@ -88,66 +89,78 @@ export default function Login() {
     }
 
     return (
-        <div className="auth-page">
-            <div className="auth-card animate-fade-in-up">
-                <div className="auth-card__logo">
-                    <span>Evionex</span>
+        <main className="evx-auth-shell">
+            <section className="evx-auth" aria-labelledby="login-title">
+                <div className="evx-auth__frame animate-fade-in-up">
+                    <aside className="evx-auth__showcase" style={{ backgroundImage: `url(${loginBackground})` }} aria-hidden="true" />
+
+                    <section className="evx-auth__panel" aria-label="Sign in form">
+                        <div className="evx-auth__brand">EVIONEX</div>
+                        <h1 id="login-title" className="evx-auth__title">Welcome Back</h1>
+                        <p className="evx-auth__subtitle">Access your account and continue your journey with us.</p>
+
+                        {error && <div className="evx-auth__alert evx-auth__alert--error">{error}</div>}
+
+                        <form className="evx-auth__form" onSubmit={handleSubmit}>
+                            <label className="evx-auth__field" htmlFor="login-identifier">
+                                <span>Email or Username</span>
+                                <input
+                                    id="login-identifier"
+                                    className="evx-auth__input"
+                                    type="text"
+                                    value={identifier}
+                                    onChange={(e) => setIdentifier(e.target.value)}
+                                    placeholder="you@example.com or institution username"
+                                    required
+                                    autoComplete="username"
+                                />
+                            </label>
+
+                            <label className="evx-auth__field" htmlFor="login-password">
+                                <span>Password</span>
+                                <input
+                                    id="login-password"
+                                    className="evx-auth__input"
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="Enter your password"
+                                    autoComplete="current-password"
+                                    required
+                                />
+                            </label>
+
+                            <div className="evx-auth__meta-row">
+                                <label className="evx-auth__checkbox">
+                                    <input type="checkbox" name="remember" />
+                                    <span>Keep me signed in</span>
+                                </label>
+                                <Link className="evx-auth__inline-link" to="/contact">Reset password</Link>
+                            </div>
+
+                            <TurnstileWidget
+                                key={turnstileKey}
+                                onVerify={handleTurnstileVerify}
+                                onError={handleTurnstileError}
+                                onExpire={handleTurnstileExpire}
+                            />
+
+                            <button
+                                type="submit"
+                                className="evx-auth__submit"
+                                disabled={loading || !turnstileToken}
+                            >
+                                {loading ? 'Signing In...' : 'Sign In'}
+                            </button>
+                        </form>
+
+                        <p className="evx-auth__switch">
+                            New to our platform?{' '}
+                            <Link to={`/portal/signup${redirectParam ? `?redirect=${encodeURIComponent(redirectParam)}` : ''}`}>Create Account</Link>
+                        </p>
+                    </section>
                 </div>
-                <h1 className="auth-card__title">Welcome Back</h1>
-                <p className="auth-card__subtitle">Sign in to your Evionex account</p>
-
-                {error && <div className="auth-error">{error}</div>}
-
-                <form className="auth-form" onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label className="form-label" htmlFor="login-identifier">Email or Username</label>
-                        <input
-                            id="login-identifier"
-                            className="form-input"
-                            type="text"
-                            value={identifier}
-                            onChange={(e) => setIdentifier(e.target.value)}
-                            placeholder="you@example.com or institution username"
-                            required
-                            autoComplete="username"
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label className="form-label" htmlFor="login-password">Password</label>
-                        <input
-                            id="login-password"
-                            className="form-input"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="••••••••"
-                            autoComplete="current-password"
-                            required
-                        />
-                    </div>
-
-                    <TurnstileWidget
-                        key={turnstileKey}
-                        onVerify={handleTurnstileVerify}
-                        onError={handleTurnstileError}
-                        onExpire={handleTurnstileExpire}
-                    />
-
-                    <button
-                        type="submit"
-                        className="btn btn-primary"
-                        disabled={loading || !turnstileToken}
-                    >
-                        {loading ? 'Signing In...' : 'Sign In'}
-                    </button>
-                </form>
-
-                <div className="auth-footer">
-                    Don't have an account?{' '}
-                    <Link to={`/portal/signup${redirectParam ? `?redirect=${encodeURIComponent(redirectParam)}` : ''}`}>Create one</Link>
-                </div>
-            </div>
-        </div>
+            </section>
+        </main>
     )
 }

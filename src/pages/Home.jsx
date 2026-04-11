@@ -1,8 +1,53 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
-import GradientText from '../components/ui/GradientText/GradientText'
+import AnimatedTextCycle from '../components/ui/AnimatedTextCycle/AnimatedTextCycle'
 import usePageMetadata from '../lib/usePageMetadata'
 import './Home.css'
+
+const HERO_COPY = {
+    subtitle: 'Strengthening Research, Accelerating Education and Securing Families in the era of Artificial Intelligence.',
+}
+
+const HERO_CYCLE_WORDS = ['Research', 'Education', 'Healthcare']
+
+const ADVANTAGE_ITEMS = [
+    {
+        icon: '🧠',
+        title: 'AI-Powered Insights',
+        description: 'Leverage advanced artificial intelligence to extract actionable insights from complex research data, accelerating discovery and innovation.'
+    },
+    {
+        icon: '🛡️',
+        title: 'Regulatory Compliance',
+        description: 'Stay ahead with built-in compliance frameworks designed for Indian regulatory standards, ensuring your institution meets all requirements effortlessly.'
+    },
+    {
+        icon: '⚡',
+        title: 'Unified Management',
+        description: 'Streamline operations with a single platform that integrates lab management, learning tools, and health records into one cohesive ecosystem.'
+    }
+]
+
+const PRODUCT_ITEMS = [
+    {
+        name: 'EviNote',
+        type: 'Research Solution',
+        description: 'Not your ordinary ELN, EviNote is a complete end-to-end Laboratory Management Platform with the power of Artificial Intelligence.',
+        color: '#00D4C8'
+    },
+    {
+        name: 'Luminary',
+        type: 'Education Solution',
+        description: 'World\'s first AI-powered Learning Enhancement System (AILES), built in India for universities everywhere.',
+        color: '#ffae00'
+    },
+    {
+        name: 'Gene Setu',
+        type: 'Healthcare Solution',
+        description: '6000+ Diseases, Nutrigenomic and Pharmacogenomic Profile, all through a single test, and that\'s just the beginning.',
+        color: '#00bafd'
+    }
+]
 
 export default function Home() {
     const homeRef = useRef(null)
@@ -156,24 +201,22 @@ export default function Home() {
                 {/* Hero Section */}
                 <section className="hero">
                     <div className="hero__bg-glow"></div>
-                    <div className="container hero__container">
+                    <div className="hero__container">
                         <div className="hero__content">
                             <h1 className="hero-display hero__headline">
-                                <span className="hero-transforming blur-in-on-view" data-blur-in data-blur-delay="0">Transforming</span>
+                                <span className="hero-transforming blur-in-on-view" data-blur-in data-blur-delay="0">TRANSFORMING</span>
                                 <span className="hero-headline-line-two blur-in-on-view" data-blur-in data-blur-delay="90">
-                                    <GradientText
-                                        colors={['#FFFFFF', '#F5F8FF', '#FFFFFF', '#EEF4FF']}
-                                        animationSpeed={4}
-                                        className="hero-gradient-text"
-                                    >
-                                        Research, Education & Healthcare
-                                    </GradientText>
+                                    <AnimatedTextCycle
+                                        words={HERO_CYCLE_WORDS}
+                                        interval={1500}
+                                        className="hero-cycle-word michroma-regular"
+                                    />
                                 </span>
                             </h1>
                             <p className="hero__subtitle hero__subtitle--intro blur-in-on-view" data-blur-in data-blur-delay="160">
-                                Strengthening Research, Accelerating Education and Securing Families in the era of Artificial Intelligence.
+                                {HERO_COPY.subtitle}
                             </p>
-                            <div className="btn-group" style={{ marginBottom: '3rem' }}>
+                            <div className="btn-group hero__actions">
                                 <div className="blur-in-on-view" data-blur-in data-blur-delay="220">
                                     <Link to="/products" className="btn btn-primary btn-large hero-cta-primary">
                                         Explore Our Products
@@ -200,23 +243,7 @@ export default function Home() {
                         </div>
 
                         <div className="grid-3">
-                            {[
-                                {
-                                    icon: '🧠',
-                                    title: 'AI-Powered Insights',
-                                    description: 'Leverage advanced artificial intelligence to extract actionable insights from complex research data, accelerating discovery and innovation.'
-                                },
-                                {
-                                    icon: '🛡️',
-                                    title: 'Regulatory Compliance',
-                                    description: 'Stay ahead with built-in compliance frameworks designed for Indian regulatory standards, ensuring your institution meets all requirements effortlessly.'
-                                },
-                                {
-                                    icon: '⚡',
-                                    title: 'Unified Management',
-                                    description: 'Streamline operations with a single platform that integrates lab management, learning tools, and health records into one cohesive ecosystem.'
-                                }
-                            ].map((item, i) => (
+                            {ADVANTAGE_ITEMS.map((item, i) => (
                                 <div key={i} className="card advantage__card blur-in-on-view" data-blur-in data-blur-delay={String(80 + i * 80)}>
                                     <div className="feature-icon">{item.icon}</div>
                                     <h3>{item.title}</h3>
@@ -237,26 +264,7 @@ export default function Home() {
                         </div>
 
                         <div className="grid-3">
-                            {[
-                                {
-                                    name: 'EviNote',
-                                    type: 'Research Solution',
-                                    description: 'Not your ordinary ELN, EviNote is a complete end-to-end Laboratory Management Platform with the power of Artificial Intelligence.',
-                                    color: '#00D4C8'
-                                },
-                                {
-                                    name: 'Luminary',
-                                    type: 'Education Solution',
-                                    description: 'World\'s first AI-powered Learning Enhancement System (AILES), built in India for universities everywhere.',
-                                    color: '#ffae00'
-                                },
-                                {
-                                    name: 'Gene Setu',
-                                    type: 'Healthcare Solution',
-                                    description: '6000+ Diseases, Nutrigenomic and Pharmacogenomic Profile, all through a single test, and that\'s just the beginning.',
-                                    color: '#00bafd'
-                                }
-                            ].map((product, i) => (
+                            {PRODUCT_ITEMS.map((product, i) => (
                                 <div key={i} className="card product-preview__card blur-in-on-view" data-blur-in data-blur-delay={String(80 + i * 80)}>
                                     <div className="product-preview__badge" style={{ color: product.color, borderColor: product.color + '40', background: product.color + '15' }}>
                                         {product.type}
@@ -282,7 +290,7 @@ export default function Home() {
                         <div className="cta-box blur-in-on-view" data-blur-in data-blur-delay="40">
                             <h2>Ready to Transform Your Life?</h2>
                             <p>Partner with Evionex and experience the future of research, education, and healthcare technology.</p>
-                            <div className="btn-group" style={{ justifyContent: 'center' }}>
+                            <div className="btn-group cta-box__actions">
                                 <div className="blur-in-on-view" data-blur-in data-blur-delay="120">
                                     <Link to="/contact" className="btn btn-primary btn-large">Get Started Today</Link>
                                 </div>

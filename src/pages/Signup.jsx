@@ -3,7 +3,8 @@ import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
 import TurnstileWidget from '../components/TurnstileWidget'
-import './Portal.css'
+import loginBackground from '../assets/images/auth/login-background.webp'
+import './Auth.css'
 
 export default function Signup() {
     const [formData, setFormData] = useState({
@@ -133,112 +134,119 @@ export default function Signup() {
     }
 
     return (
-        <div className="auth-page">
-            <div className="auth-card animate-fade-in-up">
-                <div className="auth-card__logo">
-                    <span>Evionex</span>
-                </div>
-                <h1 className="auth-card__title">Create Account</h1>
-                <p className="auth-card__subtitle">Join the Evionex healthcare platform</p>
+        <main className="evx-auth-shell">
+            <section className="evx-auth" aria-labelledby="signup-title">
+                <div className="evx-auth__frame animate-fade-in-up">
+                    <aside className="evx-auth__showcase" style={{ backgroundImage: `url(${loginBackground})` }} aria-hidden="true" />
 
-                {error && <div className="auth-error">{error}</div>}
-                {success && <div className="auth-success">{success}</div>}
+                    <section className="evx-auth__panel" aria-label="Create account form">
+                        <div className="evx-auth__brand">EVIONEX</div>
+                        <h1 id="signup-title" className="evx-auth__title">Create Account</h1>
+                        <p className="evx-auth__subtitle">Join the platform with secure and compliant access.</p>
 
-                {!success && (
-                    <form className="auth-form" onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="signup-name">Full Name</label>
-                            <input
-                                id="signup-name"
-                                className="form-input"
-                                type="text"
-                                name="fullName"
-                                value={formData.fullName}
-                                onChange={handleChange}
-                                placeholder="Your full name"
-                                required
-                            />
-                        </div>
+                        {error && <div className="evx-auth__alert evx-auth__alert--error">{error}</div>}
+                        {success && <div className="evx-auth__alert evx-auth__alert--success">{success}</div>}
 
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="signup-email">Email Address</label>
-                            <input
-                                id="signup-email"
-                                className="form-input"
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                placeholder="you@example.com"
-                                required
-                            />
-                        </div>
+                        {!success && (
+                            <form className="evx-auth__form" onSubmit={handleSubmit}>
+                                <label className="evx-auth__field" htmlFor="signup-name">
+                                    <span>Full Name</span>
+                                    <input
+                                        id="signup-name"
+                                        className="evx-auth__input"
+                                        type="text"
+                                        name="fullName"
+                                        value={formData.fullName}
+                                        onChange={handleChange}
+                                        placeholder="Your full name"
+                                        required
+                                    />
+                                </label>
 
-                        <div className="form-row">
-                            <div className="form-group">
-                                <label className="form-label" htmlFor="signup-password">Password</label>
-                                <input
-                                    id="signup-password"
-                                    className="form-input"
-                                    type="password"
-                                    name="password"
-                                    autoComplete="new-password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    placeholder="Min. 8 characters"
-                                    required
+                                <label className="evx-auth__field" htmlFor="signup-email">
+                                    <span>Email Address</span>
+                                    <input
+                                        id="signup-email"
+                                        className="evx-auth__input"
+                                        type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        placeholder="you@example.com"
+                                        required
+                                    />
+                                </label>
+
+                                <div className="evx-auth__grid-two">
+                                    <label className="evx-auth__field" htmlFor="signup-password">
+                                        <span>Password</span>
+                                        <input
+                                            id="signup-password"
+                                            className="evx-auth__input"
+                                            type="password"
+                                            name="password"
+                                            autoComplete="new-password"
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                            placeholder="Min. 8 characters"
+                                            required
+                                        />
+                                    </label>
+
+                                    <label className="evx-auth__field" htmlFor="signup-confirm">
+                                        <span>Confirm Password</span>
+                                        <input
+                                            id="signup-confirm"
+                                            className="evx-auth__input"
+                                            type="password"
+                                            name="confirmPassword"
+                                            autoComplete="new-password"
+                                            value={formData.confirmPassword}
+                                            onChange={handleChange}
+                                            placeholder="Repeat password"
+                                            required
+                                        />
+                                    </label>
+                                </div>
+
+                                <label className="evx-auth__field" htmlFor="signup-role">
+                                    <span>Account Type</span>
+                                    <select
+                                        id="signup-role"
+                                        className="evx-auth__select"
+                                        name="role"
+                                        value={formData.role}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="patient">Patient</option>
+                                        <option value="partner">Partner (Doctor)</option>
+                                    </select>
+                                </label>
+
+                                <TurnstileWidget
+                                    key={turnstileKey}
+                                    onVerify={handleTurnstileVerify}
+                                    onError={handleTurnstileError}
+                                    onExpire={handleTurnstileExpire}
                                 />
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label" htmlFor="signup-confirm">Confirm Password</label>
-                                <input
-                                    id="signup-confirm"
-                                    className="form-input"
-                                    type="password"
-                                    name="confirmPassword"
-                                    autoComplete="new-password"
-                                    value={formData.confirmPassword}
-                                    onChange={handleChange}
-                                    placeholder="Repeat password"
-                                    required
-                                />
-                            </div>
-                        </div>
 
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="signup-role">Account Type</label>
-                            <select
-                                id="signup-role"
-                                className="form-select"
-                                name="role"
-                                value={formData.role}
-                                onChange={handleChange}
-                            >
-                                <option value="patient">Patient</option>
-                                <option value="partner">Partner (Doctor)</option>
-                            </select>
-                        </div>
+                                <button
+                                    type="submit"
+                                    className="evx-auth__submit"
+                                    disabled={loading || !turnstileToken}
+                                >
+                                    {loading ? 'Creating Account...' : 'Create Account'}
+                                </button>
+                            </form>
+                        )}
 
-                        {/* Admin and employee accounts are created internally for security. */}
-
-                        <TurnstileWidget
-                            key={turnstileKey}
-                            onVerify={handleTurnstileVerify}
-                            onError={handleTurnstileError}
-                            onExpire={handleTurnstileExpire}
-                        />
-
-                        <button type="submit" className="btn btn-primary" disabled={loading || !turnstileToken}>
-                            {loading ? 'Creating Account...' : 'Create Account'}
-                        </button>
-                    </form>
-                )}
-
-                <div className="auth-footer">
-                    Already have an account?{' '}
-                    <Link to={`/portal/login${redirectParam ? `?redirect=${encodeURIComponent(redirectParam)}` : ''}`}>Sign in</Link>
+                        <p className="evx-auth__switch">
+                            Already have an account?{' '}
+                            <Link to={`/portal/login${redirectParam ? `?redirect=${encodeURIComponent(redirectParam)}` : ''}`}>Sign In</Link>
+                        </p>
+                    </section>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
     )
 }
