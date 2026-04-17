@@ -37,7 +37,7 @@
 
   <!-- ── Security headers (meta-tag fallback for static hosting) ── -->
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-  <meta http-equiv="X-Frame-Options" content="DENY" />
+  <!-- X-Frame-Options can only be enforced via an HTTP response header. -->
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://api.razorpay.com; frame-src https://challenges.cloudflare.com https://api.razorpay.com; object-src 'none'; base-uri 'self';" />
@@ -48,14 +48,8 @@
   <!-- ── Fonts preload (Space Grotesk + Source Serif 4) ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style"
-    href="https://fonts.googleapis.com/css2?family=Michroma&family=Montserrat:wght@300&family=Space+Grotesk:wght@300;400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&display=swap"
-    onload="this.onload=null;this.rel='stylesheet'" />
-  <noscript>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Michroma&family=Montserrat:wght@300&family=Space+Grotesk:wght@300;400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&display=swap"
-      rel="stylesheet" />
-  </noscript>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Michroma&family=Montserrat:wght@300&family=Space+Grotesk:wght@300;400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&display=swap" />
 
   <!-- ── JSON-LD Structured Data — Organization ──────────────────── -->
   <script type="application/ld+json">

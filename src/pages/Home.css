@@ -1,6 +1,6 @@
 /* Home video layer */
 .home {
-    --home-video-blur: 0px;
+    --home-video-blur: 10px;
     --home-video-offset-y: 0px;
     position: relative;
     isolation: isolate;
@@ -456,8 +456,8 @@
     font-family: 'Montserrat', var(--font-display);
     font-style: normal;
     font-size: 50% !important;
-    letter-spacing: 1px !important;
-    font-weight: 100 !important;
+    letter-spacing: 2px !important;
+    font-weight: 300 !important;
     will-change: opacity, transform, filter;
 }
 

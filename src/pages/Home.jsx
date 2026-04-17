@@ -72,7 +72,7 @@ export default function Home() {
             const scrollTop = window.scrollY || window.pageYOffset || 0
             const scrollRange = Math.max(window.innerHeight * 1.2, 1)
             const blurProgress = Math.min(scrollTop / scrollRange, 1)
-            const blurAmount = blurProgress * 14
+            const blurAmount = (1 - blurProgress) * 14
 
             const footer = document.querySelector('.footer')
             let footerPush = 0
@@ -208,7 +208,7 @@ export default function Home() {
                                 <span className="hero-headline-line-two blur-in-on-view" data-blur-in data-blur-delay="90">
                                     <AnimatedTextCycle
                                         words={HERO_CYCLE_WORDS}
-                                        interval={1500}
+                                        interval={2500}
                                         className="hero-cycle-word michroma-regular"
                                     />
                                 </span>
@@ -216,18 +216,11 @@ export default function Home() {
                             <p className="hero__subtitle hero__subtitle--intro blur-in-on-view" data-blur-in data-blur-delay="160">
                                 {HERO_COPY.subtitle}
                             </p>
-                            <div className="btn-group hero__actions">
-                                <div className="blur-in-on-view" data-blur-in data-blur-delay="220">
-                                    <Link to="/products" className="btn btn-primary btn-large hero-cta-primary">
-                                        Explore Our Products
-                                        <span className="btn-arrow">→</span>
-                                    </Link>
-                                </div>
-                                <div className="blur-in-on-view" data-blur-in data-blur-delay="290">
-                                    <Link to="/contact" className="btn btn-secondary btn-large hero-cta-secondary">
-                                        Partner With Us
-                                    </Link>
-                                </div>
+                            <div className="hero__actions blur-in-on-view" data-blur-in data-blur-delay="220">
+                                <Link to="/products" className="btn btn-primary btn-large hero-cta-primary">
+                                    Explore Our Products
+                                    <span className="btn-arrow">→</span>
+                                </Link>
                             </div>
                         </div>
                     </div>
