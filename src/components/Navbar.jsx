@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import evionexLogo from '../assets/images/logo/evionex-logo.png'
 import evionexText from '../assets/images/logo/evionex-text.png'
-import geneSetuMockup from '../../Gene setu Mockup.png'
-import eviNoteMockup from '../../Evinote Mockup.png'
-import luminaryMockup from '../../Luminary Mockup.png'
+import geneSetuMockup from '../assets/images/products/genesetu-mockup.png'
+import eviNoteMockup from '../assets/images/products/evinote-mockup.png'
+import luminaryMockup from '../assets/images/products/luminary-mockup.png'
 import loginBackground from '../assets/images/auth/login-background.webp'
 import doctorHandshake from '../assets/doctor-handshake.jpg'
 import { useAuth } from '../contexts/AuthContext'
@@ -31,6 +32,7 @@ const MENU_OPEN_DELAY = 90
 const MENU_CLOSE_DELAY = 220
 const PREVIEW_FADE_DURATION = 170
 const MENU_CLOSE_ANIMATION_DURATION = 280
+const MOTION_EASE = [0.22, 1, 0.36, 1]
 
 const defaultPreview = {
     title: 'Evionex',
@@ -217,6 +219,7 @@ const clearTimer = (timerRef) => {
 export default function Navbar() {
     const location = useLocation()
     const navigate = useNavigate()
+    const shouldReduceMotion = false // Temporarily set to false so you can see the animations
     const { user, profile, signOut } = useAuth()
     const [scrolled, setScrolled] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
@@ -224,7 +227,7 @@ export default function Navbar() {
     const [activeMegaMenu, setActiveMegaMenu] = useState(null)
     const [activeMegaItemId, setActiveMegaItemId] = useState(null)
     const [previewCard, setPreviewCard] = useState(defaultPreview)
-    const [previewFading, setPreviewFading] = useState(false)
+    const [hoveredNavItem, setHoveredNavItem] = useState(null)
     const navRef = useRef(null)
     const openTimerRef = useRef(null)
     const closeTimerRef = useRef(null)
@@ -254,7 +257,6 @@ export default function Navbar() {
 
         setIsMegaMenuOpen(false)
         setActiveMegaItemId(null)
-        setPreviewFading(false)
 
         closeAnimationTimerRef.current = window.setTimeout(() => {
             setActiveMegaMenu(null)
@@ -265,13 +267,7 @@ export default function Navbar() {
 
     const updatePreview = useCallback((nextPreview) => {
         clearTimer(previewTimerRef)
-        setPreviewFading(true)
-
-        previewTimerRef.current = window.setTimeout(() => {
-            setPreviewCard(nextPreview)
-            setPreviewFading(false)
-            previewTimerRef.current = null
-        }, PREVIEW_FADE_DURATION)
+        setPreviewCard(nextPreview)
     }, [])
 
     const activateMegaMenu = useCallback((menuId) => {
@@ -282,7 +278,6 @@ export default function Navbar() {
         setIsMegaMenuOpen(true)
         setActiveMegaItemId(null)
         setPreviewCard(defaultPreview)
-        setPreviewFading(false)
     }, [])
 
     const handleMegaTriggerEnter = useCallback((menuId) => {
@@ -388,51 +383,107 @@ export default function Navbar() {
 
     return (
         <>
-            <nav
+            <motion.nav
                 ref={navRef}
                 className={`gn-navbar ${scrolled ? 'gn-navbar--scrolled' : ''}`}
                 role="navigation"
                 aria-label="Main navigation"
                 onMouseEnter={handleMegaZoneEnter}
                 onMouseLeave={handleMegaZoneLeave}
+                initial={shouldReduceMotion ? false : { opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.46, ease: MOTION_EASE }}
             >
                 {/* Animated gradient bottom border */}
                 <div className="gn-navbar__gradient-border" aria-hidden="true" />
 
                 <div className="gn-navbar__inner">
                     {/* Logo */}
-                    <Link to="/" className="gn-navbar__logo" aria-label="Evionex — Go to homepage">
-                        <img
-                            src={evionexLogo}
-                            alt=""
-                            className="gn-navbar__logo-icon"
-                            width="30"
-                            height="30"
-                        />
-                        <img
-                            src={evionexText}
-                            alt="Evionex"
-                            className="gn-navbar__logo-text"
-                            width="80"
-                            height="18"
-                        />
-                    </Link>
+                    <motion.div
+                        style={{ display: 'flex' }}
+                        whileHover={shouldReduceMotion ? undefined : { y: -1, scale: 1.01 }}
+                        whileTap={shouldReduceMotion ? undefined : { scale: 0.99 }}
+                        transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.18, ease: MOTION_EASE }}
+                    >
+                        <Link to="/" className="gn-navbar__logo" aria-label="Evionex — Go to homepage">
+                            <img
+                                src={evionexLogo}
+                                alt=""
+                                className="gn-navbar__logo-icon"
+                                width="30"
+                                height="30"
+                            />
+                            <img
+                                src={evionexText}
+                                alt="Evionex"
+                                className="gn-navbar__logo-text"
+                                width="80"
+                                height="18"
+                            />
+                        </Link>
+                    </motion.div>
 
                     {/* Desktop links */}
-                    <ul className="gn-navbar__links" role="menubar">
+                    <motion.ul
+                        className="gn-navbar__links"
+                        role="menubar"
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                            hidden: { opacity: 0 },
+                            visible: {
+                                opacity: 1,
+                                transition: { staggerChildren: 0.05, delayChildren: 0.1 }
+                            }
+                        }}
+                        onMouseLeave={() => setHoveredNavItem(null)}
+                    >
                         {desktopNavItems.map((item) => {
                             if (item.type === 'link') {
                                 return (
-                                    <li key={item.id} role="none">
+                                    <motion.li
+                                        key={item.id}
+                                        role="none"
+                                        variants={{
+                                            hidden: { opacity: 0, y: -10 },
+                                            visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: MOTION_EASE } }
+                                        }}
+                                        onMouseEnter={() => {
+                                            closeMegaMenu()
+                                            setHoveredNavItem(item.id)
+                                        }}
+                                        onFocus={() => {
+                                            closeMegaMenu()
+                                            setHoveredNavItem(item.id)
+                                        }}
+                                        style={{ position: 'relative' }}
+                                    >
+                                        {hoveredNavItem === item.id && (
+                                            <motion.div
+                                                layoutId="desktop-nav-pill"
+                                                className="gn-navbar__magic-pill"
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                                style={{
+                                                    position: "absolute",
+                                                    inset: 0,
+                                                    backgroundColor: "rgba(255, 255, 255, 0.08)",
+                                                    borderRadius: "8px",
+                                                    zIndex: 0
+                                                }}
+                                            />
+                                        )}
                                         <Link
                                             to={item.href}
                                             role="menuitem"
-                                            onMouseEnter={closeMegaMenu}
                                             className={`gn-navbar__link ${isActive(item.href) ? 'gn-navbar__link--active' : ''}`}
+                                            style={{ position: 'relative', zIndex: 1 }}
                                         >
-                                            {item.label}
+                                            <span className="gn-navbar__label">{item.label}</span>
                                         </Link>
-                                    </li>
+                                    </motion.li>
                                 )
                             }
 
@@ -440,28 +491,68 @@ export default function Navbar() {
                             const triggerActive = isMegaGroupActive(item.id)
 
                             return (
-                                <li key={item.id} role="none" className="gn-navbar__mega-item">
+                                <motion.li
+                                    key={item.id}
+                                    role="none"
+                                    className="gn-navbar__mega-item"
+                                    variants={{
+                                        hidden: { opacity: 0, y: -10 },
+                                        visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: MOTION_EASE } }
+                                    }}
+                                    onMouseEnter={() => {
+                                        handleMegaTriggerEnter(item.id)
+                                        setHoveredNavItem(item.id)
+                                    }}
+                                    onFocus={() => {
+                                        handleMegaTriggerEnter(item.id)
+                                        setHoveredNavItem(item.id)
+                                    }}
+                                    style={{ position: 'relative' }}
+                                >
+                                    {hoveredNavItem === item.id && (
+                                        <motion.div
+                                            layoutId="desktop-nav-pill"
+                                            className="gn-navbar__magic-pill"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                            style={{
+                                                position: "absolute",
+                                                inset: 0,
+                                                backgroundColor: "rgba(255, 255, 255, 0.08)",
+                                                borderRadius: "8px",
+                                                zIndex: 0
+                                            }}
+                                        />
+                                    )}
                                     <button
                                         type="button"
                                         role="menuitem"
                                         className={`gn-navbar__link gn-navbar__link--trigger ${triggerActive ? 'gn-navbar__link--active' : ''} ${triggerOpen ? 'gn-navbar__link--mega-open' : ''}`}
-                                        onMouseEnter={() => handleMegaTriggerEnter(item.id)}
-                                        onFocus={() => handleMegaTriggerEnter(item.id)}
                                         onClick={() => handleMegaTriggerClick(item.id)}
                                         aria-haspopup="menu"
                                         aria-expanded={triggerOpen}
                                         aria-controls="gn-mega-menu-panel"
+                                        style={{ position: 'relative', zIndex: 1 }}
                                     >
-                                        <span>{item.label}</span>
+                                        <span className="gn-navbar__label">{item.label}</span>
                                         <span className="gn-navbar__chevron" aria-hidden="true" />
                                     </button>
-                                </li>
+                                </motion.li>
                             )
                         })}
-                    </ul>
+                    </motion.ul>
 
                     {/* Right side: avatar + CTA */}
-                    <div className="gn-navbar__actions">
+                    <motion.div
+                        className="gn-navbar__actions"
+                        initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={shouldReduceMotion
+                            ? { duration: 0 }
+                            : { duration: 0.28, ease: MOTION_EASE, delay: 0.28 }}
+                    >
                         {user ? (
                             <>
                                 <Link
@@ -484,7 +575,7 @@ export default function Navbar() {
                                 Login / Sign Up
                             </Link>
                         )}
-                    </div>
+                    </motion.div>
 
                     {/* Mobile hamburger */}
                     <button
@@ -501,117 +592,156 @@ export default function Navbar() {
                         <span />
                     </button>
                 </div>
-            </nav>
+            </motion.nav>
 
             {/* Desktop mega menu */}
-            <div
-                className={`gn-mega-menu-wrapper ${isMegaMenuOpen && activeMenu ? 'gn-mega-menu-wrapper--open' : ''}`}
-                onMouseEnter={handleMegaZoneEnter}
-                onMouseLeave={handleMegaZoneLeave}
-                aria-hidden={!isMegaMenuOpen}
-            >
-                {activeMenu && (
-                    <div
-                        id="gn-mega-menu-panel"
-                        className="gn-mega-menu"
-                        role="menu"
-                        aria-label={`${activeMenu.label} menu`}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Escape') {
-                                closeMegaMenu()
-                            }
-                        }}
+            <AnimatePresence>
+                {isMegaMenuOpen && activeMenu && (
+                    <motion.div
+                        className="gn-mega-menu-wrapper gn-mega-menu-wrapper--open"
+                        onMouseEnter={handleMegaZoneEnter}
+                        onMouseLeave={handleMegaZoneLeave}
+                        initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -14 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+                        transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.24, ease: MOTION_EASE }}
                     >
-                        <div className="gn-mega-menu__left">
-                            <p className="gn-mega-menu__eyebrow">{activeMenu.label}</p>
-                            <h3 className="gn-mega-menu__heading">Explore Pages</h3>
-                            <ul key={activeMegaMenu} className="gn-mega-menu__list" onMouseLeave={handleMegaItemsLeave}>
-                                {activeMenu.items.map((item) => (
-                                    <li key={item.id}>
-                                        <Link
-                                            to={item.href}
-                                            role="menuitem"
-                                            className={`gn-mega-menu__item ${activeMegaItemId === item.id ? 'gn-mega-menu__item--active' : ''}`}
-                                            onMouseEnter={() => handleMegaItemHover(item)}
-                                            onFocus={() => handleMegaItemHover(item)}
-                                            onClick={closeMegaMenu}
-                                        >
-                                            <span className="gn-mega-menu__item-title">{item.label}</span>
-                                            <span className="gn-mega-menu__item-description">{item.description}</span>
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        <div className="gn-mega-menu__right">
-                            <div className={`gn-mega-menu__preview ${previewFading ? 'gn-mega-menu__preview--fading' : ''}`}>
-                                <img
-                                    src={previewCard.src}
-                                    alt={previewCard.alt}
-                                    className="gn-mega-menu__preview-image"
-                                    loading="lazy"
-                                />
-                                <div className="gn-mega-menu__preview-overlay" aria-hidden="true" />
+                        <motion.div
+                            key={activeMegaMenu}
+                            id="gn-mega-menu-panel"
+                            className="gn-mega-menu"
+                            role="menu"
+                            aria-label={`${activeMenu.label} menu`}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Escape') {
+                                    closeMegaMenu()
+                                }
+                            }}
+                            initial={shouldReduceMotion ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: -8, scale: 0.986 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={shouldReduceMotion ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: -6, scale: 0.986 }}
+                            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.22, ease: MOTION_EASE }}
+                        >
+                            <div className="gn-mega-menu__left">
+                                <p className="gn-mega-menu__eyebrow">{activeMenu.label}</p>
+                                <h3 className="gn-mega-menu__heading">Explore Pages</h3>
+                                <ul key={activeMegaMenu} className="gn-mega-menu__list" onMouseLeave={handleMegaItemsLeave}>
+                                    {activeMenu.items.map((item) => (
+                                        <li key={item.id}>
+                                            <Link
+                                                to={item.href}
+                                                role="menuitem"
+                                                className={`gn-mega-menu__item ${activeMegaItemId === item.id ? 'gn-mega-menu__item--active' : ''}`}
+                                                onMouseEnter={() => handleMegaItemHover(item)}
+                                                onFocus={() => handleMegaItemHover(item)}
+                                                onClick={closeMegaMenu}
+                                            >
+                                                <span className="gn-mega-menu__item-title">{item.label}</span>
+                                                <span className="gn-mega-menu__item-description">{item.description}</span>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
-                        </div>
-                    </div>
+
+                            <div className="gn-mega-menu__right">
+                                <div className="gn-mega-menu__preview">
+                                    <AnimatePresence mode="wait">
+                                        <motion.img
+                                            key={previewCard.src}
+                                            src={previewCard.src}
+                                            alt={previewCard.alt}
+                                            className="gn-mega-menu__preview-image"
+                                            loading="lazy"
+                                            initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.95 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={shouldReduceMotion ? false : { opacity: 0, scale: 1.05 }}
+                                            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.25, ease: MOTION_EASE }}
+                                        />
+                                    </AnimatePresence>
+                                    <div className="gn-mega-menu__preview-overlay" aria-hidden="true" />
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
                 )}
-            </div>
+            </AnimatePresence>
 
-            {/* Mobile overlay */}
-            <div
-                className={`gn-mobile-overlay ${mobileOpen ? 'gn-mobile-overlay--visible' : ''}`}
-                onClick={() => setMobileOpen(false)}
-                aria-hidden="true"
-            />
+            <AnimatePresence>
+                {mobileOpen && (
+                    <>
+                        {/* Mobile overlay */}
+                        <motion.div
+                            className="gn-mobile-overlay gn-mobile-overlay--visible"
+                            onClick={() => setMobileOpen(false)}
+                            aria-hidden="true"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.2, ease: 'easeOut' }}
+                        />
 
-            {/* Mobile drawer */}
-            <aside
-                className={`gn-mobile-drawer ${mobileOpen ? 'gn-mobile-drawer--open' : ''}`}
-                aria-label="Mobile navigation"
-            >
-                <div className="gn-mobile-drawer__links">
-                    {mobileNavLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            to={link.href}
-                            className={`gn-mobile-drawer__link ${isActive(link.href) ? 'gn-mobile-drawer__link--active' : ''}`}
-                            onClick={() => setMobileOpen(false)}
+                        {/* Mobile drawer */}
+                        <motion.aside
+                            className="gn-mobile-drawer gn-mobile-drawer--open"
+                            aria-label="Mobile navigation"
+                            initial={shouldReduceMotion ? { x: 0 } : { x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={shouldReduceMotion ? { x: 0 } : { x: '100%' }}
+                            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.34, ease: MOTION_EASE }}
                         >
-                            {link.label}
-                        </Link>
-                    ))}
-                </div>
-                <div className="gn-mobile-drawer__bottom">
-                    {user ? (
-                        <>
-                            <Link
-                                to="/portal/dashboard"
-                                className="gn-mobile-drawer__avatar-link"
-                                onClick={() => setMobileOpen(false)}
-                            >
-                                <span className="gn-navbar__avatar gn-navbar__avatar--mobile">{initials}</span>
-                                <span>My Dashboard</span>
-                            </Link>
-                            <button
-                                className="gn-mobile-drawer__cta gn-mobile-drawer__cta--signout"
-                                onClick={async () => { setMobileOpen(false); await signOut(); navigate('/portal/login'); }}
-                            >
-                                Sign Out
-                            </button>
-                        </>
-                    ) : (
-                        <Link
-                            to="/portal/login"
-                            className="gn-mobile-drawer__cta"
-                            onClick={() => setMobileOpen(false)}
-                        >
-                            Login / Sign Up
-                        </Link>
-                    )}
-                </div>
-            </aside>
+                            <div className="gn-mobile-drawer__links">
+                                {mobileNavLinks.map((link, index) => (
+                                    <motion.div
+                                        key={link.href}
+                                        initial={shouldReduceMotion ? false : { opacity: 0, x: 24 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={shouldReduceMotion
+                                            ? { duration: 0 }
+                                            : { duration: 0.24, ease: MOTION_EASE, delay: 0.06 + (index * 0.04) }}
+                                    >
+                                        <Link
+                                            to={link.href}
+                                            className={`gn-mobile-drawer__link ${isActive(link.href) ? 'gn-mobile-drawer__link--active' : ''}`}
+                                            onClick={() => setMobileOpen(false)}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </motion.div>
+                                ))}
+                            </div>
+                            <div className="gn-mobile-drawer__bottom">
+                                {user ? (
+                                    <>
+                                        <Link
+                                            to="/portal/dashboard"
+                                            className="gn-mobile-drawer__avatar-link"
+                                            onClick={() => setMobileOpen(false)}
+                                        >
+                                            <span className="gn-navbar__avatar gn-navbar__avatar--mobile">{initials}</span>
+                                            <span>My Dashboard</span>
+                                        </Link>
+                                        <button
+                                            className="gn-mobile-drawer__cta gn-mobile-drawer__cta--signout"
+                                            onClick={async () => { setMobileOpen(false); await signOut(); navigate('/portal/login'); }}
+                                        >
+                                            Sign Out
+                                        </button>
+                                    </>
+                                ) : (
+                                    <Link
+                                        to="/portal/login"
+                                        className="gn-mobile-drawer__cta"
+                                        onClick={() => setMobileOpen(false)}
+                                    >
+                                        Login / Sign Up
+                                    </Link>
+                                )}
+                            </div>
+                        </motion.aside>
+                    </>
+                )}
+            </AnimatePresence>
         </>
     )
 }

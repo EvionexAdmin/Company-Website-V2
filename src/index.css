@@ -305,6 +305,13 @@ img {
   border-radius: var(--radius-lg);
 }
 
+.btn.pill-btn,
+.btn.pill-btn:hover,
+.home .btn.pill-btn:hover,
+.home .btn.pill-btn:focus-visible {
+  border-radius: var(--radius-full) !important;
+}
+
 .btn-group {
   display: flex;
   gap: var(--space-md);

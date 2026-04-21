@@ -217,9 +217,8 @@ export default function Home() {
                                 {HERO_COPY.subtitle}
                             </p>
                             <div className="hero__actions blur-in-on-view" data-blur-in data-blur-delay="220">
-                                <Link to="/products" className="btn btn-primary btn-large hero-cta-primary">
+                                <Link to="/products" className="btn btn-primary btn-large hero-cta-primary pill-btn">
                                     Explore Our Products
-                                    <span className="btn-arrow">→</span>
                                 </Link>
                             </div>
                         </div>

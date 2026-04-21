@@ -1,5 +1,7 @@
+import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import luminaryLogo from '../assets/images/products/luminary-logo.png'
+import luminaryMockup from '../assets/images/products/luminary-mockup.png'
+import defaultBg from '../assets/images/auth/login-background.webp'
 import usePageMetadata from '../lib/usePageMetadata'
 import './ProductDetail.css'
 
@@ -67,6 +69,8 @@ const luminaryProductLd = {
 }
 
 export default function LuminaryDetail() {
+    const [hoveredFeature, setHoveredFeature] = useState(null)
+    const progressRef = useRef(null)
     usePageMetadata({
         title: 'Luminary — AI-Powered Learning Enhancement System | Evionex',
         description: 'Personalized AI-driven quizzes, digital journals, interview practice, and competitive exam preparation for universities and institutes.',
@@ -80,8 +84,9 @@ export default function LuminaryDetail() {
         <div className="product-detail">
             {/* Hero */}
             <section className="product-detail__hero">
+                <div className="product-detail__hero-bg" style={{ backgroundImage: `url(${luminaryMockup})` }}></div>
+                <div className="product-detail__hero-overlay"></div>
                 <div className="container" style={{ textAlign: 'center' }}>
-                    <img src={luminaryLogo} alt="Luminary" className="product-detail__hero-logo" style={{ '--logo-glow': accentColor }} />
                     <h1 className="product-detail__hero-title">Luminary</h1>
                     <span className="product-detail__hero-type" style={{ color: accentColor, borderColor: accentColor + '40', background: accentColor + '15', border: `1px solid ${accentColor}40` }}>
                         Education Solution
@@ -118,26 +123,98 @@ export default function LuminaryDetail() {
                     <h2 className="product-detail__features-title">
                         Powerful <span style={{ color: accentColor }}>Features</span>
                     </h2>
-                    {features.map((feature, i) => (
-                        <div key={i} className={`product-detail__feature ${i % 2 !== 0 ? 'product-detail__feature--reverse' : ''}`}>
-                            <div className="product-detail__feature-video-wrap" style={{ borderColor: accentColor + '20' }}>
-                                <video
-                                    className="product-detail__feature-video"
-                                    controls
-                                    muted
-                                    playsInline
-                                    preload="metadata"
+                    
+                    {/* Desktop Version */}
+                    <div className="accordion-features-desktop accordion-features__container">
+                        <div className="accordion-features__media" style={{ borderColor: accentColor + '20' }}>
+                                {hoveredFeature !== null && features[hoveredFeature].media.type === 'video' ? (
+                                    <>
+                                        <video
+                                            key={hoveredFeature}
+                                            className="accordion-features__video"
+                                            autoPlay
+                                            loop
+                                            muted
+                                            playsInline
+                                            preload="metadata"
+                                            onTimeUpdate={(e) => {
+                                                if (progressRef.current) {
+                                                    const progress = (e.target.currentTime / e.target.duration) * 100;
+                                                    progressRef.current.style.width = `${progress}%`;
+                                                }
+                                            }}
+                                        >
+                                            <source src={features[hoveredFeature].media.src} type="video/mp4" />
+                                        </video>
+                                        <div className="accordion-features__progress-bar-container">
+                                            <div 
+                                                ref={progressRef}
+                                                className="accordion-features__progress-bar"
+                                                style={{ backgroundColor: accentColor, opacity: 0.8 }}
+                                            />
+                                        </div>
+                                    </>
+                                ) : hoveredFeature !== null && features[hoveredFeature].media.type === 'image' ? (
+                                    <img src={features[hoveredFeature].media.src} alt={features[hoveredFeature].title} className="accordion-features__image" />
+                                ) : (
+                                    <img src={defaultBg} alt="Default Feature" className="accordion-features__image" />
+                                )}
+                            </div>
+                        <div className="accordion-features__list">
+                            {features.map((feature, i) => (
+                                <div
+                                    key={i}
+                                    className={`accordion-features__item ${hoveredFeature === i ? 'active' : ''}`}
+                                    onMouseEnter={() => setHoveredFeature(i)}
+                                    onMouseLeave={() => setHoveredFeature(null)}
                                 >
-                                    <source src={feature.media.src} type="video/mp4" />
-                                </video>
-                            </div>
-                            <div className="product-detail__feature-content">
-                                <span className="product-detail__feature-num" style={{ color: accentColor }}>Feature {String(i + 1).padStart(2, '0')}</span>
-                                <h3 className="product-detail__feature-title">{feature.title}</h3>
-                                <p className="product-detail__feature-desc">{feature.desc}</p>
-                            </div>
+                                    <div className="accordion-features__item-header">
+                                        <span className="accordion-features__item-num" style={{ color: accentColor }}>{String(i + 1).padStart(2, '0')}</span>
+                                        <h3 className="accordion-features__item-title">{feature.title}</h3>
+                                    </div>
+                                    <div
+                                        className="accordion-features__item-content"
+                                        style={{
+                                            maxHeight: hoveredFeature === i ? '200px' : '0',
+                                            opacity: hoveredFeature === i ? 1 : 0,
+                                            overflow: 'hidden',
+                                            transition: 'all 0.3s ease-in-out'
+                                        }}
+                                    >
+                                        <p className="accordion-features__item-desc">{feature.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    ))}
+                    </div>
+
+                    {/* Mobile Version (Old Style) */}
+                    <div className="features-mobile-old">
+                        {features.map((feature, i) => (
+                            <div key={i} className={`product-detail__feature ${i % 2 !== 0 ? 'product-detail__feature--reverse' : ''}`}>
+                                <div className="product-detail__feature-video-wrap" style={{ borderColor: accentColor + '20' }}>
+                                    {feature.media.type === 'video' ? (
+                                        <video
+                                            className="product-detail__feature-video"
+                                            controls
+                                            muted
+                                            playsInline
+                                            preload="metadata"
+                                        >
+                                            <source src={feature.media.src} type="video/mp4" />
+                                        </video>
+                                    ) : (
+                                        <img src={feature.media.src} alt={feature.title} className="product-detail__feature-image" />
+                                    )}
+                                </div>
+                                <div className="product-detail__feature-content">
+                                    <span className="product-detail__feature-num" style={{ color: accentColor }}>Feature {String(i + 1).padStart(2, '0')}</span>
+                                    <h3 className="product-detail__feature-title">{feature.title}</h3>
+                                    <p className="product-detail__feature-desc">{feature.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 
