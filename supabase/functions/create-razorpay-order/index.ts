@@ -3,18 +3,29 @@
 // This file runs in the Deno/Supabase Edge Runtime — Deno globals are always available there.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-// --- Security: Restrict CORS to production origin only ---
-const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") || "https://www.evionex.com";
+// --- Security: Restrict CORS to explicit origins only ---
+const PRODUCTION_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") || "https://www.evionex.com";
+const ALLOWED_ORIGINS = [
+    PRODUCTION_ORIGIN,
+    "http://localhost:5173",
+    "http://localhost:3000",
+];
 
-const corsHeaders = {
-    "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
-    "Access-Control-Allow-Headers":
-        "authorization, x-client-info, apikey, content-type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Max-Age": "86400",
-};
+function getCorsHeaders(req: Request) {
+    const origin = req.headers.get("Origin") || "";
+    const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : PRODUCTION_ORIGIN;
+    return {
+        "Access-Control-Allow-Origin": allowedOrigin,
+        "Access-Control-Allow-Headers":
+            "authorization, x-client-info, apikey, content-type",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Max-Age": "86400",
+    };
+}
 
 Deno.serve(async (req: Request) => {
+    const corsHeaders = getCorsHeaders(req);
+
     // Handle CORS preflight
     if (req.method === "OPTIONS") {
         return new Response("ok", { headers: corsHeaders });
