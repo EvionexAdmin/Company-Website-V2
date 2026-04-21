@@ -29,7 +29,7 @@ To the maximum extent permitted by law, Gene Setu shall not be liable for any in
 We reserve the right to modify these terms at any time. We will provide notice of significant changes by posting the new terms on the App.
 
 ## 9. Governing Law
-These terms shall be governed by and construed in accordance with the laws of [Your Jurisdiction].
+These terms shall be governed by and construed in accordance with the laws of India.
 
 ## 10. Contact Information
-For any questions regarding these Terms, please contact [Your Contact Email/Website].
+For any questions regarding these Terms, please contact contact@evionex.com.
