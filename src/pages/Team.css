@@ -1,3 +1,33 @@
+.team-hero {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 340px;
+}
+
+.team-hero__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center 24%;
+    background-repeat: no-repeat;
+}
+
+.team-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(10, 12, 28, 0.75) 0%,
+            rgba(10, 12, 28, 0.88) 100%);
+}
+
+.team-hero .container {
+    position: relative;
+    z-index: 1;
+}
+
 .team-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -119,6 +149,10 @@
 }
 
 @media (max-width: 900px) {
+    .team-hero__bg {
+        background-position: center 18%;
+    }
+
     .team-grid {
         grid-template-columns: 1fr;
         max-width: 450px;

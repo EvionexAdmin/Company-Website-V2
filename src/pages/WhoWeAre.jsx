@@ -1,5 +1,6 @@
 import usePageMetadata from '../lib/usePageMetadata'
 import './WhoWeAre.css'
+import aboutUsHero from '../assets/images/company/about-us-hero.webp'
 
 export default function WhoWeAre() {
     const defaultOgImage = new URL('../assets/images/logo/evionex-logo.png', import.meta.url).href
@@ -13,7 +14,9 @@ export default function WhoWeAre() {
     return (
         <div className="who-we-are">
             {/* Hero Section */}
-            <section className="page-hero">
+            <section className="page-hero who-hero">
+                <div className="who-hero__bg" style={{ backgroundImage: `url(${aboutUsHero})` }}></div>
+                <div className="who-hero__overlay"></div>
                 <div className="container">
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">About Evionex</span>

@@ -4,16 +4,37 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 // --- Security: Restrict CORS to explicit origins only ---
-const PRODUCTION_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") || "https://www.evionex.com";
-const ALLOWED_ORIGINS = [
-    PRODUCTION_ORIGIN,
-    "http://localhost:5173",
-    "http://localhost:3000",
-];
+function buildAllowedOrigins() {
+    const configuredOrigin = Deno.env.get("ALLOWED_ORIGIN") || "https://www.evionex.com";
+    const allowedOrigins = new Set<string>([
+        configuredOrigin,
+        "http://localhost:5173",
+        "http://localhost:3000",
+    ]);
+
+    // Accept both apex and www variants of the configured production domain.
+    try {
+        const parsed = new URL(configuredOrigin);
+        if (parsed.hostname.startsWith("www.")) {
+            allowedOrigins.add(`${parsed.protocol}//${parsed.hostname.replace(/^www\./, "")}`);
+        } else {
+            allowedOrigins.add(`${parsed.protocol}//www.${parsed.hostname}`);
+        }
+    } catch {
+        // Ignore malformed ALLOWED_ORIGIN and keep the configured value as-is.
+    }
+
+    return {
+        productionOrigin: configuredOrigin,
+        allowedOrigins,
+    };
+}
+
+const { productionOrigin: PRODUCTION_ORIGIN, allowedOrigins: ALLOWED_ORIGINS } = buildAllowedOrigins();
 
 function getCorsHeaders(req: Request) {
     const origin = req.headers.get("Origin") || "";
-    const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : PRODUCTION_ORIGIN;
+    const allowedOrigin = ALLOWED_ORIGINS.has(origin) ? origin : PRODUCTION_ORIGIN;
     return {
         "Access-Control-Allow-Origin": allowedOrigin,
         "Access-Control-Allow-Headers":
@@ -79,12 +100,26 @@ Deno.serve(async (req: Request) => {
         }
 
         // Read Razorpay credentials from environment secrets
-        const razorpayKeyId = Deno.env.get("RAZORPAY_KEY_ID");
-        const razorpayKeySecret = Deno.env.get("RAZORPAY_KEY_SECRET");
+        const razorpayKeyId =
+            Deno.env.get("RAZORPAY_KEY_ID") || Deno.env.get("VITE_RAZORPAY_KEY_ID");
+        const razorpayKeySecret =
+            Deno.env.get("RAZORPAY_KEY_SECRET") || Deno.env.get("VITE_RAZORPAY_KEY_SECRET");
 
         if (!razorpayKeyId || !razorpayKeySecret) {
-            console.error("Razorpay credentials not configured");
-            throw new Error("Payment gateway not configured");
+            const missing = [
+                !razorpayKeyId ? "RAZORPAY_KEY_ID (or VITE_RAZORPAY_KEY_ID)" : null,
+                !razorpayKeySecret ? "RAZORPAY_KEY_SECRET (or VITE_RAZORPAY_KEY_SECRET)" : null,
+            ].filter(Boolean);
+            console.error("Razorpay credentials not configured", { missing });
+            return new Response(
+                JSON.stringify({
+                    error: `Payment gateway is not configured on the server. Missing: ${missing.join(", ")}`,
+                }),
+                {
+                    status: 500,
+                    headers: { ...corsHeaders, "Content-Type": "application/json" },
+                }
+            );
         }
 
         // Generate unique receipt ID
@@ -113,7 +148,15 @@ Deno.serve(async (req: Request) => {
         if (!razorpayResponse.ok) {
             const errorData = await razorpayResponse.json();
             console.error("Razorpay API error:", errorData);
-            throw new Error(`Payment gateway error: ${errorData?.error?.description || "Unknown error"}`);
+            return new Response(
+                JSON.stringify({
+                    error: `Payment gateway error: ${errorData?.error?.description || "Unable to create order"}`,
+                }),
+                {
+                    status: 502,
+                    headers: { ...corsHeaders, "Content-Type": "application/json" },
+                }
+            );
         }
 
         const order = await razorpayResponse.json();
@@ -143,6 +186,7 @@ Deno.serve(async (req: Request) => {
                 id: order.id,
                 amount: order.amount,
                 currency: order.currency,
+                key_id: razorpayKeyId,
             }),
             {
                 status: 200,

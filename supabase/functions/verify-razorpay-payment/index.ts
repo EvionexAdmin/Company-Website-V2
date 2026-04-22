@@ -4,16 +4,37 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 // --- Security: Restrict CORS to explicit origins only ---
-const PRODUCTION_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") || "https://www.evionex.com";
-const ALLOWED_ORIGINS = [
-    PRODUCTION_ORIGIN,
-    "http://localhost:5173",
-    "http://localhost:3000",
-];
+function buildAllowedOrigins() {
+    const configuredOrigin = Deno.env.get("ALLOWED_ORIGIN") || "https://www.evionex.com";
+    const allowedOrigins = new Set<string>([
+        configuredOrigin,
+        "http://localhost:5173",
+        "http://localhost:3000",
+    ]);
+
+    // Accept both apex and www variants of the configured production domain.
+    try {
+        const parsed = new URL(configuredOrigin);
+        if (parsed.hostname.startsWith("www.")) {
+            allowedOrigins.add(`${parsed.protocol}//${parsed.hostname.replace(/^www\./, "")}`);
+        } else {
+            allowedOrigins.add(`${parsed.protocol}//www.${parsed.hostname}`);
+        }
+    } catch {
+        // Ignore malformed ALLOWED_ORIGIN and keep the configured value as-is.
+    }
+
+    return {
+        productionOrigin: configuredOrigin,
+        allowedOrigins,
+    };
+}
+
+const { productionOrigin: PRODUCTION_ORIGIN, allowedOrigins: ALLOWED_ORIGINS } = buildAllowedOrigins();
 
 function getCorsHeaders(req: Request) {
     const origin = req.headers.get("Origin") || "";
-    const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : PRODUCTION_ORIGIN;
+    const allowedOrigin = ALLOWED_ORIGINS.has(origin) ? origin : PRODUCTION_ORIGIN;
     return {
         "Access-Control-Allow-Origin": allowedOrigin,
         "Access-Control-Allow-Headers":
@@ -71,10 +92,19 @@ Deno.serve(async (req: Request) => {
         }
 
         // Read Razorpay key secret from environment
-        const razorpayKeySecret = Deno.env.get("RAZORPAY_KEY_SECRET");
+        const razorpayKeySecret =
+            Deno.env.get("RAZORPAY_KEY_SECRET") || Deno.env.get("VITE_RAZORPAY_KEY_SECRET");
         if (!razorpayKeySecret) {
             console.error("RAZORPAY_KEY_SECRET not configured");
-            throw new Error("Payment verification not configured");
+            return new Response(
+                JSON.stringify({
+                    error: "Payment verification is not configured on the server. Missing: RAZORPAY_KEY_SECRET (or VITE_RAZORPAY_KEY_SECRET)",
+                }),
+                {
+                    status: 500,
+                    headers: { ...corsHeaders, "Content-Type": "application/json" },
+                }
+            );
         }
 
         // ── Verify signature using HMAC SHA-256 ──

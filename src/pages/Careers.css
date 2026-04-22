@@ -1,4 +1,34 @@
-﻿.careers-content {
+﻿.careers-hero {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 340px;
+}
+
+.careers-hero__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+}
+
+.careers-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(10, 12, 28, 0.75) 0%,
+            rgba(10, 12, 28, 0.88) 100%);
+}
+
+.careers-hero .container {
+    position: relative;
+    z-index: 1;
+}
+
+.careers-content {
     max-width: 800px;
     margin: 0 auto;
 }
@@ -67,6 +97,10 @@
 }
 
 @media (max-width: 600px) {
+    .careers-hero__bg {
+        background-position: center 24%;
+    }
+
     .careers-perks {
         grid-template-columns: 1fr;
     }

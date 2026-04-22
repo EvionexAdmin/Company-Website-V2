@@ -12,6 +12,44 @@ import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
 // Publishable key — safe for client-side
 const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID
 
+async function parseFunctionError(error, fallbackMessage) {
+    let message = fallbackMessage
+
+    if (!error) {
+        return new Error(message)
+    }
+
+    const response = error?.context
+    if (response) {
+        try {
+            const cloned = response.clone()
+            const body = await cloned.json()
+            if (body?.error) {
+                message = body.error
+            }
+        } catch {
+            try {
+                const text = await response.clone().text()
+                if (text) {
+                    message = text
+                }
+            } catch {
+                // Ignore body parse errors and fall back to generic message
+            }
+        }
+
+        if (response.status === 401) {
+            message = 'Your session has expired. Please sign in again and retry payment.'
+        } else if (response.status === 500 && message === fallbackMessage) {
+            message = 'Payment backend is not configured correctly. Please contact support.'
+        }
+    } else if (error?.message) {
+        message = error.message
+    }
+
+    return new Error(message)
+}
+
 /**
  * Load Razorpay checkout script dynamically
  * @returns {Promise<boolean>} Whether script loaded successfully
@@ -56,7 +94,11 @@ export async function createOrder({ amount, currency = 'INR', planName, customer
     })
 
     if (error) {
-        throw new Error(error.message || 'Failed to create order')
+        throw await parseFunctionError(error, 'Failed to create order')
+    }
+
+    if (data?.error) {
+        throw new Error(data.error)
     }
 
     return data
@@ -82,7 +124,11 @@ export async function verifyPayment({ razorpay_order_id, razorpay_payment_id, ra
     })
 
     if (error) {
-        throw new Error(error.message || 'Payment verification failed')
+        throw await parseFunctionError(error, 'Payment verification failed')
+    }
+
+    if (data?.error) {
+        throw new Error(data.error)
     }
 
     return data
@@ -117,12 +163,6 @@ export async function initiatePayment({
     onSuccess,
     onFailure,
 }) {
-    if (!RAZORPAY_KEY_ID) {
-        alert('Payment gateway is not configured. Please contact support.')
-        if (onFailure) onFailure(new Error('Razorpay key not configured'))
-        return
-    }
-
     // Load Razorpay script
     const scriptLoaded = await loadRazorpayScript()
     if (!scriptLoaded) {
@@ -137,14 +177,23 @@ export async function initiatePayment({
         order = await createOrder({ amount, currency, planName, customerName, customerEmail })
     } catch (err) {
         console.error('Order creation failed:', err)
-        alert('Could not initiate payment. Please try again later.')
+        alert(err?.message || 'Could not initiate payment. Please try again later.')
         if (onFailure) onFailure(err)
+        return
+    }
+
+    // Prefer the key_id used by the server while creating the order.
+    // This avoids order/key mismatches between client and server environments.
+    const checkoutKeyId = order?.key_id || RAZORPAY_KEY_ID
+    if (!checkoutKeyId) {
+        alert('Payment gateway is not configured. Please contact support.')
+        if (onFailure) onFailure(new Error('Razorpay key not configured'))
         return
     }
 
     // Step 2: Open Razorpay Checkout
     const options = {
-        key: RAZORPAY_KEY_ID,
+        key: checkoutKeyId,
         amount: order.amount,
         currency: order.currency,
         name: 'Evionex Private Limited',

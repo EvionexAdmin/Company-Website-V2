@@ -8,6 +8,10 @@ import eviNoteMockup from '../assets/images/products/evinote-mockup.png'
 import luminaryMockup from '../assets/images/products/luminary-mockup.png'
 import loginBackground from '../assets/images/auth/login-background.webp'
 import doctorHandshake from '../assets/doctor-handshake.jpg'
+import aboutUsPreview from '../assets/images/company/about-us-hero.webp'
+import teamPreview from '../assets/images/company/team-hero.webp'
+import careersPreview from '../assets/images/company/careers-hero.webp'
+import companyPreview from '../assets/images/company/company-preview.webp'
 import { useAuth } from '../contexts/AuthContext'
 import './Navbar.css'
 
@@ -41,9 +45,17 @@ const defaultPreview = {
     alt: 'Evionex menu preview',
 }
 
+const companyDefaultPreview = {
+    title: 'Evionex Company',
+    description: 'Explore our story, team, and culture.',
+    src: companyPreview,
+    alt: 'Evionex company preview',
+}
+
 const megaMenuConfig = {
     company: {
         label: 'Company',
+        defaultPreview: companyDefaultPreview,
         items: [
             {
                 id: 'company-about',
@@ -53,7 +65,7 @@ const megaMenuConfig = {
                 preview: {
                     title: 'About Evionex',
                     description: 'Mission-led technology focused on compliant and impactful innovation.',
-                    src: loginBackground,
+                    src: aboutUsPreview,
                     alt: 'Evionex brand preview',
                 },
             },
@@ -65,7 +77,7 @@ const megaMenuConfig = {
                 preview: {
                     title: 'Leadership Team',
                     description: 'Founders building trusted AI products for institutions.',
-                    src: loginBackground,
+                    src: teamPreview,
                     alt: 'Evionex team preview',
                 },
             },
@@ -77,7 +89,7 @@ const megaMenuConfig = {
                 preview: {
                     title: 'Careers at Evionex',
                     description: 'Join a fast-moving team building meaningful technology.',
-                    src: loginBackground,
+                    src: careersPreview,
                     alt: 'Evionex careers preview',
                 },
             },
@@ -216,6 +228,8 @@ const clearTimer = (timerRef) => {
     }
 }
 
+const getMenuDefaultPreview = (menuId) => megaMenuConfig[menuId]?.defaultPreview || defaultPreview
+
 export default function Navbar() {
     const location = useLocation()
     const navigate = useNavigate()
@@ -277,7 +291,7 @@ export default function Navbar() {
         setActiveMegaMenu(menuId)
         setIsMegaMenuOpen(true)
         setActiveMegaItemId(null)
-        setPreviewCard(defaultPreview)
+        setPreviewCard(getMenuDefaultPreview(menuId))
     }, [])
 
     const handleMegaTriggerEnter = useCallback((menuId) => {
@@ -329,8 +343,8 @@ export default function Navbar() {
 
     const handleMegaItemsLeave = useCallback(() => {
         setActiveMegaItemId(null)
-        updatePreview(defaultPreview)
-    }, [updatePreview])
+        updatePreview(getMenuDefaultPreview(activeMegaMenu))
+    }, [activeMegaMenu, updatePreview])
 
     // Close mobile drawer and mega menu on route change
     useEffect(() => {

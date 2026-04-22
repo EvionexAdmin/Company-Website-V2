@@ -5,6 +5,7 @@ import atharvaPhoto from '../assets/images/team/atharva.png'
 import dhrumilPhoto from '../assets/images/team/dhrumil.png'
 import usePageMetadata from '../lib/usePageMetadata'
 import './Team.css'
+import teamHero from '../assets/images/company/team-hero.webp'
 
 const teamMembers = [
     {
@@ -53,7 +54,9 @@ export default function Team() {
 
     return (
         <div className="team-page">
-            <section className="page-hero">
+            <section className="page-hero team-hero">
+                <div className="team-hero__bg" style={{ backgroundImage: `url(${teamHero})` }}></div>
+                <div className="team-hero__overlay"></div>
                 <div className="container">
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">Our Team</span>

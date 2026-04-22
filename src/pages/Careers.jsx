@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import usePageMetadata from '../lib/usePageMetadata'
 import './Careers.css'
+import careersHero from '../assets/images/company/careers-hero.webp'
 
 const ALLOWED_TYPES = [
     'application/pdf',
@@ -137,7 +138,9 @@ export default function Careers() {
 
     return (
         <div className="careers-page">
-            <section className="page-hero">
+            <section className="page-hero careers-hero">
+                <div className="careers-hero__bg" style={{ backgroundImage: `url(${careersHero})` }}></div>
+                <div className="careers-hero__overlay"></div>
                 <div className="container">
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">Careers</span>
