@@ -12,6 +12,10 @@ import aboutUsPreview from '../assets/images/company/about-us-hero.webp'
 import teamPreview from '../assets/images/company/team-hero.webp'
 import careersPreview from '../assets/images/company/careers-hero.webp'
 import companyPreview from '../assets/images/company/company-preview.webp'
+import geneSetuPreview from '../assets/images/products-nav/genesetu-nav.webp'
+import eviNotePreview from '../assets/images/products-nav/evinote-nav.webp'
+import luminaryPreview from '../assets/images/products-nav/luminary-nav.webp'
+import productsDefaultPreviewImage from '../assets/images/products-nav/products-preview.webp'
 import { useAuth } from '../contexts/AuthContext'
 import './Navbar.css'
 
@@ -50,6 +54,13 @@ const companyDefaultPreview = {
     description: 'Explore our story, team, and culture.',
     src: companyPreview,
     alt: 'Evionex company preview',
+}
+
+const productsDefaultPreview = {
+    title: 'Evionex Products',
+    description: 'Explore the product portfolio and platform capabilities.',
+    src: productsDefaultPreviewImage,
+    alt: 'Evionex products preview',
 }
 
 const megaMenuConfig = {
@@ -109,6 +120,7 @@ const megaMenuConfig = {
     },
     products: {
         label: 'Products',
+        defaultPreview: productsDefaultPreview,
         items: [
             {
                 id: 'products-genesetu',
@@ -118,7 +130,7 @@ const megaMenuConfig = {
                 preview: {
                     title: 'GeneSetu',
                     description: 'Screen 6,000+ conditions and track lifelong biomarker health data.',
-                    src: geneSetuMockup,
+                    src: geneSetuPreview,
                     alt: 'GeneSetu product preview',
                 },
             },
@@ -130,7 +142,7 @@ const megaMenuConfig = {
                 preview: {
                     title: 'EviNote',
                     description: 'Run modern labs with structured records and smarter workflows.',
-                    src: eviNoteMockup,
+                    src: eviNotePreview,
                     alt: 'EviNote product preview',
                 },
             },
@@ -142,7 +154,7 @@ const megaMenuConfig = {
                 preview: {
                     title: 'Luminary',
                     description: 'Personalized learning built for institutions and educators.',
-                    src: luminaryMockup,
+                    src: luminaryPreview,
                     alt: 'Luminary product preview',
                 },
             },
@@ -154,7 +166,7 @@ const megaMenuConfig = {
                 preview: {
                     title: 'Other Services',
                     description: 'More platform services and capabilities are on the way.',
-                    src: loginBackground,
+                    src: productsDefaultPreviewImage,
                     alt: 'Evionex services preview',
                 },
             },
@@ -241,6 +253,7 @@ export default function Navbar() {
     const [activeMegaMenu, setActiveMegaMenu] = useState(null)
     const [activeMegaItemId, setActiveMegaItemId] = useState(null)
     const [previewCard, setPreviewCard] = useState(defaultPreview)
+    const [fadingPreviewCard, setFadingPreviewCard] = useState(null)
     const [hoveredNavItem, setHoveredNavItem] = useState(null)
     const navRef = useRef(null)
     const openTimerRef = useRef(null)
@@ -271,6 +284,7 @@ export default function Navbar() {
 
         setIsMegaMenuOpen(false)
         setActiveMegaItemId(null)
+        setFadingPreviewCard(null)
 
         closeAnimationTimerRef.current = window.setTimeout(() => {
             setActiveMegaMenu(null)
@@ -281,8 +295,18 @@ export default function Navbar() {
 
     const updatePreview = useCallback((nextPreview) => {
         clearTimer(previewTimerRef)
+        if (previewCard.src === nextPreview.src) {
+            return
+        }
+
+        setFadingPreviewCard(previewCard)
         setPreviewCard(nextPreview)
-    }, [])
+
+        previewTimerRef.current = window.setTimeout(() => {
+            setFadingPreviewCard(null)
+            previewTimerRef.current = null
+        }, PREVIEW_FADE_DURATION)
+    }, [previewCard])
 
     const activateMegaMenu = useCallback((menuId) => {
         clearTimer(previewTimerRef)
@@ -291,6 +315,7 @@ export default function Navbar() {
         setActiveMegaMenu(menuId)
         setIsMegaMenuOpen(true)
         setActiveMegaItemId(null)
+        setFadingPreviewCard(null)
         setPreviewCard(getMenuDefaultPreview(menuId))
     }, [])
 
@@ -394,6 +419,8 @@ export default function Navbar() {
         if (!activeMegaMenu) return null
         return megaMenuConfig[activeMegaMenu] || null
     }, [activeMegaMenu])
+
+    const isCrossfadingPreview = Boolean(fadingPreviewCard && fadingPreviewCard.src !== previewCard.src)
 
     return (
         <>
@@ -660,19 +687,31 @@ export default function Navbar() {
 
                             <div className="gn-mega-menu__right">
                                 <div className="gn-mega-menu__preview">
-                                    <AnimatePresence mode="wait">
+                                    <div className="gn-mega-menu__preview-stack" aria-live="polite">
+                                        {isCrossfadingPreview && (
+                                            <motion.img
+                                                key={`outgoing-${fadingPreviewCard.src}`}
+                                                src={fadingPreviewCard.src}
+                                                alt=""
+                                                aria-hidden="true"
+                                                className="gn-mega-menu__preview-image gn-mega-menu__preview-image--outgoing"
+                                                loading="lazy"
+                                                initial={shouldReduceMotion ? false : { opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                                                animate={{ opacity: 0, scale: 1.04, filter: 'blur(3px)' }}
+                                                transition={shouldReduceMotion ? { duration: 0 } : { duration: PREVIEW_FADE_DURATION / 1000, ease: MOTION_EASE }}
+                                            />
+                                        )}
                                         <motion.img
                                             key={previewCard.src}
                                             src={previewCard.src}
                                             alt={previewCard.alt}
                                             className="gn-mega-menu__preview-image"
                                             loading="lazy"
-                                            initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.95 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            exit={shouldReduceMotion ? false : { opacity: 0, scale: 1.05 }}
-                                            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.25, ease: MOTION_EASE }}
+                                            initial={shouldReduceMotion ? false : { opacity: isCrossfadingPreview ? 0 : 1, scale: isCrossfadingPreview ? 0.98 : 1, filter: isCrossfadingPreview ? 'blur(3px)' : 'blur(0px)' }}
+                                            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                                            transition={shouldReduceMotion ? { duration: 0 } : { duration: isCrossfadingPreview ? PREVIEW_FADE_DURATION / 1000 : 0.22, ease: MOTION_EASE }}
                                         />
-                                    </AnimatePresence>
+                                    </div>
                                     <div className="gn-mega-menu__preview-overlay" aria-hidden="true" />
                                 </div>
                             </div>

@@ -388,11 +388,24 @@
 }
 
 .gn-mega-menu__preview-image {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    will-change: transform, opacity, filter;
     transform: scale(1.01);
     transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gn-mega-menu__preview-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.gn-mega-menu__preview-image--outgoing {
+    pointer-events: none;
 }
 
 .gn-mega-menu-wrapper--open .gn-mega-menu__preview-image {
