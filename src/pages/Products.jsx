@@ -4,6 +4,7 @@ import MagicBento from '../components/ui/MagicBento/MagicBento'
 import evinoteIcon from '../assets/images/products/evinote-icon.png'
 import luminaryLogo from '../assets/images/products/luminary-logo.png'
 import genesetuLogo from '../assets/images/products/genesetu-logo.png'
+import ehrRepositoryImage from '../assets/images/products/ehr-repository.jpeg'
 import usePageMetadata from '../lib/usePageMetadata'
 import './Products.css'
 
@@ -26,7 +27,7 @@ const products = [
         features: [
             { title: 'WES Data Analysis', desc: 'Whole Exome Sequencing analysis covering 6,000+ genetic conditions.', media: { src: '/media/genesetu/wes-results.mp4', type: 'video' } },
             { title: 'Biomarker Tracking', desc: 'Track biomarkers throughout life to monitor health.', media: { src: '/media/genesetu/biomarker-tracking.mp4', type: 'video' } },
-            { title: 'Life Record Management', desc: 'Maintain complete health records from birth through life with secure, accessible storage.', media: { src: '/media/genesetu/ehr-repository.jpeg', type: 'image' } },
+            { title: 'Life Record Management', desc: 'Maintain complete health records from birth through life with secure, accessible storage.', media: { src: ehrRepositoryImage, type: 'image' } },
             { title: 'AI Diagnostics', desc: 'Machine learning models for early disease detection and predictive health analytics.', media: { src: '/media/genesetu/live-diagnostics.mp4', type: 'video' } },
             { title: 'Medication Tracking', desc: 'Track medications and prescriptions with reminders and dosage tracking.', media: { src: '/media/genesetu/medication-tracking.mp4', type: 'video' } },
             { title: 'NutriLogging', desc: 'Track nutrition and diet with AI-powered insights.', media: { src: '/media/genesetu/nutrilogging.mp4', type: 'video' } },

@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import genesetuMockup from '../assets/images/products/genesetu-mockup.png'
 import defaultBg from '../assets/images/auth/login-background.webp'
+import ehrRepositoryImage from '../assets/images/products/ehr-repository.jpeg'
 import usePageMetadata from '../lib/usePageMetadata'
 import './ProductDetail.css'
 
@@ -34,7 +35,7 @@ const overview = [
 const features = [
     { title: 'Screen for 6,000+ Conditions in One Test', desc: 'A single DNA sample screens for over 6,000 inherited conditions metabolic, neurological, cardiac, and more. No repeat tests. No guesswork. Results are reviewed by a certified geneticist and surfaced in plain language.', media: { src: '/media/genesetu/wes-results.mp4', type: 'video' } },
     { title: 'Know When Something Is Off Before It Becomes Serious', desc: 'Gene Setu tracks lab values, growth markers, and vital signs over time. Automated alerts notify you when anything drifts outside the healthy range, so you and your doctor can act early.', media: { src: '/media/genesetu/biomarker-tracking.mp4', type: 'video' } },
-    { title: 'One Place for an Entire Health Story', desc: 'Vaccinations, prescriptions, lab reports, genetic data all in one secure timeline. Accessible instantly from any device, and shareable with any doctor in seconds.', media: { src: '/media/genesetu/ehr-repository.jpeg', type: 'image' } },
+    { title: 'One Place for an Entire Health Story', desc: 'Vaccinations, prescriptions, lab reports, genetic data all in one secure timeline. Accessible instantly from any device, and shareable with any doctor in seconds.', media: { src: ehrRepositoryImage, type: 'image' } },
     { title: 'AI That Supports Your Doctor, Not Replaces Them', desc: 'Our AI flags early risk patterns and suggests possible conditions based on health data giving your doctor a head start. All findings are reviewed by clinicians before reaching you.', media: { src: '/media/genesetu/live-diagnostics.mp4', type: 'video' } },
     { title: 'Never Miss a Dose or a Dangerous Interaction', desc: 'Log every medication prescribed. Gene Setu sends reminders, tracks dosage history, and cross-checks against the genetic profile to flag any pharmacogenomic risks.', media: { src: '/media/genesetu/medication-tracking.mp4', type: 'video' } },
     { title: 'Eat Right Backed by DNA', desc: 'Log meals and feeding patterns and let Gene Setu\'s AI analyze nutrient intake against the genetic profile and health needs. Get personalised dietary guidance informed by real biology.', media: { src: '/media/genesetu/nutrilogging.mp4', type: 'video' } },

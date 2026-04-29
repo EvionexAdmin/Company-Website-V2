@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import usePageMetadata from '../lib/usePageMetadata'
-import doctorBg from '../assets/doctor-handshake.jpg'
+import doctorBg from '../assets/images/company/doctor-handshake.jpg'
 import './Contact.css'
 
 export default function Contact() {
