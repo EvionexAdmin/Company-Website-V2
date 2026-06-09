@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import ProtectedRoute from './components/ProtectedRoute'
+import PaymentProtectedRoute from './components/PaymentProtectedRoute'
 import ErrorBoundary from './components/ErrorBoundary'
 
 // Lazy-loaded pages — only downloaded when the route is visited.
@@ -15,7 +16,10 @@ const LuminaryDetail = lazy(() => import('./pages/LuminaryDetail'))
 const Team = lazy(() => import('./pages/Team'))
 const Careers = lazy(() => import('./pages/Careers'))
 const Contact = lazy(() => import('./pages/Contact'))
-const Pricing = lazy(() => import('./pages/Pricing'))
+const Shop = lazy(() => import('./pages/Shop'))
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail'))
+const Cart = lazy(() => import('./pages/CartPage'))
+const Checkout = lazy(() => import('./pages/Checkout'))
 const Login = lazy(() => import('./pages/Login'))
 const Signup = lazy(() => import('./pages/Signup'))
 const VerifyEmail = lazy(() => import('./pages/VerifyEmail'))
@@ -37,7 +41,10 @@ export default function App() {
                         <Route path="team" element={<Team />} />
                         <Route path="careers" element={<Careers />} />
                         <Route path="contact" element={<Contact />} />
-                        <Route path="pricing" element={<Pricing />} />
+                        <Route path="shop" element={<Shop />} />
+                        <Route path="service/:id" element={<ServiceDetail />} />
+                        <Route path="cart" element={<Cart />} />
+                        <Route path="shop/:id" element={<PaymentProtectedRoute><Checkout /></PaymentProtectedRoute>} />
                         <Route path="portal/login" element={<Login />} />
                         <Route path="portal/signup" element={<Signup />} />
                         <Route path="portal/verify-email" element={<VerifyEmail />} />

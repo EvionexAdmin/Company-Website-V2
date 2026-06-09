@@ -20,7 +20,7 @@ export default defineConfig({
                     react: ['react', 'react-dom'],
                     router: ['react-router-dom'],
                     supabase: ['@supabase/supabase-js'],
-                    motion: ['motion', 'gsap'],
+                    motion: ['framer-motion', 'gsap'],
                 },
             },
         },

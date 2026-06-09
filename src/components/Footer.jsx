@@ -56,7 +56,7 @@ export default function Footer() {
                         <h4 className="footer__col-title">Contact</h4>
                         <ul className="footer__col-links">
                             <li>
-                                <a href="mailto:evionex.info@gmail.com">evionex.info@gmail.com</a>
+                                <a href="mailto:contact@evionex.com">contact@evionex.com</a>
                             </li>
                             <li>Mon – Fri, 9:00 AM – 6:00 PM</li>
                             <li><Link to="/contact">Get in Touch</Link></li>

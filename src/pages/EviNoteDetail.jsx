@@ -26,7 +26,7 @@ const overview = [
     {
         icon: '🌍',
         title: 'Total Addressable Market',
-        text: 'The global Electronic Lab Notebook market is valued at $590 million and is projected to exceed $1.3 billion by 2030, growing at 11% CAGR. India\'s research infrastructure is expanding rapidly — with over 1,000 universities and 3,000+ research labs, the domestic digital research tools market is poised for significant growth as institutions modernize under the National Education Policy and National Research Foundation initiatives.'
+        text: 'The global Electronic Lab Notebook market is valued at ₹590 million and is projected to exceed ₹1.3 billion by 2030, growing at 11% CAGR. India\'s research infrastructure is expanding rapidly — with over 1,000 universities and 3,000+ research labs, the domestic digital research tools market is poised for significant growth as institutions modernize under the National Education Policy and National Research Foundation initiatives.'
     },
 ]
 

@@ -12,6 +12,7 @@ export default function Layout() {
     const lenisRef = useRef(null)
 
     const isDashboard = pathname.startsWith('/portal/dashboard')
+    const isShopPage = pathname === '/shop'
     const showMinimalHeader = isDashboard && !!user
 
     // Initialize Lenis smooth scrolling
@@ -46,7 +47,7 @@ export default function Layout() {
     }, [pathname])
 
     return (
-        <div className="app-layout">
+        <div className={`app-layout ${isShopPage ? 'app-layout--shop' : ''}`}>
             {showMinimalHeader ? <DashboardHeader /> : <Navbar />}
             <main className="main-content">
                 <Outlet />

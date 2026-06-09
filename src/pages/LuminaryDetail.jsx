@@ -26,7 +26,7 @@ const overview = [
     {
         icon: '🌍',
         title: 'Total Addressable Market',
-        text: 'The global EdTech market is valued at over $340 billion and is expected to reach $605 billion by 2027. India\'s online education market alone is projected to reach $30 billion by 2030, fueled by the National Education Policy 2020, increasing smartphone penetration, and growing demand for competitive exam preparation and skill development platforms.'
+        text: 'The global EdTech market is valued at over ₹340 billion and is expected to reach ₹605 billion by 2027. India\'s online education market alone is projected to reach ₹30 billion by 2030, fueled by the National Education Policy 2020, increasing smartphone penetration, and growing demand for competitive exam preparation and skill development platforms.'
     },
 ]
 

@@ -17,13 +17,14 @@ import eviNotePreview from '../assets/images/products-nav/evinote-nav.webp'
 import luminaryPreview from '../assets/images/products-nav/luminary-nav.webp'
 import productsDefaultPreviewImage from '../assets/images/products-nav/products-preview.webp'
 import { useAuth } from '../contexts/AuthContext'
+import { useCart } from '../contexts/CartContext'
 import './Navbar.css'
 
 const mobileNavLinks = [
     { label: 'Home', href: '/' },
     { label: 'Who We Are', href: '/who-we-are' },
     { label: 'Products', href: '/products' },
-    { label: 'Pricing', href: '/pricing' },
+    { label: 'Shop', href: '/shop' },
     { label: 'Team', href: '/team' },
     { label: 'Careers', href: '/careers' },
     { label: 'Contact', href: '/contact' },
@@ -33,7 +34,7 @@ const desktopNavItems = [
     { id: 'home', label: 'Home', type: 'link', href: '/' },
     { id: 'company', label: 'Company', type: 'mega' },
     { id: 'products', label: 'Products', type: 'mega' },
-    { id: 'pricing', label: 'Pricing', type: 'mega' },
+    { id: 'shop', label: 'Shop', type: 'link', href: '/shop' },
 ]
 
 const MENU_OPEN_DELAY = 90
@@ -172,65 +173,12 @@ const megaMenuConfig = {
             },
         ],
     },
-    pricing: {
-        label: 'Pricing',
-        items: [
-            {
-                id: 'pricing-genesetu',
-                label: 'GeneSetu',
-                description: 'Compare genetic testing and healthcare plan options for families and providers.',
-                href: '/pricing',
-                preview: {
-                    title: 'GeneSetu Pricing',
-                    description: 'Plans for individuals, families, and healthcare institutions.',
-                    src: geneSetuMockup,
-                    alt: 'GeneSetu pricing preview',
-                },
-            },
-            {
-                id: 'pricing-evinote',
-                label: 'EviNote',
-                description: 'Evaluate flexible pricing for labs, research teams, and enterprise setups.',
-                href: '/pricing',
-                preview: {
-                    title: 'EviNote Pricing',
-                    description: 'Scales from individual labs to institution-wide deployments.',
-                    src: eviNoteMockup,
-                    alt: 'EviNote pricing preview',
-                },
-            },
-            {
-                id: 'pricing-luminary',
-                label: 'Luminary',
-                description: 'See plan options for students, educators, and university ecosystems.',
-                href: '/pricing',
-                preview: {
-                    title: 'Luminary Pricing',
-                    description: 'Flexible plans for classrooms, coaching, and universities.',
-                    src: luminaryMockup,
-                    alt: 'Luminary pricing preview',
-                },
-            },
-            {
-                id: 'pricing-other-services',
-                label: 'Other Services',
-                description: 'Explore custom packages for broader platform and support requirements.',
-                href: '/',
-                preview: {
-                    title: 'Custom Services',
-                    description: 'Reach out for bundled plans, enterprise support, and custom scope.',
-                    src: loginBackground,
-                    alt: 'Evionex custom services preview',
-                },
-            },
-        ],
-    },
 }
 
 const megaGroupRoutePrefixes = {
     company: ['/who-we-are', '/team', '/careers', '/contact'],
     products: ['/products'],
-    pricing: ['/pricing'],
+    shop: ['/shop'],
 }
 
 const clearTimer = (timerRef) => {
@@ -247,6 +195,7 @@ export default function Navbar() {
     const navigate = useNavigate()
     const shouldReduceMotion = false // Temporarily set to false so you can see the animations
     const { user, profile, signOut } = useAuth()
+    const { cartCount } = useCart()
     const [scrolled, setScrolled] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
     const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false)
@@ -260,6 +209,7 @@ export default function Navbar() {
     const closeTimerRef = useRef(null)
     const previewTimerRef = useRef(null)
     const closeAnimationTimerRef = useRef(null)
+    const searchInputRef = useRef(null)
 
     // Compute initials from profile name or email
     const initials = profile?.full_name
@@ -422,11 +372,56 @@ export default function Navbar() {
 
     const isCrossfadingPreview = Boolean(fadingPreviewCard && fadingPreviewCard.src !== previewCard.src)
 
+    const isShopPage = location.pathname === '/shop'
+    const searchCloseTimerRef = useRef(null)
+    const [shopSearchQuery, setShopSearchQuery] = useState('')
+    const [isShopSearchOpen, setIsShopSearchOpen] = useState(false)
+
+    useEffect(() => {
+        if (!isShopPage) return
+        const params = new URLSearchParams(location.search)
+        setShopSearchQuery(params.get('q') || '')
+    }, [isShopPage, location.search])
+
+    const shopSearchItems = useMemo(() => ([
+        { id: 'genesetu', label: 'GeneSetu', type: 'Product', href: '/shop#shop-item-genesetu' },
+        { id: 'luminary', label: 'Luminary', type: 'Product', href: '/shop#shop-item-luminary' },
+        { id: 'evinote', label: 'EviNote', type: 'Product', href: '/shop#shop-item-evinote' },
+        { id: 'blood-analysis', label: 'Blood Report Analysis', type: 'Service', href: '/shop#shop-item-blood-analysis' },
+        { id: 'mri-analysis', label: 'MRI Results Analysis', type: 'Service', href: '/shop#shop-item-mri-analysis' },
+        { id: 'health-tests', label: 'Healthcare Tests Assessment', type: 'Service', href: '/shop#shop-item-health-tests' },
+        { id: 'dev-services', label: 'Software / Web Development', type: 'Service', href: '/shop#shop-item-dev-services' }
+    ]), [])
+
+    const shopSearchResults = useMemo(() => {
+        const query = shopSearchQuery.trim().toLowerCase()
+        if (!query) return []
+        return shopSearchItems.filter((item) => item.label.toLowerCase().includes(query))
+    }, [shopSearchItems, shopSearchQuery])
+
+    const updateShopSearch = useCallback((nextQuery) => {
+        if (!isShopPage) return
+        const params = new URLSearchParams(location.search)
+        if (nextQuery) {
+            params.set('q', nextQuery)
+        } else {
+            params.delete('q')
+        }
+
+        const search = params.toString()
+        navigate({ pathname: '/shop', search: search ? `?${search}` : '' }, { replace: true })
+        window.dispatchEvent(new CustomEvent('shop-search', { detail: { query: nextQuery } }))
+    }, [isShopPage, location.search, navigate])
+
+    const handleShopFiltersToggle = useCallback(() => {
+        window.dispatchEvent(new CustomEvent('toggle-shop-filters'))
+    }, [])
+
     return (
         <>
             <motion.nav
                 ref={navRef}
-                className={`gn-navbar ${scrolled ? 'gn-navbar--scrolled' : ''}`}
+                className={`gn-navbar ${scrolled ? 'gn-navbar--scrolled' : ''} ${isShopPage ? 'gn-navbar--shop' : ''}`}
                 role="navigation"
                 aria-label="Main navigation"
                 onMouseEnter={handleMegaZoneEnter}
@@ -439,30 +434,46 @@ export default function Navbar() {
                 <div className="gn-navbar__gradient-border" aria-hidden="true" />
 
                 <div className="gn-navbar__inner">
-                    {/* Logo */}
-                    <motion.div
-                        style={{ display: 'flex' }}
-                        whileHover={shouldReduceMotion ? undefined : { y: -1, scale: 1.01 }}
-                        whileTap={shouldReduceMotion ? undefined : { scale: 0.99 }}
-                        transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.18, ease: MOTION_EASE }}
-                    >
-                        <Link to="/" className="gn-navbar__logo" aria-label="Evionex — Go to homepage">
-                            <img
-                                src={evionexLogo}
-                                alt=""
-                                className="gn-navbar__logo-icon"
-                                width="30"
-                                height="30"
-                            />
-                            <img
-                                src={evionexText}
-                                alt="Evionex"
-                                className="gn-navbar__logo-text"
-                                width="80"
-                                height="18"
-                            />
-                        </Link>
-                    </motion.div>
+                    <div className="gn-navbar__left">
+                        {isShopPage && (
+                            <button
+                                type="button"
+                                className="gn-navbar__filter-toggle"
+                                aria-label="Open filters"
+                                aria-controls="shop-filters-drawer"
+                                onClick={handleShopFiltersToggle}
+                            >
+                                <span />
+                                <span />
+                                <span />
+                            </button>
+                        )}
+
+                        {/* Logo */}
+                        <motion.div
+                            style={{ display: 'flex' }}
+                            whileHover={shouldReduceMotion ? undefined : { y: -1, scale: 1.01 }}
+                            whileTap={shouldReduceMotion ? undefined : { scale: 0.99 }}
+                            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.18, ease: MOTION_EASE }}
+                        >
+                            <Link to="/" className="gn-navbar__logo" aria-label="Evionex — Go to homepage">
+                                <img
+                                    src={evionexLogo}
+                                    alt=""
+                                    className="gn-navbar__logo-icon"
+                                    width="30"
+                                    height="30"
+                                />
+                                <img
+                                    src={evionexText}
+                                    alt="Evionex"
+                                    className="gn-navbar__logo-text"
+                                    width="80"
+                                    height="18"
+                                />
+                            </Link>
+                        </motion.div>
+                    </div>
 
                     {/* Desktop links */}
                     <motion.ul
@@ -479,7 +490,143 @@ export default function Navbar() {
                         }}
                         onMouseLeave={() => setHoveredNavItem(null)}
                     >
-                        {desktopNavItems.map((item) => {
+                        {isShopPage ? (
+                            <>
+                                <motion.li
+                                    role="none"
+                                    variants={{
+                                        hidden: { opacity: 0, y: -10 },
+                                        visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: MOTION_EASE } }
+                                    }}
+                                    onMouseEnter={() => setHoveredNavItem('shop-products')}
+                                    onFocus={() => setHoveredNavItem('shop-products')}
+                                    style={{ position: 'relative' }}
+                                >
+                                    {hoveredNavItem === 'shop-products' && (
+                                        <motion.div
+                                            layoutId="desktop-nav-pill"
+                                            className="gn-navbar__magic-pill"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                                            style={{
+                                                position: 'absolute',
+                                                inset: 0,
+                                                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                                borderRadius: '8px',
+                                                zIndex: 0
+                                            }}
+                                        />
+                                    )}
+                                    <Link to="/shop#products" className="gn-navbar__link" style={{ position: 'relative', zIndex: 1 }}>
+                                        <span className="gn-navbar__label">PRODUCTS</span>
+                                    </Link>
+                                </motion.li>
+                                <motion.li
+                                    role="none"
+                                    variants={{
+                                        hidden: { opacity: 0, y: -10 },
+                                        visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: MOTION_EASE } }
+                                    }}
+                                    onMouseEnter={() => setHoveredNavItem('shop-services')}
+                                    onFocus={() => setHoveredNavItem('shop-services')}
+                                    style={{ position: 'relative' }}
+                                >
+                                    {hoveredNavItem === 'shop-services' && (
+                                        <motion.div
+                                            layoutId="desktop-nav-pill"
+                                            className="gn-navbar__magic-pill"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                                            style={{
+                                                position: 'absolute',
+                                                inset: 0,
+                                                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                                borderRadius: '8px',
+                                                zIndex: 0
+                                            }}
+                                        />
+                                    )}
+                                    <Link to="/shop#services" className="gn-navbar__link" style={{ position: 'relative', zIndex: 1 }}>
+                                        <span className="gn-navbar__label">SERVICES</span>
+                                    </Link>
+                                </motion.li>
+                                <motion.li
+                                    role="none"
+                                    variants={{
+                                        hidden: { opacity: 0, y: -10 },
+                                        visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: MOTION_EASE } }
+                                    }}
+                                    style={{ position: 'relative', display: 'flex', alignItems: 'center', marginLeft: '1rem' }}
+                                >
+                                    <div className="gn-navbar__search">
+                                        <input
+                                            type="text"
+                                            placeholder="Search..."
+                                            className="gn-navbar__search-input"
+                                            aria-label="Search products and services"
+                                            ref={searchInputRef}
+                                            value={shopSearchQuery}
+                                            onChange={(event) => {
+                                                const nextQuery = event.target.value
+                                                setShopSearchQuery(nextQuery)
+                                                updateShopSearch(nextQuery)
+                                                setIsShopSearchOpen(true)
+                                            }}
+                                            onFocus={() => setIsShopSearchOpen(true)}
+                                            onBlur={() => {
+                                                if (searchCloseTimerRef.current) {
+                                                    window.clearTimeout(searchCloseTimerRef.current)
+                                                }
+                                                searchCloseTimerRef.current = window.setTimeout(() => {
+                                                    setIsShopSearchOpen(false)
+                                                    searchCloseTimerRef.current = null
+                                                }, 140)
+                                            }}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="gn-navbar__search-button"
+                                            aria-label="Search"
+                                            onClick={() => {
+                                                searchInputRef.current?.focus()
+                                                setIsShopSearchOpen(true)
+                                            }}
+                                        >
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                                <circle cx="11" cy="11" r="7" />
+                                                <line x1="16.65" y1="16.65" x2="21" y2="21" />
+                                            </svg>
+                                        </button>
+                                        {isShopSearchOpen && shopSearchQuery.trim() && (
+                                            <div className="gn-navbar__search-dropdown" role="listbox">
+                                                {shopSearchResults.length > 0 ? (
+                                                    shopSearchResults.map((result) => (
+                                                        <Link
+                                                            key={result.id}
+                                                            to={result.href}
+                                                            className="gn-navbar__search-item"
+                                                            role="option"
+                                                            onMouseDown={() => {
+                                                                setIsShopSearchOpen(false)
+                                                            }}
+                                                        >
+                                                            <span className="gn-navbar__search-item-label">{result.label}</span>
+                                                            <span className="gn-navbar__search-item-type">{result.type}</span>
+                                                        </Link>
+                                                    ))
+                                                ) : (
+                                                    <div className="gn-navbar__search-empty">No results found.</div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </motion.li>
+                            </>
+                        ) : desktopNavItems.map((item) => {
                             if (item.type === 'link') {
                                 return (
                                     <motion.li
@@ -594,6 +741,19 @@ export default function Navbar() {
                             ? { duration: 0 }
                             : { duration: 0.28, ease: MOTION_EASE, delay: 0.28 }}
                     >
+                        {cartCount > 0 && (
+                            <Link to="/cart" className="gn-navbar__cart-icon" aria-label="View cart">
+                                <div className="gn-navbar__cart-wrapper">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <circle cx="9" cy="21" r="1"></circle>
+                                        <circle cx="20" cy="21" r="1"></circle>
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                    </svg>
+                                    <span className="gn-navbar__cart-badge">{cartCount}</span>
+                                </div>
+                            </Link>
+                        )}
+
                         {user ? (
                             <>
                                 <Link
@@ -764,6 +924,15 @@ export default function Navbar() {
                                 ))}
                             </div>
                             <div className="gn-mobile-drawer__bottom">
+                                {cartCount > 0 && (
+                                    <Link
+                                        to="/cart"
+                                        className="gn-mobile-drawer__cart-link"
+                                        onClick={() => setMobileOpen(false)}
+                                    >
+                                        View Cart ({cartCount})
+                                    </Link>
+                                )}
                                 {user ? (
                                     <>
                                         <Link
