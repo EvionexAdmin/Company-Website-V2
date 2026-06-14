@@ -295,8 +295,8 @@ export default function GeneSetuDetail() {
 
                     {/* CTA Buttons */}
                     <div className="product-detail__hero-buttons">
-                        <Link to="/pricing" className="btn btn-primary btn-large" style={{ background: accentColor }}>
-                            I'm Interested
+                        <Link to="/subscribe/genesetu" className="btn btn-primary btn-large" style={{ background: accentColor }}>
+                            Subscribe Now
                         </Link>
                         <a href="#features" onClick={scrollToFeatures} className="btn btn-secondary btn-large">
                             See How It Works ↓

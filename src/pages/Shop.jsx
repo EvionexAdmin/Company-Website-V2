@@ -451,8 +451,8 @@ export default function Shop() {
                                             <Link to={`/products/${product.id}`} className="amazon-card__button amazon-card__button--learn-more">
                                                 Learn More
                                             </Link>
-                                            <Link to={`/shop/${product.id}`} className="amazon-card__button">
-                                                Buy Now
+                                            <Link to={product.id === 'genesetu' ? `/subscribe/genesetu` : `/shop/${product.id}`} className="amazon-card__button">
+                                                {product.id === 'genesetu' ? 'Subscribe Now' : 'Buy Now'}
                                             </Link>
                                         </div>
                                     </div>

@@ -13,6 +13,7 @@ export default function Layout() {
 
     const isDashboard = pathname.startsWith('/portal/dashboard')
     const isShopPage = pathname === '/shop'
+    const isSubscriptionPage = pathname.startsWith('/subscribe')
     const showMinimalHeader = isDashboard && !!user
 
     // Initialize Lenis smooth scrolling
@@ -47,7 +48,7 @@ export default function Layout() {
     }, [pathname])
 
     return (
-        <div className={`app-layout ${isShopPage ? 'app-layout--shop' : ''}`}>
+        <div className={`app-layout ${isShopPage ? 'app-layout--shop' : ''} ${isSubscriptionPage ? 'app-layout--subscription' : ''}`}>
             {showMinimalHeader ? <DashboardHeader /> : <Navbar />}
             <main className="main-content">
                 <Outlet />

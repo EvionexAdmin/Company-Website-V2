@@ -25,6 +25,7 @@ const Signup = lazy(() => import('./pages/Signup'))
 const VerifyEmail = lazy(() => import('./pages/VerifyEmail'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
+const Subscription = lazy(() => import('./pages/Subscription'))
 
 export default function App() {
     return (
@@ -45,6 +46,7 @@ export default function App() {
                         <Route path="service/:id" element={<ServiceDetail />} />
                         <Route path="cart" element={<Cart />} />
                         <Route path="shop/:id" element={<PaymentProtectedRoute><Checkout /></PaymentProtectedRoute>} />
+                        <Route path="subscribe/:id" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
                         <Route path="portal/login" element={<Login />} />
                         <Route path="portal/signup" element={<Signup />} />
                         <Route path="portal/verify-email" element={<VerifyEmail />} />
