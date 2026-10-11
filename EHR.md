@@ -1,6 +1,6 @@
 # Electronic Health Record (EHR) & Database Architecture
 
-This document describes the database architecture for the Evionex and GeneSetu platforms, focusing on data structures, role-based access control (RBAC), and the overall system design.
+This document describes the database architecture for the Evionex and Eviolife platforms, focusing on data structures, role-based access control (RBAC), and the overall system design.
 
 > **NOTE:** This file must be kept updated whenever changes are made to the database schema, RLS policies, or authentication flow to ensure AI models have accurate context for development.
 
@@ -105,9 +105,9 @@ The system uses a secure flow where critical financial writes are handled by **E
 
 ---
 
-## 2. GeneSetu Database Architecture (Project ID: `bpcprnncbdjjxzqpumzy`)
+## 2. Eviolife Database Architecture (Project ID: `bpcprnncbdjjxzqpumzy`)
 
-GeneSetu focuses on genomic data and personalized health insights. It uses a more consumer-centric health tracking model.
+Eviolife focuses on genomic data and personalized health insights. It uses a more consumer-centric health tracking model.
 
 ### 2.1 Core Data Entities
 
@@ -171,5 +171,5 @@ GeneSetu focuses on genomic data and personalized health insights. It uses a mor
 1. **Identity**: User $\rightarrow$ `auth.users` $\rightarrow$ `profiles` (Project specific).
 2. **Clinical Flow (Evionex)**: Patient $\rightarrow$ Request Connection $\rightarrow$ Doctor $\rightarrow$ Institution.
 3. **Financial Flow (Evionex)**: User $\rightarrow$ Edge Function $\rightarrow$ Razorpay $\rightarrow$ `orders` $\rightarrow$ `payments`.
-4. **Health Tracking (GeneSetu)**: User $\rightarrow$ Log Nutrition/Medication $\rightarrow$ Update `profiles` (Streaks/Stats).
+4. **Health Tracking (Eviolife)**: User $\rightarrow$ Log Nutrition/Medication $\rightarrow$ Update `profiles` (Streaks/Stats).
 5. **Administrative Flow (Evionex)**: Admin $\rightarrow$ Manage $\rightarrow$ Employee/Institution/Doctor.

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
-import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
+import { supabaseEviolife } from '../lib/supabaseEviolife'
 
 const AuthContext = createContext({})
 
@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
 
     const fetchProfile = useCallback(async (userId) => {
         try {
-            const { data, error } = await supabaseGeneSetu
+            const { data, error } = await supabaseEviolife
                 .from('evionex_profiles')
                 .select('*')
                 .eq('id', userId)
@@ -34,7 +34,7 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         // Restore persisted session on page load
-        supabaseGeneSetu.auth.getSession().then(({ data: { session: existingSession } }) => {
+        supabaseEviolife.auth.getSession().then(({ data: { session: existingSession } }) => {
             if (existingSession?.user) {
                 setUser(existingSession.user)
                 setSession(existingSession)
@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
         // Calling async operations (like DB queries) directly inside
         // onAuthStateChange deadlocks the GoTrue internal event queue,
         // which freezes the entire UI after token refresh (~1 hour).
-        const { data: { subscription } } = supabaseGeneSetu.auth.onAuthStateChange(
+        const { data: { subscription } } = supabaseEviolife.auth.onAuthStateChange(
             (event, newSession) => {
                 if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
                     if (newSession?.user) {
@@ -78,7 +78,7 @@ export function AuthProvider({ children }) {
         }
         if (subRole) metadata.evionex_sub_role = subRole
 
-        const { data, error } = await supabaseGeneSetu.auth.signUp({
+        const { data, error } = await supabaseEviolife.auth.signUp({
             email,
             password,
             options: {
@@ -90,7 +90,7 @@ export function AuthProvider({ children }) {
     }
 
     async function signIn({ email, password }) {
-        const { data, error } = await supabaseGeneSetu.auth.signInWithPassword({
+        const { data, error } = await supabaseEviolife.auth.signInWithPassword({
             email,
             password,
         })
@@ -100,7 +100,7 @@ export function AuthProvider({ children }) {
 
             // Block suspended accounts immediately
             if (profileData?.account_status === 'suspended') {
-                await supabaseGeneSetu.auth.signOut({ scope: 'local' })
+                await supabaseEviolife.auth.signOut({ scope: 'local' })
                 setUser(null)
                 setSession(null)
                 setProfile(null)
@@ -119,7 +119,7 @@ export function AuthProvider({ children }) {
     async function signOut() {
         // 1. Try Supabase signOut (best effort — don't let errors block logout)
         try {
-            await supabaseGeneSetu.auth.signOut()
+            await supabaseEviolife.auth.signOut()
         } catch (err) {
             console.warn('Supabase signOut error (ignored):', err)
         }

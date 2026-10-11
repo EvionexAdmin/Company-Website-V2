@@ -3,17 +3,17 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import usePageMetadata from '../lib/usePageMetadata'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
-import geneSetuImg from '../assets/images/products-nav/genesetu-nav.webp'
+import eviolifeImg from '../assets/images/products-nav/eviolife-nav.webp'
 import eviNoteImg from '../assets/images/products-nav/evinote-nav.webp'
 import luminaryImg from '../assets/images/products-nav/luminary-nav.webp'
 import './Shop.css'
 
 const PRODUCTS = [
     {
-        id: 'genesetu',
-        name: 'GeneSetu',
+        id: 'eviolife',
+        name: 'Eviolife',
         description: 'AI-enabled health intelligence using genomic insights and longitudinal records.',
-        image: geneSetuImg,
+        image: eviolifeImg,
         price: '₹249',
         rating: 4.9,
         reviews: 345,
@@ -451,8 +451,8 @@ export default function Shop() {
                                             <Link to={`/products/${product.id}`} className="amazon-card__button amazon-card__button--learn-more">
                                                 Learn More
                                             </Link>
-                                            <Link to={product.id === 'genesetu' ? `/subscribe/genesetu` : `/shop/${product.id}`} className="amazon-card__button">
-                                                {product.id === 'genesetu' ? 'Subscribe Now' : 'Buy Now'}
+                                            <Link to={product.id === 'eviolife' ? `/subscribe/eviolife` : `/shop/${product.id}`} className="amazon-card__button">
+                                                {product.id === 'eviolife' ? 'Subscribe Now' : 'Buy Now'}
                                             </Link>
                                         </div>
                                     </div>

@@ -1,6 +1,6 @@
 # Evionex — Full Information for LLMs
 
-> Evionex Private Limited is an Indian AI technology startup transforming research, education, and healthcare through three flagship AI-powered platforms: EviNote (lab management), Luminary (education), and Gene Setu (genomic healthcare). All products are built for Indian regulatory compliance while meeting global standards of data security and user experience.
+> Evionex Private Limited is an Indian AI technology startup transforming research, education, and healthcare through three flagship AI-powered platforms: EviNote (lab management), Luminary (education), and Eviolife (genomic healthcare). All products are built for Indian regulatory compliance while meeting global standards of data security and user experience.
 
 This document provides comprehensive information about Evionex Private Limited, its products, team, and services. It is designed for use by large language models (LLMs) and AI assistants to provide accurate and helpful responses about the company.
 
@@ -12,7 +12,7 @@ Evionex Private Limited is an Indian AI technology company headquartered in Indi
 
 1. **Research** — via EviNote, a complete lab management platform
 2. **Education** — via Luminary, an AI-powered learning enhancement system
-3. **Healthcare** — via Gene Setu, an AI-enabled electronic health record platform
+3. **Healthcare** — via Eviolife, an AI-enabled electronic health record platform
 
 All products are designed for institutional use by universities, research laboratories, and healthcare facilities. They aim to replace fragmented, manual workflows with unified, AI-driven ecosystems.
 
@@ -31,11 +31,11 @@ All products are designed for institutional use by universities, research labora
 
 ## Products
 
-### Gene Setu
+### Eviolife
 
-**URL**: https://www.evionex.com/products/genesetu
+**URL**: https://www.evionex.com/products/eviolife
 
-Gene Setu is an AI-enabled Electronic Health Record (EHR) platform that leverages Whole Exome Sequencing (WES) to analyse over 6,000 diseases. It is designed for healthcare facilities that want to offer genomics-driven, personalized healthcare.
+Eviolife is an AI-enabled Electronic Health Record (EHR) platform that leverages Whole Exome Sequencing (WES) to analyse over 6,000 diseases. It is designed for healthcare facilities that want to offer genomics-driven, personalized healthcare.
 
 **Key Features:**
 - Whole Exome Sequencing (WES) analysis covering 6,000+ diseases

@@ -25,7 +25,7 @@ These arrays are rendered directly into two sections:
 - Services section: `#services`
 
 Item cards use a consistent structure and rely on `id` for:
-- URL targets (e.g., `/shop/<id>` for product checkout links, `/subscribe/genesetu` for the GeneSetu subscription page)
+- URL targets (e.g., `/shop/<id>` for product checkout links, `/subscribe/eviolife` for the Eviolife subscription page)
 - Hash anchors for in-page scroll (e.g., `/shop#shop-item-<id>`)
 
 When adding new items, ensure:
@@ -35,7 +35,7 @@ When adding new items, ensure:
 
 ## Routing and Anchors
 - Product checkout links use `/shop/<id>`.
-- GeneSetu now uses a dedicated subscription route at `/subscribe/genesetu` instead of the generic shop checkout page.
+- Eviolife now uses a dedicated subscription route at `/subscribe/eviolife` instead of the generic shop checkout page.
 - The Shop page listens to `location.hash` and scrolls to element IDs.
 - Section anchors use `#products` and `#services`.
 
@@ -87,7 +87,7 @@ Common card structure:
 	- Bottom right: Discount
 - Learn More button (Products only)
 
-- Subscribe Now button (GeneSetu product card)
+- Subscribe Now button (Eviolife product card)
 - Buy Now button (other products)
 - Add to cart button (Services)
 	- Turns into a quantity counter after first click
@@ -96,9 +96,9 @@ Common card structure:
 Click targets:
 - Service card image and title link to the service detail page (`/service/<id>`)
 
-## GeneSetu Subscription — Razorpay Integration
+## Eviolife Subscription — Razorpay Integration
 
-GeneSetu Premium uses Razorpay Subscriptions (true autopay — customer authorises once, billed monthly automatically).
+Eviolife Premium uses Razorpay Subscriptions (true autopay — customer authorises once, billed monthly automatically).
 
 ### Pricing
 | Region | Currency | Base Price | Streak Discount (≥30 days) |
@@ -122,7 +122,7 @@ Region is detected via `https://ipapi.co/json/` on page load. Falls back to USD 
 | `premium_usd_discounted` ($3.20/month) | `plan_T1VMcOnUhl599T` |
 
 ### Payment Flow
-1. User clicks "Start Premium" on `/subscribe/genesetu`
+1. User clicks "Start Premium" on `/subscribe/eviolife`
 2. Frontend calls `create-razorpay-subscription` edge function (JWT-authenticated)
 3. Edge function verifies streak server-side, creates Razorpay subscription, returns `subscription_id`
 4. Frontend loads `checkout.razorpay.com/v1/checkout.js` and opens modal with `subscription_id`

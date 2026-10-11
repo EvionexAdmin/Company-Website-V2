@@ -66,7 +66,7 @@
     line-height: 1.7;
 }
 
-/* Hero CTA Buttons â€” Gene Setu specific */
+/* Hero CTA Buttons â€” Eviolife specific */
 .product-detail__hero-buttons {
     display: flex;
     gap: 1rem;
@@ -75,7 +75,7 @@
     margin-top: 2rem;
 }
 
-/* Trust Bar â€” Gene Setu specific */
+/* Trust Bar â€” Eviolife specific */
 .product-detail__trust-bar {
     display: flex;
     gap: 1.5rem;
@@ -102,7 +102,7 @@
     line-height: 1;
 }
 
-/* Overview Card Link â€” Gene Setu specific */
+/* Overview Card Link â€” Eviolife specific */
 .product-detail__card-link {
     display: inline-block;
     margin-top: 1rem;
@@ -116,7 +116,7 @@
     opacity: 0.8;
 }
 
-/* FAQ Doctor Partner Block â€” Gene Setu specific */
+/* FAQ Doctor Partner Block â€” Eviolife specific */
 .product-detail__faq-doctor-block {
     background: rgba(0, 186, 253, 0.04);
     border: 1px solid rgba(0, 186, 253, 0.12);
@@ -139,7 +139,7 @@
     margin-right: auto;
 }
 
-/* CTA Micro Trust â€” Gene Setu specific */
+/* CTA Micro Trust â€” Eviolife specific */
 .product-detail__cta-micro-trust {
     margin-top: 1.25rem;
     font-size: 0.8rem !important;

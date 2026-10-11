@@ -46,7 +46,7 @@ export default function Footer() {
                         <ul className="footer__col-links">
                             <li><Link to="/products">EviNote</Link></li>
                             <li><Link to="/products">Luminary</Link></li>
-                            <li><Link to="/products">Gene Setu</Link></li>
+                            <li><Link to="/products">Eviolife</Link></li>
                             <li><Link to="/pricing">Pricing</Link></li>
                         </ul>
                     </div>
@@ -66,7 +66,13 @@ export default function Footer() {
 
                 <div className="footer__bottom">
                     <div className="glow-line"></div>
-                    <p>© 2026 Evionex Private Limited. All rights reserved.</p>
+                    <div className="footer__bottom-row">
+                        <p>© 2026 Evionex Private Limited. All rights reserved.</p>
+                        <div className="footer__legal-links">
+                            <Link to="/terms">Terms of Use</Link>
+                            <Link to="/privacy-policy">Privacy Policy</Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </footer>

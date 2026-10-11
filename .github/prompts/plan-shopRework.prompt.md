@@ -5,7 +5,7 @@ Replace the Pricing page with a Shop experience on /pricing, add a page-specific
 **Steps**
 1. Update routing and navigation: replace the Pricing page route component with the new Shop component, and swap the navbar item label from Pricing to Shop with no mega menu hover behavior. *Depends on final component location/name.*
 2. Create the Shop page structure: hero with "Solutions that change lives," in-page anchors for Products and Services, and a Shop-specific navbar (logo, Products anchor, Services anchor, search input, Login/Sign Up). *Depends on step 1 for route wiring.*
-3. Build the Products section: three product cards (Gene Setu, Luminary, EviNote) with brief descriptions and non-functional Buy Now buttons. Ensure the buttons are visually present but disabled/coming-soon. *Parallel with step 4.*
+3. Build the Products section: three product cards (Eviolife, Luminary, EviNote) with brief descriptions and non-functional Buy Now buttons. Ensure the buttons are visually present but disabled/coming-soon. *Parallel with step 4.*
 4. Build the Services section: 2x2 grid with the four services (Blood Report Analysis, MRI Results Analysis, Healthcare Tests, Software/Web Development). Use an Amazon-like card layout (image/placeholder, title, description, price/CTA area) within a clinical aesthetic. *Parallel with step 3.*
 5. Implement search filtering: client-side filter over both product and service lists; show an empty-state if no matches. *Depends on steps 3-4.*
 6. Styling pass: establish a clinical design system (cool neutrals, clean borders, subtle gradients, careful typography) and responsive behavior (2x2 grid on desktop, 1 column on mobile). *Depends on steps 2-5.*

@@ -19,7 +19,7 @@ export default function Contact() {
 
     usePageMetadata({
         title: 'Contact Evionex — Partnerships, Demos, Support',
-        description: 'Get in touch with Evionex for product demos, partnerships, or support across Gene Setu, EviNote, and Luminary.',
+        description: 'Get in touch with Evionex for product demos, partnerships, or support across Eviolife, EviNote, and Luminary.',
         canonicalPath: '/contact',
         image: defaultOgImage,
     })
@@ -240,7 +240,7 @@ export default function Contact() {
                                         <option value="" disabled>Select an option</option>
                                         <option value="evinote">EviNote – Research Solution</option>
                                         <option value="luminary">Luminary – Education Solution</option>
-                                        <option value="genesetu">Gene Setu – Healthcare Solution</option>
+                                        <option value="eviolife">Eviolife – Healthcare Solution</option>
                                         <option value="partnership">Partnership / Other</option>
                                     </select>
                                 </div>

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import genesetuMockup from '../assets/images/products/genesetu-mockup.png'
+import eviolifeMockup from '../assets/images/products/eviolife-mockup.png'
 import defaultBg from '../assets/images/auth/login-background.webp'
 import ehrRepositoryImage from '../assets/images/products/ehr-repository.jpeg'
 import usePageMetadata from '../lib/usePageMetadata'
@@ -11,34 +11,34 @@ const accentColor = '#00bafd'
 const overview = [
     {
         icon: '👶',
-        title: 'What Does Gene Setu Do?',
-        text: 'Gene Setu is a platform that screens an individual\'s DNA to check for over 6,000 inherited conditions from metabolic disorders to rare genetic diseases using a simple sample. You get a clear, certified report reviewed by a human geneticist.'
+        title: 'What Does Eviolife Do?',
+        text: 'Eviolife is a platform that screens an individual\'s DNA to check for over 6,000 inherited conditions from metabolic disorders to rare genetic diseases using a simple sample. You get a clear, certified report reviewed by a human geneticist.'
     },
     {
         icon: '💡',
         title: 'Why Early Screening Matters',
-        text: 'Millions in India are affected by genetic conditions every year yet most are diagnosed years too late. Early detection means early action. Gene Setu puts that power in your hands from day one.'
+        text: 'Millions in India are affected by genetic conditions every year yet most are diagnosed years too late. Early detection means early action. Eviolife puts that power in your hands from day one.'
     },
     {
         icon: '🏠',
         title: 'How Does It Work?',
-        text: 'Order online. We will reach out and guide you to your nearest collection clinic. Your results reviewed by a geneticist are delivered within 3-4 weeks, along with 1 year of access to the Gene Setu health platform.'
+        text: 'Order online. We will reach out and guide you to your nearest collection clinic. Your results reviewed by a geneticist are delivered within 3-4 weeks, along with 1 year of access to the Eviolife health platform.'
     },
     {
         icon: '🤝',
         title: 'For Healthcare Professionals',
-        text: 'Gene Setu is also built for doctors and clinics who want to offer genomic screening to their patients. Integrate Gene Setu into your care workflow.',
+        text: 'Eviolife is also built for doctors and clinics who want to offer genomic screening to their patients. Integrate Eviolife into your care workflow.',
         link: { label: 'Contact us for integration →', to: '/contact' }
     },
 ]
 
 const features = [
-    { title: 'Screen for 6,000+ Conditions in One Test', desc: 'A single DNA sample screens for over 6,000 inherited conditions metabolic, neurological, cardiac, and more. No repeat tests. No guesswork. Results are reviewed by a certified geneticist and surfaced in plain language.', media: { src: '/media/genesetu/wes-results.mp4', type: 'video' } },
-    { title: 'Know When Something Is Off Before It Becomes Serious', desc: 'Gene Setu tracks lab values, growth markers, and vital signs over time. Automated alerts notify you when anything drifts outside the healthy range, so you and your doctor can act early.', media: { src: '/media/genesetu/biomarker-tracking.mp4', type: 'video' } },
+    { title: 'Screen for 6,000+ Conditions in One Test', desc: 'A single DNA sample screens for over 6,000 inherited conditions metabolic, neurological, cardiac, and more. No repeat tests. No guesswork. Results are reviewed by a certified geneticist and surfaced in plain language.', media: { src: '/media/eviolife/wes-results.mp4', type: 'video' } },
+    { title: 'Know When Something Is Off Before It Becomes Serious', desc: 'Eviolife tracks lab values, growth markers, and vital signs over time. Automated alerts notify you when anything drifts outside the healthy range, so you and your doctor can act early.', media: { src: '/media/eviolife/biomarker-tracking.mp4', type: 'video' } },
     { title: 'One Place for an Entire Health Story', desc: 'Vaccinations, prescriptions, lab reports, genetic data all in one secure timeline. Accessible instantly from any device, and shareable with any doctor in seconds.', media: { src: ehrRepositoryImage, type: 'image' } },
-    { title: 'AI That Supports Your Doctor, Not Replaces Them', desc: 'Our AI flags early risk patterns and suggests possible conditions based on health data giving your doctor a head start. All findings are reviewed by clinicians before reaching you.', media: { src: '/media/genesetu/live-diagnostics.mp4', type: 'video' } },
-    { title: 'Never Miss a Dose or a Dangerous Interaction', desc: 'Log every medication prescribed. Gene Setu sends reminders, tracks dosage history, and cross-checks against the genetic profile to flag any pharmacogenomic risks.', media: { src: '/media/genesetu/medication-tracking.mp4', type: 'video' } },
-    { title: 'Eat Right Backed by DNA', desc: 'Log meals and feeding patterns and let Gene Setu\'s AI analyze nutrient intake against the genetic profile and health needs. Get personalised dietary guidance informed by real biology.', media: { src: '/media/genesetu/nutrilogging.mp4', type: 'video' } },
+    { title: 'AI That Supports Your Doctor, Not Replaces Them', desc: 'Our AI flags early risk patterns and suggests possible conditions based on health data giving your doctor a head start. All findings are reviewed by clinicians before reaching you.', media: { src: '/media/eviolife/live-diagnostics.mp4', type: 'video' } },
+    { title: 'Never Miss a Dose or a Dangerous Interaction', desc: 'Log every medication prescribed. Eviolife sends reminders, tracks dosage history, and cross-checks against the genetic profile to flag any pharmacogenomic risks.', media: { src: '/media/eviolife/medication-tracking.mp4', type: 'video' } },
+    { title: 'Eat Right Backed by DNA', desc: 'Log meals and feeding patterns and let Eviolife\'s AI analyze nutrient intake against the genetic profile and health needs. Get personalised dietary guidance informed by real biology.', media: { src: '/media/eviolife/nutrilogging.mp4', type: 'video' } },
 ]
 
 const featureLabels = [
@@ -50,23 +50,23 @@ const featureLabels = [
     'NutriLogging',
 ]
 
-const geneSetuOgImage = new URL('../assets/images/products/genesetu-logo.png', import.meta.url).href
+const eviolifeOgImage = new URL('../assets/images/products/eviolife-logo.png', import.meta.url).href
 
-const geneSetuProductLd = {
+const eviolifeProductLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'Gene Setu',
+    name: 'Eviolife',
     applicationCategory: 'HealthApplication',
     operatingSystem: 'Web',
-    url: 'https://www.evionex.com/products/genesetu',
-    image: geneSetuOgImage,
+    url: 'https://www.evionex.com/products/eviolife',
+    image: eviolifeOgImage,
     description: 'AI-enabled Electronic Health Record platform using Whole Exome Sequencing to screen 6,000+ diseases with biomarker tracking, nutrigenomics, and pharmacogenomics.',
     offers: {
         '@type': 'Offer',
         price: '19500',
         priceCurrency: 'INR',
         availability: 'https://schema.org/PreOrder',
-        url: 'https://www.evionex.com/products/genesetu',
+        url: 'https://www.evionex.com/products/eviolife',
     },
     brand: {
         '@type': 'Brand',
@@ -74,13 +74,13 @@ const geneSetuProductLd = {
     },
 }
 
-const geneSetuFaqLd = {
+const eviolifeFaqLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
         {
             '@type': 'Question',
-            name: 'What happens after I place my Gene Setu order?',
+            name: 'What happens after I place my Eviolife order?',
             acceptedAnswer: {
                 '@type': 'Answer',
                 text: 'After ordering, the team contacts you to schedule sample collection. The sample goes to an NABL-accredited lab for Whole Exome Sequencing, is reviewed by a geneticist, and results arrive in about 3–4 weeks with platform access.',
@@ -96,10 +96,10 @@ const geneSetuFaqLd = {
         },
         {
             '@type': 'Question',
-            name: 'Is Gene Setu compliant with Indian health data rules?',
+            name: 'Is Eviolife compliant with Indian health data rules?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Gene Setu is built with privacy-first architecture, follows DISHA-aligned practices, encrypts data in transit and at rest, and uses access controls to protect genomic data.',
+                text: 'Eviolife is built with privacy-first architecture, follows DISHA-aligned practices, encrypts data in transit and at rest, and uses access controls to protect genomic data.',
             },
         },
         {
@@ -107,7 +107,7 @@ const geneSetuFaqLd = {
             name: 'Is the laboratory accredited?',
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Gene Setu uses its own NABL-accredited lab and follows CLIA and CAP grade processes to ensure accurate Whole Exome Sequencing and reporting.',
+                text: 'Eviolife uses its own NABL-accredited lab and follows CLIA and CAP grade processes to ensure accurate Whole Exome Sequencing and reporting.',
             },
         },
     ],
@@ -120,7 +120,7 @@ const faqCategories = [
         faqs: [
             {
                 q: 'What exactly happens after I place my order?',
-                a: 'Once you place your order for the Gene Setu Genetic Testing Package, our team will reach out to you within 24 hours to schedule a convenient sample collection appointment. The sample will be collected at a clinic and that\'s it from your side. From there, the sample is securely transported to our own accredited laboratory where Whole Exome Sequencing (WES) is performed, and the genetic data is analyzed by us and reviewed by a qualified geneticist before the final report is delivered to you.'
+                a: 'Once you place your order for the Eviolife Genetic Testing Package, our team will reach out to you within 24 hours to schedule a convenient sample collection appointment. The sample will be collected at a clinic and that\'s it from your side. From there, the sample is securely transported to our own accredited laboratory where Whole Exome Sequencing (WES) is performed, and the genetic data is analyzed by us and reviewed by a qualified geneticist before the final report is delivered to you.'
             },
             {
                 q: 'How is the genetic sample collected - is it a blood test, saliva swab, or something else?',
@@ -136,7 +136,7 @@ const faqCategories = [
             },
             {
                 q: 'How long does it take to receive the results?',
-                a: 'From the time your sample reaches the laboratory, you can expect to receive your Geneticist Certified Report within 3-4 Weeks (or earlier in some cases) after sample collection. We know the waiting period can feel anxious, so our team will keep you updated on the progress of your report and you will be able to track its progress through the Gene Setu app and our website. Once ready, you will receive a notification and can access the full report through the Gene Setu+ platform along with a downloadable PDF.'
+                a: 'From the time your sample reaches the laboratory, you can expect to receive your Geneticist Certified Report within 3-4 Weeks (or earlier in some cases) after sample collection. We know the waiting period can feel anxious, so our team will keep you updated on the progress of your report and you will be able to track its progress through the Eviolife app and our website. Once ready, you will receive a notification and can access the full report through the Eviolife+ platform along with a downloadable PDF.'
             },
         ]
     },
@@ -150,15 +150,15 @@ const faqCategories = [
             },
             {
                 q: 'Who is the geneticist reviewing the report what are their qualifications?',
-                a: 'Every Gene Setu report is reviewed by a board-certified clinical geneticist with a specialization in medical genetics and genomics. Our geneticists hold qualifications such as MD/DNB in Medical Genetics or equivalent credentials recognized by Indian medical bodies. They bring years of experience in interpreting next-generation sequencing data, ensuring that every flagged variant is clinically validated and contextualized for the individual\'s health profile.'
+                a: 'Every Eviolife report is reviewed by a board-certified clinical geneticist with a specialization in medical genetics and genomics. Our geneticists hold qualifications such as MD/DNB in Medical Genetics or equivalent credentials recognized by Indian medical bodies. They bring years of experience in interpreting next-generation sequencing data, ensuring that every flagged variant is clinically validated and contextualized for the individual\'s health profile.'
             },
             {
                 q: 'What does "6,000+ diseases screened" mean in practice will I receive results for all of them?',
                 a: 'When we say 6,000+ diseases screened, it means our AI and sequencing pipeline analyzes the exome data against a database of over 6,000 known genetic conditions. Your final report will highlight only the findings that are clinically significant meaning conditions where a disease-causing or carrier variant has been identified. You will not receive 6,000 separate results; instead, you get a focused, meaningful report that tells you exactly what matters for health.'
             },
             {
-                q: 'What is the Gene Setu+ platform and what can I do with it during my 1-year access?',
-                a: 'Gene Setu+ is a personal digital health companion. During your 1-year access, you can view the full genetic report, track health milestones and biomarkers, log vaccinations and medications, and receive AI-powered health insights personalized to the genetic profile. Think of it as a secure, intelligent health diary that grows with you and keeps you aware of any potential health issues. Should you choose to extend your access, the medical reports you process and submit through the Gene Setu+ platform will be continually analysed and we will provide you with relevant health insights and recommendations.'
+                q: 'What is the Eviolife+ platform and what can I do with it during my 1-year access?',
+                a: 'Eviolife+ is a personal digital health companion. During your 1-year access, you can view the full genetic report, track health milestones and biomarkers, log vaccinations and medications, and receive AI-powered health insights personalized to the genetic profile. Think of it as a secure, intelligent health diary that grows with you and keeps you aware of any potential health issues. Should you choose to extend your access, the medical reports you process and submit through the Eviolife+ platform will be continually analysed and we will provide you with relevant health insights and recommendations.'
             },
         ]
     },
@@ -171,8 +171,8 @@ const faqCategories = [
                 a: 'The genomic data is encrypted both in transit and at rest using industry-standard AES-256 encryption, the same level of security used by leading banks and healthcare institutions worldwide. Access to the data is strictly controlled through multi-factor authentication and role-based permissions. Our servers are hosted in secure, compliant data centres, and no one not even our own team can access the raw genetic data without your explicit consent.'
             },
             {
-                q: 'Is Gene Setu compliant with India\'s DISHA (Digital Information Security in Healthcare Act)?',
-                a: 'Gene Setu is designed with privacy-first architecture and is built to comply with India\'s emerging Digital Information Security in Healthcare Act (DISHA) framework, as well as existing IT Act provisions related to sensitive personal data. We follow the highest standards of data governance, including purpose limitation, data minimization, and consent-based processing. As DISHA regulations continue to evolve, we are committed to meeting and exceeding every requirement to protect your family\'s data.'
+                q: 'Is Eviolife compliant with India\'s DISHA (Digital Information Security in Healthcare Act)?',
+                a: 'Eviolife is designed with privacy-first architecture and is built to comply with India\'s emerging Digital Information Security in Healthcare Act (DISHA) framework, as well as existing IT Act provisions related to sensitive personal data. We follow the highest standards of data governance, including purpose limitation, data minimization, and consent-based processing. As DISHA regulations continue to evolve, we are committed to meeting and exceeding every requirement to protect your family\'s data.'
             },
             {
                 q: 'Will the genetic data ever be shared with third parties?',
@@ -180,7 +180,7 @@ const faqCategories = [
             },
             {
                 q: 'What happens to my data after the 1-year platform access expires?',
-                a: 'After your 1-year Gene Setu+ access period ends, you will have the option to renew your subscription to continue enjoying the full platform features. If you choose not to renew, your genetic report and key health records will remain available for download for export indefinitely but will not be analysed further. You may also request a complete data export or permanent deletion at any time we believe you should have full control over your family\'s health data.'
+                a: 'After your 1-year Eviolife+ access period ends, you will have the option to renew your subscription to continue enjoying the full platform features. If you choose not to renew, your genetic report and key health records will remain available for download for export indefinitely but will not be analysed further. You may also request a complete data export or permanent deletion at any time we believe you should have full control over your family\'s health data.'
             },
         ]
     },
@@ -189,16 +189,16 @@ const faqCategories = [
         icon: '🏅',
         faqs: [
             {
-                q: 'Is Gene Setu approved or recognized by any Indian medical body (ICMR, NMC, NABL)?',
-                a: 'Our own laboratories are NABL-accredited, which is the gold standard for clinical laboratories in India. Our platform and processes are developed in alignment with ICMR guidelines for genomic research and diagnostics. While genetic screening platforms in India do not currently require a separate NMC approval, Gene Setu adheres to all applicable regulatory frameworks and industry best practices to ensure clinical credibility and patient safety.'
+                q: 'Is Eviolife approved or recognized by any Indian medical body (ICMR, NMC, NABL)?',
+                a: 'Our own laboratories are NABL-accredited, which is the gold standard for clinical laboratories in India. Our platform and processes are developed in alignment with ICMR guidelines for genomic research and diagnostics. While genetic screening platforms in India do not currently require a separate NMC approval, Eviolife adheres to all applicable regulatory frameworks and industry best practices to ensure clinical credibility and patient safety.'
             },
             {
                 q: 'Are the labs used for WES NABL-accredited or internationally certified (CLIA/CAP)?',
                 a: 'Yes, our own laboratory is NABL-accredited, ensuring it meets rigorous national quality benchmarks. We also hold international certifications such as CAP (College of American Pathologists) and CLIA (Clinical Laboratory Improvement Amendments), which are recognized globally as markers of laboratory excellence. This means the sample is processed to the same standards followed by world-class genomics labs.'
             },
             {
-                q: 'What clinical evidence supports the accuracy of Gene Setu\'s AI diagnostics?',
-                a: 'Gene Setu\'s AI is used strictly to monitor and process the downstream metrics from our WES results, not for raw data processing. Our variant interpretation pipeline follows the guidelines set by the American College of Medical Genetics and Genomics (ACMG), which is the international benchmark for clinical variant classification. Every flagged finding is additionally reviewed by a human geneticist, ensuring a dual layer of accuracy before any result reaches you.'
+                q: 'What clinical evidence supports the accuracy of Eviolife\'s AI diagnostics?',
+                a: 'Eviolife\'s AI is used strictly to monitor and process the downstream metrics from our WES results, not for raw data processing. Our variant interpretation pipeline follows the guidelines set by the American College of Medical Genetics and Genomics (ACMG), which is the international benchmark for clinical variant classification. Every flagged finding is additionally reviewed by a human geneticist, ensuring a dual layer of accuracy before any result reaches you.'
             },
         ]
     },
@@ -212,10 +212,10 @@ const faqCategories = [
             },
             {
                 q: 'What do I do if the report flags a genetic condition?',
-                a: 'First, please know that a flagged finding does not necessarily mean the individual will develop a condition it means that you still have time to take appropriate measures. You will be referred by a doctor to a geneticist who will explain the specific finding in detail and recommend appropriate next steps, which may include confirmatory testing, specialist referrals, or simply monitoring. Gene Setu is designed to catch potential issues early so that you and your doctor can take timely, informed action in the best window for intervention.'
+                a: 'First, please know that a flagged finding does not necessarily mean the individual will develop a condition it means that you still have time to take appropriate measures. You will be referred by a doctor to a geneticist who will explain the specific finding in detail and recommend appropriate next steps, which may include confirmatory testing, specialist referrals, or simply monitoring. Eviolife is designed to catch potential issues early so that you and your doctor can take timely, informed action in the best window for intervention.'
             },
             {
-                q: 'Does Gene Setu connect me with doctors or specialists for follow-up care?',
+                q: 'Does Eviolife connect me with doctors or specialists for follow-up care?',
                 a: 'Yes, if the report identifies a finding that requires specialist attention, our care coordination team will help connect you with relevant specialists, clinical geneticists, or metabolic disorder experts in your city. We maintain a referral network of trusted healthcare professionals across India who are experienced in managing genetic conditions. Our goal is to ensure that you are never left navigating the next steps alone.'
             },
         ]
@@ -226,11 +226,11 @@ const faqCategories = [
         faqs: [
             {
                 q: 'Is the ₹18,000 a one-time fee or are there hidden costs?',
-                a: 'The ₹18,000 is a single, all-inclusive fee with absolutely no hidden charges. This price covers everything home sample collection, Whole Exome Sequencing, AI-powered analysis, the Geneticist Certified Report, one personalized genetic counselling session, and 1 year of access to the Gene Setu+ platform. There are no surprise add-ons, lab fees, or consultation charges beyond what is included in the package.'
+                a: 'The ₹18,000 is a single, all-inclusive fee with absolutely no hidden charges. This price covers everything home sample collection, Whole Exome Sequencing, AI-powered analysis, the Geneticist Certified Report, one personalized genetic counselling session, and 1 year of access to the Eviolife+ platform. There are no surprise add-ons, lab fees, or consultation charges beyond what is included in the package.'
             },
             {
-                q: 'What is included in the 1-year Gene Setu+ platform access?',
-                a: 'Your 1-year Gene Setu+ subscription gives you full access to a digital health profile, including the detailed genetic report, biomarker tracking dashboard, vaccination and medication logs, nutritional insights, and AI-powered health recommendations. You can also securely share the report with your doctor or specialist directly from the platform. After the first year, you may choose to renew the subscription to continue using all platform features.'
+                q: 'What is included in the 1-year Eviolife+ platform access?',
+                a: 'Your 1-year Eviolife+ subscription gives you full access to a digital health profile, including the detailed genetic report, biomarker tracking dashboard, vaccination and medication logs, nutritional insights, and AI-powered health recommendations. You can also securely share the report with your doctor or specialist directly from the platform. After the first year, you may choose to renew the subscription to continue using all platform features.'
             },
             {
                 q: 'Can I get a refund if I change my mind before the test is conducted?',
@@ -238,7 +238,7 @@ const faqCategories = [
             },
             {
                 q: 'Is this available across all cities in India or only in select locations?',
-                a: 'Gene Setu is currently available in Mumbai, Delhi, Bangalore, Hyderabad, Chennai, Pune, Kolkata, Ahmedabad and is expanding rapidly to Tier-2 and Tier-3 cities. If your city is not yet covered, you can still access the service by visiting one of our NABL-accredited laboratories near you. Please check with our care team for the latest availability in your area.'
+                a: 'Eviolife is currently available in Mumbai, Delhi, Bangalore, Hyderabad, Chennai, Pune, Kolkata, Ahmedabad and is expanding rapidly to Tier-2 and Tier-3 cities. If your city is not yet covered, you can still access the service by visiting one of our NABL-accredited laboratories near you. Please check with our care team for the latest availability in your area.'
             },
         ]
     },
@@ -251,18 +251,18 @@ const trustBarItems = [
     { icon: '🧬', label: '6,000+ Diseases Screened' },
 ]
 
-export default function GeneSetuDetail() {
+export default function EviolifeDetail() {
     const [openFaqIndex, setOpenFaqIndex] = useState(null)
     const [hoveredFeature, setHoveredFeature] = useState(null)
     const progressRef = useRef(null)
 
     usePageMetadata({
-        title: 'Gene Setu — AI-enabled Electronic Health Record | Evionex',
-        description: 'Screen 6,000+ genetic conditions, track biomarkers, and manage lifelong health records with Gene Setu, the AI-enabled EHR from Evionex.',
-        canonicalPath: '/products/genesetu',
-        image: geneSetuOgImage,
+        title: 'Eviolife — AI-enabled Electronic Health Record | Evionex',
+        description: 'Screen 6,000+ genetic conditions, track biomarkers, and manage lifelong health records with Eviolife, the AI-enabled EHR from Evionex.',
+        canonicalPath: '/products/eviolife',
+        image: eviolifeOgImage,
         ogType: 'product',
-        jsonLd: [geneSetuProductLd, geneSetuFaqLd],
+        jsonLd: [eviolifeProductLd, eviolifeFaqLd],
     })
 
     const toggleFaq = (categoryIdx, faqIdx) => {
@@ -282,10 +282,10 @@ export default function GeneSetuDetail() {
         <div className="product-detail">
             {/* Hero */}
             <section className="product-detail__hero">
-                <div className="product-detail__hero-bg" style={{ backgroundImage: `url(${genesetuMockup})` }}></div>
+                <div className="product-detail__hero-bg" style={{ backgroundImage: `url(${eviolifeMockup})` }}></div>
                 <div className="product-detail__hero-overlay"></div>
                 <div className="container" style={{ textAlign: 'center' }}>
-                    <h1 className="product-detail__hero-title">Gene Setu</h1>
+                    <h1 className="product-detail__hero-title">Eviolife</h1>
                     <span className="product-detail__hero-type" style={{ color: accentColor, borderColor: accentColor + '40', background: accentColor + '15', border: `1px solid ${accentColor}40` }}>
                         Healthcare Solution
                     </span>
@@ -295,7 +295,7 @@ export default function GeneSetuDetail() {
 
                     {/* CTA Buttons */}
                     <div className="product-detail__hero-buttons">
-                        <Link to="/subscribe/genesetu" className="btn btn-primary btn-large" style={{ background: accentColor }}>
+                        <Link to="/subscribe/eviolife" className="btn btn-primary btn-large" style={{ background: accentColor }}>
                             Subscribe Now
                         </Link>
                         <a href="#features" onClick={scrollToFeatures} className="btn btn-secondary btn-large">
@@ -320,7 +320,7 @@ export default function GeneSetuDetail() {
                 <div className="container">
                     <div className="section-header" style={{ textAlign: 'center', marginBottom: '2rem' }}>
                         <h2 style={{ fontSize: '2.2rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-                            About <span style={{ color: accentColor }}>Gene Setu</span>
+                            About <span style={{ color: accentColor }}>Eviolife</span>
                         </h2>
                     </div>
                     <div className="product-detail__overview-grid">
@@ -450,7 +450,7 @@ export default function GeneSetuDetail() {
                             Frequently Asked <span style={{ color: accentColor }}>Questions</span>
                         </h2>
                         <p className="product-detail__faq-subtitle">
-                            Everything you need to know about the Gene Setu Genetic Testing Package. We've answered the most common questions from people just like you.
+                            Everything you need to know about the Eviolife Genetic Testing Package. We've answered the most common questions from people just like you.
                         </p>
                     </div>
 
@@ -502,7 +502,7 @@ export default function GeneSetuDetail() {
                         <div className="product-detail__faq-doctor-block">
                             <span className="product-detail__faq-label product-detail__faq-label--doctor" style={{ color: accentColor }}>For Doctors</span>
                             <p className="product-detail__faq-doctor-text">
-                                Are you a clinician or hospital looking to integrate Gene Setu? Contact our team.
+                                Are you a clinician or hospital looking to integrate Eviolife? Contact our team.
                             </p>
                             <Link to="/contact" className="btn btn-primary" style={{ background: accentColor, fontSize: '0.95rem', padding: '0.7rem 1.75rem' }}>
                                 Integrate With Us →

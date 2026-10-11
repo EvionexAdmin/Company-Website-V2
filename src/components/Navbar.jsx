@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import evionexLogo from '../assets/images/logo/evionex-logo.png'
 import evionexText from '../assets/images/logo/evionex-text.png'
-import geneSetuMockup from '../assets/images/products/genesetu-mockup.png'
+import eviolifeMockup from '../assets/images/products/eviolife-mockup.png'
 import eviNoteMockup from '../assets/images/products/evinote-mockup.png'
 import luminaryMockup from '../assets/images/products/luminary-mockup.png'
 import loginBackground from '../assets/images/auth/login-background.webp'
@@ -12,7 +12,7 @@ import aboutUsPreview from '../assets/images/company/about-us-hero.webp'
 import teamPreview from '../assets/images/company/team-hero.webp'
 import careersPreview from '../assets/images/company/careers-hero.webp'
 import companyPreview from '../assets/images/company/company-preview.webp'
-import geneSetuPreview from '../assets/images/products-nav/genesetu-nav.webp'
+import eviolifePreview from '../assets/images/products-nav/eviolife-nav.webp'
 import eviNotePreview from '../assets/images/products-nav/evinote-nav.webp'
 import luminaryPreview from '../assets/images/products-nav/luminary-nav.webp'
 import productsDefaultPreviewImage from '../assets/images/products-nav/products-preview.webp'
@@ -124,15 +124,15 @@ const megaMenuConfig = {
         defaultPreview: productsDefaultPreview,
         items: [
             {
-                id: 'products-genesetu',
-                label: 'GeneSetu',
+                id: 'products-eviolife',
+                label: 'Eviolife',
                 description: 'AI-enabled health intelligence using genomic insights and longitudinal records.',
-                href: '/products/genesetu',
+                href: '/products/eviolife',
                 preview: {
-                    title: 'GeneSetu',
+                    title: 'Eviolife',
                     description: 'Screen 6,000+ conditions and track lifelong biomarker health data.',
-                    src: geneSetuPreview,
-                    alt: 'GeneSetu product preview',
+                    src: eviolifePreview,
+                    alt: 'Eviolife product preview',
                 },
             },
             {
@@ -384,7 +384,7 @@ export default function Navbar() {
     }, [isShopPage, location.search])
 
     const shopSearchItems = useMemo(() => ([
-        { id: 'genesetu', label: 'GeneSetu', type: 'Product', href: '/shop#shop-item-genesetu' },
+        { id: 'eviolife', label: 'Eviolife', type: 'Product', href: '/shop#shop-item-eviolife' },
         { id: 'luminary', label: 'Luminary', type: 'Product', href: '/shop#shop-item-luminary' },
         { id: 'evinote', label: 'EviNote', type: 'Product', href: '/shop#shop-item-evinote' },
         { id: 'blood-analysis', label: 'Blood Report Analysis', type: 'Service', href: '/shop#shop-item-blood-analysis' },

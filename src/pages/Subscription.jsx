@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
-import genesetuMockup from '../assets/images/products/genesetu-mockup.png'
+import { supabaseEviolife } from '../lib/supabaseEviolife'
+import eviolifeMockup from '../assets/images/products/eviolife-mockup.png'
 import './Subscription.css'
 
 const SOUTH_ASIA_COUNTRIES = ['IN', 'PK', 'BD', 'LK', 'NP', 'MV', 'BT', 'AF']
@@ -112,7 +112,7 @@ export default function Subscription() {
 
     useEffect(() => {
         if (!user) {
-            navigate('/portal/login?redirect=/subscribe/genesetu')
+            navigate('/portal/login?redirect=/subscribe/eviolife')
         }
     }, [user, navigate])
 
@@ -125,7 +125,7 @@ export default function Subscription() {
             try {
                 const [locationResult, profileResult] = await Promise.allSettled([
                     fetch('https://ipapi.co/json/'),
-                    supabaseGeneSetu
+                    supabaseEviolife
                         .from('profiles')
                         .select('current_streak, is_premium, subscription_tier')
                         .eq('id', user.id)
@@ -244,8 +244,8 @@ export default function Subscription() {
                 const options = {
                     key: key_id,
                     subscription_id,
-                    name: 'GeneSetu',
-                    description: 'GeneSetu Premium — Monthly',
+                    name: 'Eviolife',
+                    description: 'Eviolife Premium — Monthly',
                     image: 'https://www.evionex.com/favicon.ico',
                     prefill: {
                         email: user.email || '',
@@ -336,12 +336,12 @@ export default function Subscription() {
 
                 <section className="subscription-hero">
                     <div className="subscription-hero__copy">
-                        <img src={genesetuMockup} alt="GeneSetu App" className="subscription-hero__mockup" />
+                        <img src={eviolifeMockup} alt="Eviolife App" className="subscription-hero__mockup" />
                         <div className="subscription-hero__text-content">
                             <span className="subscription-badge">Best for individuals &amp; families</span>
                             <h1>Premium health tracking, built for daily use.</h1>
                             <p className="subscription-hero__description">
-                                Keep wearables, nutrition, doctor access, and family monitoring in one premium GeneSetu plan.
+                                Keep wearables, nutrition, doctor access, and family monitoring in one premium Eviolife plan.
                                 Clear pricing. Faster support. Less friction.
                             </p>
 
@@ -400,7 +400,7 @@ export default function Subscription() {
                                 </div>
                                 <p className="subscription-success-state__title">You&apos;re now Premium</p>
                                 <p className="subscription-success-state__sub">
-                                    Your GeneSetu subscription is active. Open the app to unlock all features.
+                                    Your Eviolife subscription is active. Open the app to unlock all features.
                                 </p>
                                 <button
                                     type="button"
@@ -416,7 +416,7 @@ export default function Subscription() {
                                     <p className="subscription-error" role="alert">{error}</p>
                                 )}
                                 <button
-                                    id="genesetu-subscribe-btn"
+                                    id="eviolife-subscribe-btn"
                                     type="button"
                                     className="subscription-cta"
                                     onClick={handleSubscribe}

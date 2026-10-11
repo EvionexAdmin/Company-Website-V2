@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import usePageMetadata from '../lib/usePageMetadata'
 import { useAuth } from '../contexts/AuthContext'
 import { useCart } from '../contexts/CartContext'
-import geneSetuImg from '../assets/images/products-nav/genesetu-nav.webp'
+import eviolifeImg from '../assets/images/products-nav/eviolife-nav.webp'
 import eviNoteImg from '../assets/images/products-nav/evinote-nav.webp'
 import luminaryImg from '../assets/images/products-nav/luminary-nav.webp'
 import './Shop.css'
@@ -12,10 +12,10 @@ import './ServiceDetail.css'
 // In a real app, this would come from a shared data file or API
 const PRODUCTS = [
     {
-        id: 'genesetu',
-        name: 'GeneSetu',
+        id: 'eviolife',
+        name: 'Eviolife',
         description: 'AI-enabled health intelligence using genomic insights and longitudinal records.',
-        image: geneSetuImg,
+        image: eviolifeImg,
         price: '₹249',
         rating: 4.9,
         reviews: 345,

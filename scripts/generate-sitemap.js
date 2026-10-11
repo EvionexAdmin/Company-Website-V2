@@ -40,7 +40,7 @@ const routes = [
   { path: '/',                      src: 'src/pages/Home.jsx',           changefreq: 'weekly',  priority: '1.0' },
   { path: '/who-we-are',            src: 'src/pages/WhoWeAre.jsx',       changefreq: 'monthly', priority: '0.8' },
   { path: '/products',              src: 'src/pages/Products.jsx',       changefreq: 'weekly',  priority: '0.9' },
-  { path: '/products/genesetu',     src: 'src/pages/GeneSetuDetail.jsx', changefreq: 'monthly', priority: '0.8' },
+  { path: '/products/eviolife',     src: 'src/pages/EviolifeDetail.jsx', changefreq: 'monthly', priority: '0.8' },
   { path: '/products/evinote',      src: 'src/pages/EviNoteDetail.jsx',  changefreq: 'monthly', priority: '0.8' },
   { path: '/products/luminary',     src: 'src/pages/LuminaryDetail.jsx', changefreq: 'monthly', priority: '0.8' },
   { path: '/team',                  src: 'src/pages/Team.jsx',           changefreq: 'monthly', priority: '0.7' },
@@ -48,6 +48,7 @@ const routes = [
   { path: '/contact',               src: 'src/pages/Contact.jsx',        changefreq: 'monthly', priority: '0.7' },
   { path: '/pricing',               src: 'src/pages/Pricing.jsx',        changefreq: 'weekly',  priority: '0.8' },
   { path: '/privacy-policy',        src: 'src/pages/PrivacyPolicy.jsx',  changefreq: 'yearly',  priority: '0.4' },
+  { path: '/terms',                 src: 'src/pages/TermsOfUse.jsx',     changefreq: 'yearly',  priority: '0.4' },
 ]
 
 const urlEntries = routes

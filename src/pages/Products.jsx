@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import MagicBento from '../components/ui/MagicBento/MagicBento'
 import evinoteIcon from '../assets/images/products/evinote-icon.png'
 import luminaryLogo from '../assets/images/products/luminary-logo.png'
-import genesetuLogo from '../assets/images/products/genesetu-logo.png'
+import eviolifeLogo from '../assets/images/products/eviolife-logo.png'
 import ehrRepositoryImage from '../assets/images/products/ehr-repository.jpeg'
 import usePageMetadata from '../lib/usePageMetadata'
 import './Products.css'
@@ -18,21 +18,21 @@ const hexToRgb = (hex) => {
 
 const products = [
     {
-        id: 'genesetu',
-        name: 'Gene Setu',
+        id: 'eviolife',
+        name: 'Eviolife',
         type: 'Healthcare Solution',
         tagColor: '#00bafd',
         description: 'An AI-enabled Electronic Health Record platform that leverages Whole Exome Sequencing (WES) data to analyze 6,000+ diseases in individuals of all ages, along with maintaining their complete life records.',
-        logo: genesetuLogo,
+        logo: eviolifeLogo,
         features: [
-            { title: 'WES Data Analysis', desc: 'Whole Exome Sequencing analysis covering 6,000+ genetic conditions.', media: { src: '/media/genesetu/wes-results.mp4', type: 'video' } },
-            { title: 'Biomarker Tracking', desc: 'Track biomarkers throughout life to monitor health.', media: { src: '/media/genesetu/biomarker-tracking.mp4', type: 'video' } },
+            { title: 'WES Data Analysis', desc: 'Whole Exome Sequencing analysis covering 6,000+ genetic conditions.', media: { src: '/media/eviolife/wes-results.mp4', type: 'video' } },
+            { title: 'Biomarker Tracking', desc: 'Track biomarkers throughout life to monitor health.', media: { src: '/media/eviolife/biomarker-tracking.mp4', type: 'video' } },
             { title: 'Life Record Management', desc: 'Maintain complete health records from birth through life with secure, accessible storage.', media: { src: ehrRepositoryImage, type: 'image' } },
-            { title: 'AI Diagnostics', desc: 'Machine learning models for early disease detection and predictive health analytics.', media: { src: '/media/genesetu/live-diagnostics.mp4', type: 'video' } },
-            { title: 'Medication Tracking', desc: 'Track medications and prescriptions with reminders and dosage tracking.', media: { src: '/media/genesetu/medication-tracking.mp4', type: 'video' } },
-            { title: 'NutriLogging', desc: 'Track nutrition and diet with AI-powered insights.', media: { src: '/media/genesetu/nutrilogging.mp4', type: 'video' } },
+            { title: 'AI Diagnostics', desc: 'Machine learning models for early disease detection and predictive health analytics.', media: { src: '/media/eviolife/live-diagnostics.mp4', type: 'video' } },
+            { title: 'Medication Tracking', desc: 'Track medications and prescriptions with reminders and dosage tracking.', media: { src: '/media/eviolife/medication-tracking.mp4', type: 'video' } },
+            { title: 'NutriLogging', desc: 'Track nutrition and diet with AI-powered insights.', media: { src: '/media/eviolife/nutrilogging.mp4', type: 'video' } },
         ],
-        learnMorePath: '/products/genesetu',
+        learnMorePath: '/products/eviolife',
     },
     {
         id: 'evinote',
@@ -76,8 +76,8 @@ export default function Products() {
     const defaultOgImage = new URL('../assets/images/logo/evionex-logo.png', import.meta.url).href
 
     usePageMetadata({
-        title: 'Evionex Products — Gene Setu, EviNote, Luminary',
-        description: 'Explore Evionex products: Gene Setu (genomic healthcare), EviNote (electronic lab notebook), and Luminary (AI-powered learning platform).',
+        title: 'Evionex Products — Eviolife, EviNote, Luminary',
+        description: 'Explore Evionex products: Eviolife (genomic healthcare), EviNote (electronic lab notebook), and Luminary (AI-powered learning platform).',
         canonicalPath: '/products',
         image: defaultOgImage,
     })

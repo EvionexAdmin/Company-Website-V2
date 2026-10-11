@@ -41,7 +41,7 @@ export default function PrivacyPolicy() {
                         <p>This Policy describes how we collect, use, store, share, and protect your personal data when you:</p>
                         <ul>
                             <li>Visit and use our website at <a href="https://www.evionex.com" target="_blank" rel="noopener noreferrer">https://www.evionex.com</a> ("Website")</li>
-                            <li>Use our healthcare platform <strong>Gene Setu</strong> (for patients, doctors, and healthcare institutions)</li>
+                            <li>Use our healthcare platform <strong>Eviolife</strong> (for patients, doctors, and healthcare institutions)</li>
                             <li>Use our research and laboratory management platform <strong>EviNote</strong> (for research bodies, laboratories, and principal investigators)</li>
                             <li>Use our educational platform <strong>Luminary</strong> (for universities and academic institutions)</li>
                             <li>Avail our genetic testing and genomic analysis services</li>
@@ -51,8 +51,8 @@ export default function PrivacyPolicy() {
                         <h3 className="policy-subsection__title">1.2 Scope and Applicability</h3>
                         <p>This Policy applies to:</p>
                         <ul>
-                            <li>Patients and their authorized guardians or legal representatives using Gene Setu</li>
-                            <li>Healthcare professionals (doctors, clinicians, genetic counselors) using Gene Setu</li>
+                            <li>Patients and their authorized guardians or legal representatives using Eviolife</li>
+                            <li>Healthcare professionals (doctors, clinicians, genetic counselors) using Eviolife</li>
                             <li>Healthcare institutions and clinical partners collaborating with Evionex</li>
                             <li>Researchers, scientists, and principal investigators using EviNote</li>
                             <li>Laboratories and research organizations using EviNote</li>
@@ -98,7 +98,7 @@ export default function PrivacyPolicy() {
                         </ul>
 
                         <p className="policy-category">B. Health and Medical Data (Sensitive Personal Data)</p>
-                        <p>Collected primarily through Gene Setu and our genetic testing services:</p>
+                        <p>Collected primarily through Eviolife and our genetic testing services:</p>
                         <ul>
                             <li>Genetic and genomic data, including raw sequencing data, variant reports, and interpreted results</li>
                             <li>Medical history, family medical history, and clinical information</li>
@@ -184,7 +184,7 @@ export default function PrivacyPolicy() {
                         <ul>
                             <li><strong>Direct submission:</strong> When you register an account, complete forms, submit test orders, upload records, or communicate with us</li>
                             <li><strong>Clinical Partner submissions:</strong> When a healthcare institution or doctor submits your information on your behalf for genetic testing, with your prior informed consent</li>
-                            <li><strong>Our applications:</strong> When you interact with Gene Setu, EviNote, or Luminary</li>
+                            <li><strong>Our applications:</strong> When you interact with Eviolife, EviNote, or Luminary</li>
                             <li><strong>Automated collection:</strong> Through cookies, server logs, and similar technologies when you use our Website or applications</li>
                             <li><strong>Payment processors:</strong> Transaction metadata from Razorpay upon completion of payments</li>
                             <li><strong>Third-party integrations:</strong> With your explicit authorization, from connected health devices or healthcare information systems</li>
@@ -199,7 +199,7 @@ export default function PrivacyPolicy() {
                         </h2>
                         <p>We use your personal data only for the specific, lawful purposes described below:</p>
 
-                        <h3 className="policy-subsection__title">4.1 Gene Setu – Healthcare Platform</h3>
+                        <h3 className="policy-subsection__title">4.1 Eviolife – Healthcare Platform</h3>
                         <div className="policy-table-wrapper">
                             <table className="policy-table">
                                 <thead>

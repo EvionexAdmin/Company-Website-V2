@@ -10,7 +10,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 // This dramatically reduces the initial JS bundle (Dashboard alone is ~143 KB).
 const WhoWeAre = lazy(() => import('./pages/WhoWeAre'))
 const Products = lazy(() => import('./pages/Products'))
-const GeneSetuDetail = lazy(() => import('./pages/GeneSetuDetail'))
+const EviolifeDetail = lazy(() => import('./pages/EviolifeDetail'))
 const EviNoteDetail = lazy(() => import('./pages/EviNoteDetail'))
 const LuminaryDetail = lazy(() => import('./pages/LuminaryDetail'))
 const Team = lazy(() => import('./pages/Team'))
@@ -25,6 +25,7 @@ const Signup = lazy(() => import('./pages/Signup'))
 const VerifyEmail = lazy(() => import('./pages/VerifyEmail'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
+const TermsOfUse = lazy(() => import('./pages/TermsOfUse'))
 const Subscription = lazy(() => import('./pages/Subscription'))
 
 export default function App() {
@@ -36,7 +37,7 @@ export default function App() {
                         <Route index element={<Home />} />
                         <Route path="who-we-are" element={<WhoWeAre />} />
                         <Route path="products" element={<Products />} />
-                        <Route path="products/genesetu" element={<GeneSetuDetail />} />
+                        <Route path="products/eviolife" element={<EviolifeDetail />} />
                         <Route path="products/evinote" element={<EviNoteDetail />} />
                         <Route path="products/luminary" element={<LuminaryDetail />} />
                         <Route path="team" element={<Team />} />
@@ -52,6 +53,9 @@ export default function App() {
                         <Route path="portal/verify-email" element={<VerifyEmail />} />
                         <Route path="portal/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                         <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                        <Route path="privacy" element={<PrivacyPolicy />} />
+                        <Route path="terms" element={<TermsOfUse />} />
+                        <Route path="terms-of-use" element={<TermsOfUse />} />
                     </Route>
                 </Routes>
             </Suspense>

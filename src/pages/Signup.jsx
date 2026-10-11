@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
+import { supabaseEviolife } from '../lib/supabaseEviolife'
 import TurnstileWidget from '../components/TurnstileWidget'
 import loginBackground from '../assets/images/auth/login-background.webp'
 import './Auth.css'
@@ -94,7 +94,7 @@ export default function Signup() {
         try {
             // ── Server-side Turnstile token validation ──
             const { data: verifyData, error: verifyError } =
-                await supabaseGeneSetu.functions.invoke('verify-turnstile', {
+                await supabaseEviolife.functions.invoke('verify-turnstile', {
                     body: { token: turnstileToken },
                 })
 

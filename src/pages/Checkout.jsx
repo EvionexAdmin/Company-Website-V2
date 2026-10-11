@@ -7,8 +7,8 @@ import './Checkout.css'
 // Product and service catalog (same as Shop.jsx for now)
 const PRODUCTS = [
     {
-        id: 'genesetu',
-        name: 'GeneSetu',
+        id: 'eviolife',
+        name: 'Eviolife',
         description: 'AI-enabled health intelligence using genomic insights and longitudinal records.',
         price: 24900,
         discount: 'Save 15%',

@@ -42,7 +42,7 @@ const PRODUCT_ITEMS = [
         color: '#ffae00'
     },
     {
-        name: 'Gene Setu',
+        name: 'Eviolife',
         type: 'Healthcare Solution',
         description: '6000+ Diseases, Nutrigenomic and Pharmacogenomic Profile, all through a single test, and that\'s just the beginning.',
         color: '#00bafd'
@@ -55,7 +55,7 @@ export default function Home() {
 
     usePageMetadata({
         title: 'Evionex — Transforming Research, Education & Healthcare with AI',
-        description: 'Evionex builds AI-powered platforms for research labs (EviNote), universities (Luminary), and healthcare facilities (Gene Setu). Headquartered in India and serving institutions globally.',
+        description: 'Evionex builds AI-powered platforms for research labs (EviNote), universities (Luminary), and healthcare facilities (Eviolife). Headquartered in India and serving institutions globally.',
         canonicalPath: '/',
         image: defaultOgImage,
     })

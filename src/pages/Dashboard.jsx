@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
+import { supabaseEviolife } from '../lib/supabaseEviolife'
 import ResizableTable from '../components/ResizableTable'
 import './Portal.css'
 
@@ -234,15 +234,15 @@ function EditUserView({ userId, userType, onBack, onSaved }) {
 
     useEffect(() => {
         async function load() {
-            const { data: prof } = await supabaseGeneSetu.from('evionex_profiles').select('*').eq('id', userId).single()
+            const { data: prof } = await supabaseEviolife.from('evionex_profiles').select('*').eq('id', userId).single()
             let patientData = null
             let employeeData = null
             if (userType === 'Patient') {
-                const { data: pat } = await supabaseGeneSetu.from('evionex_patients').select('*').eq('id', userId).single()
+                const { data: pat } = await supabaseEviolife.from('evionex_patients').select('*').eq('id', userId).single()
                 patientData = pat
             }
             if (userType === 'Employee') {
-                const { data: emp } = await supabaseGeneSetu.from('evionex_employees').select('*').eq('id', userId).single()
+                const { data: emp } = await supabaseEviolife.from('evionex_employees').select('*').eq('id', userId).single()
                 employeeData = emp
             }
             setProfileData(prof)
@@ -278,15 +278,15 @@ function EditUserView({ userId, userType, onBack, onSaved }) {
             if (userType === 'Employee') {
                 profileUpdate.sub_role = form.sub_role
             }
-            const { error: profileErr } = await supabaseGeneSetu.from('evionex_profiles').update(profileUpdate).eq('id', userId)
+            const { error: profileErr } = await supabaseEviolife.from('evionex_profiles').update(profileUpdate).eq('id', userId)
             if (profileErr) throw new Error('Profile: ' + profileErr.message)
 
             if (userType === 'Patient') {
-                const { error: patErr } = await supabaseGeneSetu.from('evionex_patients').update({ date_of_birth: form.date_of_birth || null, gender: form.gender || null, blood_group: form.blood_group || null, address: form.address || null }).eq('id', userId)
+                const { error: patErr } = await supabaseEviolife.from('evionex_patients').update({ date_of_birth: form.date_of_birth || null, gender: form.gender || null, blood_group: form.blood_group || null, address: form.address || null }).eq('id', userId)
                 if (patErr) throw new Error('Patient details: ' + patErr.message)
             }
             if (userType === 'Employee') {
-                const { error: empErr } = await supabaseGeneSetu.from('evionex_employees').update({ department: form.department || null }).eq('id', userId)
+                const { error: empErr } = await supabaseEviolife.from('evionex_employees').update({ department: form.department || null }).eq('id', userId)
                 if (empErr) throw new Error('Employee details: ' + empErr.message)
             }
             setSaving(false); setSaved(true)
@@ -402,14 +402,14 @@ function UserDetailView({ userId, userType, onBack }) {
 
     useEffect(() => {
         async function load() {
-            const { data: prof } = await supabaseGeneSetu.from('evionex_profiles').select('*').eq('id', userId).single()
+            const { data: prof } = await supabaseEviolife.from('evionex_profiles').select('*').eq('id', userId).single()
             setProfileData(prof)
 
             if (userType === 'patient') {
                 const [{ data: pat }, { data: ord }, { data: rep }] = await Promise.all([
-                    supabaseGeneSetu.from('evionex_patients').select('*').eq('id', userId).single(),
-                    supabaseGeneSetu.from('evionex_wes_orders').select('*').eq('patient_id', userId).eq('payment_verified', true).order('created_at', { ascending: false }),
-                    supabaseGeneSetu.from('evionex_medical_reports').select('*').eq('patient_id', userId).order('created_at', { ascending: false }),
+                    supabaseEviolife.from('evionex_patients').select('*').eq('id', userId).single(),
+                    supabaseEviolife.from('evionex_wes_orders').select('*').eq('patient_id', userId).eq('payment_verified', true).order('created_at', { ascending: false }),
+                    supabaseEviolife.from('evionex_medical_reports').select('*').eq('patient_id', userId).order('created_at', { ascending: false }),
                 ])
                 setPatientData(pat)
                 setOrders(ord || [])
@@ -528,9 +528,9 @@ function PatientView({ tab, user, profile }) {
 
     async function loadDoctorData() {
         const [{ data: connected }, { data: requests }, { data: notifs }] = await Promise.all([
-            supabaseGeneSetu.from('evionex_doctor_patients').select('*, evionex_doctors(doctor_id, specialization, experience_years, evionex_profiles(full_name))').eq('patient_id', user.id),
-            supabaseGeneSetu.from('evionex_connection_requests').select('*, evionex_doctors(doctor_id, specialization, evionex_profiles(full_name))').eq('patient_id', user.id).order('created_at', { ascending: false }),
-            supabaseGeneSetu.from('evionex_notifications').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50),
+            supabaseEviolife.from('evionex_doctor_patients').select('*, evionex_doctors(doctor_id, specialization, experience_years, evionex_profiles(full_name))').eq('patient_id', user.id),
+            supabaseEviolife.from('evionex_connection_requests').select('*, evionex_doctors(doctor_id, specialization, evionex_profiles(full_name))').eq('patient_id', user.id).order('created_at', { ascending: false }),
+            supabaseEviolife.from('evionex_notifications').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50),
         ])
         setConnectedDoctors(connected || [])
         setMyRequests(requests || [])
@@ -540,9 +540,9 @@ function PatientView({ tab, user, profile }) {
     useEffect(() => {
         async function load() {
             const [{ data: pat }, { data: ord }, { data: rep }] = await Promise.all([
-                supabaseGeneSetu.from('evionex_patients').select('*').eq('id', user.id).single(),
-                supabaseGeneSetu.from('evionex_wes_orders').select('*').eq('patient_id', user.id).eq('payment_verified', true).order('created_at', { ascending: false }),
-                supabaseGeneSetu.from('evionex_medical_reports').select('*').eq('patient_id', user.id).eq('visible_to_patient', true).order('created_at', { ascending: false }),
+                supabaseEviolife.from('evionex_patients').select('*').eq('id', user.id).single(),
+                supabaseEviolife.from('evionex_wes_orders').select('*').eq('patient_id', user.id).eq('payment_verified', true).order('created_at', { ascending: false }),
+                supabaseEviolife.from('evionex_medical_reports').select('*').eq('patient_id', user.id).eq('visible_to_patient', true).order('created_at', { ascending: false }),
             ])
             setPatient(pat); setOrders(ord || []); setReports(rep || [])
             if (pat) setForm({ full_name: profile.full_name || '', date_of_birth: pat.date_of_birth || '', gender: pat.gender || '', blood_group: pat.blood_group || '', address: pat.address || '' })
@@ -554,8 +554,8 @@ function PatientView({ tab, user, profile }) {
 
     async function saveProfile() {
         setSaving(true); setSaved(false)
-        await supabaseGeneSetu.from('evionex_profiles').update({ full_name: form.full_name }).eq('id', user.id)
-        await supabaseGeneSetu.from('evionex_patients').update({ date_of_birth: form.date_of_birth || null, gender: form.gender || null, blood_group: form.blood_group || null, address: form.address || null }).eq('id', user.id)
+        await supabaseEviolife.from('evionex_profiles').update({ full_name: form.full_name }).eq('id', user.id)
+        await supabaseEviolife.from('evionex_patients').update({ date_of_birth: form.date_of_birth || null, gender: form.gender || null, blood_group: form.blood_group || null, address: form.address || null }).eq('id', user.id)
         await fetchProfile(user.id)
         setSaving(false); setSaved(true); setEditMode(false)
         setTimeout(() => setSaved(false), 3000)
@@ -574,10 +574,10 @@ function PatientView({ tab, user, profile }) {
             .slice(0, 100)                        // Limit length
         const filePath = `${user.id}/${Date.now()}_${sanitizedName}`
         setUploadProgress(30)
-        const { error: uploadErr } = await supabaseGeneSetu.storage.from('evionex-patient-reports').upload(filePath, file)
+        const { error: uploadErr } = await supabaseEviolife.storage.from('evionex-patient-reports').upload(filePath, file)
         setUploadProgress(70)
         if (uploadErr) { alert('Upload failed: ' + uploadErr.message); setUploading(false); return }
-        const { data: inserted, error: insertErr } = await supabaseGeneSetu.from('evionex_medical_reports').insert({ patient_id: user.id, report_type: file.type === 'application/pdf' ? 'PDF Report' : 'Image Report', file_path: filePath, file_name: file.name, uploaded_by: user.id, visible_to_patient: true }).select().single()
+        const { data: inserted, error: insertErr } = await supabaseEviolife.from('evionex_medical_reports').insert({ patient_id: user.id, report_type: file.type === 'application/pdf' ? 'PDF Report' : 'Image Report', file_path: filePath, file_name: file.name, uploaded_by: user.id, visible_to_patient: true }).select().single()
         setUploadProgress(100)
         if (!insertErr && inserted) setReports(prev => [inserted, ...prev])
         setTimeout(() => { setUploading(false); setUploadProgress(0) }, 600)
@@ -585,13 +585,13 @@ function PatientView({ tab, user, profile }) {
 
     async function viewReport(report) {
         setViewingReport(report)
-        const { data } = await supabaseGeneSetu.storage.from('evionex-patient-reports').createSignedUrl(report.file_path, 3600)
+        const { data } = await supabaseEviolife.storage.from('evionex-patient-reports').createSignedUrl(report.file_path, 3600)
         setReportUrl(data?.signedUrl || '')
     }
 
     async function searchDoctors() {
         setSearching(true)
-        let query = supabaseGeneSetu.from('evionex_doctors').select('id, doctor_id, specialization, experience_years, evionex_profiles(full_name)')
+        let query = supabaseEviolife.from('evionex_doctors').select('id, doctor_id, specialization, experience_years, evionex_profiles(full_name)')
         if (searchForm.specialization) query = query.ilike('specialization', `%${searchForm.specialization}%`)
         if (searchForm.name) query = query.ilike('evionex_profiles.full_name', `%${searchForm.name}%`)
         if (searchForm.experience) query = query.gte('experience_years', parseInt(searchForm.experience))
@@ -603,7 +603,7 @@ function PatientView({ tab, user, profile }) {
     async function sendConnectionRequest(doctorUuid) {
         setSendingRequest(doctorUuid)
         try {
-            const { error } = await supabaseGeneSetu.from('evionex_connection_requests').insert({ patient_id: user.id, doctor_id: doctorUuid })
+            const { error } = await supabaseEviolife.from('evionex_connection_requests').insert({ patient_id: user.id, doctor_id: doctorUuid })
             if (error) {
                 if (error.code === '23505') alert('You already have a pending request with this doctor.')
                 else alert('Failed to send request: ' + error.message)
@@ -615,7 +615,7 @@ function PatientView({ tab, user, profile }) {
     async function sendDirectRequest() {
         if (!directDoctorId.trim()) return
         setDirectIdSending(true); setDirectIdError('')
-        const { data: doc } = await supabaseGeneSetu.from('evionex_doctors').select('id').eq('doctor_id', directDoctorId.trim()).single()
+        const { data: doc } = await supabaseEviolife.from('evionex_doctors').select('id').eq('doctor_id', directDoctorId.trim()).single()
         if (!doc) { setDirectIdError('Doctor ID not found. Please check and try again.'); setDirectIdSending(false); return }
         await sendConnectionRequest(doc.id)
         setDirectDoctorId('')
@@ -625,18 +625,18 @@ function PatientView({ tab, user, profile }) {
     async function handleDisconnectDoctor(docUuid, doctorName) {
         if (!window.confirm(`Are you sure you want to disconnect from ${doctorName || 'this doctor'}?`)) return
         try {
-            await supabaseGeneSetu.from('evionex_doctor_patients').delete().eq('patient_id', user.id).eq('doctor_id', docUuid)
+            await supabaseEviolife.from('evionex_doctor_patients').delete().eq('patient_id', user.id).eq('doctor_id', docUuid)
             await loadDoctorData()
         } catch (e) { alert('Failed to disconnect: ' + e.message) }
     }
 
     async function markAsRead(notifId) {
-        await supabaseGeneSetu.from('evionex_notifications').update({ is_read: true }).eq('id', notifId)
+        await supabaseEviolife.from('evionex_notifications').update({ is_read: true }).eq('id', notifId)
         setNotifications(prev => prev.map(n => n.id === notifId ? { ...n, is_read: true } : n))
     }
 
     async function markAllAsRead() {
-        await supabaseGeneSetu.from('evionex_notifications').update({ is_read: true }).eq('user_id', user.id).eq('is_read', false)
+        await supabaseEviolife.from('evionex_notifications').update({ is_read: true }).eq('user_id', user.id).eq('is_read', false)
         setNotifications(prev => prev.map(n => ({ ...n, is_read: true })))
     }
 
@@ -905,7 +905,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
     const [employeeForm, setEmployeeForm] = useState({ fullName: '', email: '', password: '', subRole: 'full-time', department: 'Software Development' })
 
     async function getAccessTokenOrThrow() {
-        const { data: sessionData, error: sessionError } = await supabaseGeneSetu.auth.getSession()
+        const { data: sessionData, error: sessionError } = await supabaseEviolife.auth.getSession()
         if (sessionError) throw new Error('Failed to read auth session. Please sign in again.')
         const token = sessionData?.session?.access_token
         if (!token) throw new Error('Session expired. Please sign out and sign in again.')
@@ -916,7 +916,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
         e.preventDefault()
         setEmployeeFormError(''); setEmployeeFormSuccess(''); setCreatingEmployee(true)
         try {
-            const { data: { user: authUser }, error: authErr } = await supabaseGeneSetu.auth.getUser()
+            const { data: { user: authUser }, error: authErr } = await supabaseEviolife.auth.getUser()
             if (authErr || !authUser) {
                 setEmployeeFormError('Session expired. Please sign out and sign in again.')
                 setCreatingEmployee(false)
@@ -924,7 +924,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
             }
             const token = await getAccessTokenOrThrow()
 
-            const { data: result, error: fnErr } = await supabaseGeneSetu.functions.invoke('evionex-create-employee', {
+            const { data: result, error: fnErr } = await supabaseEviolife.functions.invoke('evionex-create-employee', {
                 body: employeeForm,
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -959,10 +959,10 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
     async function loadData() {
         setLoading(true)
         const [{ data: ord }, { data: pats }, { data: parts }, { data: emps }] = await Promise.all([
-            supabaseGeneSetu.from('evionex_wes_orders').select('*, evionex_patients(patient_id)').eq('payment_verified', true).order('created_at', { ascending: false }),
-            supabaseGeneSetu.from('evionex_patients').select('*, evionex_profiles(full_name, account_status)').order('created_at', { ascending: false }),
-            supabaseGeneSetu.from('evionex_profiles').select('*').eq('role', 'partner').order('created_at', { ascending: false }),
-            supabaseGeneSetu.from('evionex_profiles').select('*').eq('role', 'employee').order('created_at', { ascending: false }),
+            supabaseEviolife.from('evionex_wes_orders').select('*, evionex_patients(patient_id)').eq('payment_verified', true).order('created_at', { ascending: false }),
+            supabaseEviolife.from('evionex_patients').select('*, evionex_profiles(full_name, account_status)').order('created_at', { ascending: false }),
+            supabaseEviolife.from('evionex_profiles').select('*').eq('role', 'partner').order('created_at', { ascending: false }),
+            supabaseEviolife.from('evionex_profiles').select('*').eq('role', 'employee').order('created_at', { ascending: false }),
         ])
         setOrders(ord || []); setPatients(pats || []); setPartners(parts || []); setEmployees(emps || [])
         setLoading(false)
@@ -972,7 +972,7 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
 
     async function updateStatus(orderId, newStatus) {
         setUpdatingId(orderId)
-        const { error } = await supabaseGeneSetu.from('evionex_wes_orders').update({ order_status: newStatus, status_updated_by: user.id }).eq('id', orderId)
+        const { error } = await supabaseEviolife.from('evionex_wes_orders').update({ order_status: newStatus, status_updated_by: user.id }).eq('id', orderId)
         if (!error) setOrders(prev => prev.map(o => o.id === orderId ? { ...o, order_status: newStatus } : o))
         setUpdatingId(null)
     }
@@ -1004,13 +1004,13 @@ function AdminView({ tab, user, profile, session, isAdminUser }) {
         if (!isAdminUser) { alert('Only admins can delete users.'); return }
         setIsDeleting(true)
         try {
-            const { data: { user: authUser }, error: authErr } = await supabaseGeneSetu.auth.getUser()
+            const { data: { user: authUser }, error: authErr } = await supabaseEviolife.auth.getUser()
             if (authErr || !authUser) {
                 alert('Session expired. Please sign out and sign in again.')
                 setIsDeleting(false)
                 return
             }
-            const { data: result, error: fnErr } = await supabaseGeneSetu.functions.invoke('evionex-delete-user', {
+            const { data: result, error: fnErr } = await supabaseEviolife.functions.invoke('evionex-delete-user', {
                 body: { userId: deletingUser },
             })
             if (fnErr) {
@@ -1236,7 +1236,7 @@ function InstitutionManager({ user, session }) {
 
     async function loadInstitutions() {
         setLoading(true)
-        const { data } = await supabaseGeneSetu
+        const { data } = await supabaseEviolife
             .from('evionex_institutions')
             .select('*, evionex_profiles(full_name, account_status, email)')
             .order('created_at', { ascending: false })
@@ -1249,7 +1249,7 @@ function InstitutionManager({ user, session }) {
     }
 
     async function getAccessTokenOrThrow() {
-        const { data: sessionData, error: sessionError } = await supabaseGeneSetu.auth.getSession()
+        const { data: sessionData, error: sessionError } = await supabaseEviolife.auth.getSession()
         if (sessionError) throw new Error('Failed to read auth session. Please sign in again.')
         const token = sessionData?.session?.access_token
         if (!token) throw new Error('Session expired. Please sign out and sign in again.')
@@ -1261,7 +1261,7 @@ function InstitutionManager({ user, session }) {
         setError(''); setSuccess(''); setCreating(true)
 
         try {
-            const { data: { user: authUser }, error: authErr } = await supabaseGeneSetu.auth.getUser()
+            const { data: { user: authUser }, error: authErr } = await supabaseEviolife.auth.getUser()
             if (authErr || !authUser) {
                 setError('Session expired. Please sign out and sign in again.')
                 setCreating(false)
@@ -1269,7 +1269,7 @@ function InstitutionManager({ user, session }) {
             }
             const token = await getAccessTokenOrThrow()
 
-            const { data: result, error: fnErr } = await supabaseGeneSetu.functions.invoke('evionex-create-institution', {
+            const { data: result, error: fnErr } = await supabaseEviolife.functions.invoke('evionex-create-institution', {
                 body: {
                     username: form.username,
                     password: form.password,
@@ -1413,10 +1413,10 @@ function DoctorView({ tab, user, profile }) {
 
     async function loadData() {
         const [{ data: doc }, { data: assigned }, { data: requests }, { data: instReqs }] = await Promise.all([
-            supabaseGeneSetu.from('evionex_doctors').select('*').eq('id', user.id).single(),
-            supabaseGeneSetu.from('evionex_doctor_patients').select('*, evionex_patients(patient_id, gender, blood_group, evionex_profiles(full_name))').eq('doctor_id', user.id),
-            supabaseGeneSetu.from('evionex_connection_requests').select('*, evionex_patients(patient_id, evionex_profiles(full_name))').eq('doctor_id', user.id).eq('status', 'pending').order('created_at', { ascending: false }),
-            supabaseGeneSetu.from('evionex_doctor_institution_requests')
+            supabaseEviolife.from('evionex_doctors').select('*').eq('id', user.id).single(),
+            supabaseEviolife.from('evionex_doctor_patients').select('*, evionex_patients(patient_id, gender, blood_group, evionex_profiles(full_name))').eq('doctor_id', user.id),
+            supabaseEviolife.from('evionex_connection_requests').select('*, evionex_patients(patient_id, evionex_profiles(full_name))').eq('doctor_id', user.id).eq('status', 'pending').order('created_at', { ascending: false }),
+            supabaseEviolife.from('evionex_doctor_institution_requests')
                 .select('*, evionex_institutions(id, institution_code, institution_id, name, phone, website)')
                 .eq('doctor_id', user.id)
                 .order('created_at', { ascending: false }),
@@ -1435,11 +1435,11 @@ function DoctorView({ tab, user, profile }) {
         setRespondingId(request.id)
         try {
             // 1. Update request status
-            await supabaseGeneSetu.from('evionex_connection_requests').update({ status: 'accepted', responded_at: new Date().toISOString() }).eq('id', request.id)
+            await supabaseEviolife.from('evionex_connection_requests').update({ status: 'accepted', responded_at: new Date().toISOString() }).eq('id', request.id)
             // 2. Insert into doctor_patients junction table
-            await supabaseGeneSetu.from('evionex_doctor_patients').insert({ doctor_id: user.id, patient_id: request.patient_id })
+            await supabaseEviolife.from('evionex_doctor_patients').insert({ doctor_id: user.id, patient_id: request.patient_id })
             // 3. Create notification for the patient
-            await supabaseGeneSetu.from('evionex_notifications').insert({
+            await supabaseEviolife.from('evionex_notifications').insert({
                 user_id: request.patient_id,
                 type: 'connection_accepted',
                 title: 'Connection Accepted',
@@ -1454,8 +1454,8 @@ function DoctorView({ tab, user, profile }) {
     async function handleReject(request) {
         setRespondingId(request.id)
         try {
-            await supabaseGeneSetu.from('evionex_connection_requests').update({ status: 'rejected', responded_at: new Date().toISOString() }).eq('id', request.id)
-            await supabaseGeneSetu.from('evionex_notifications').insert({
+            await supabaseEviolife.from('evionex_connection_requests').update({ status: 'rejected', responded_at: new Date().toISOString() }).eq('id', request.id)
+            await supabaseEviolife.from('evionex_notifications').insert({
                 user_id: request.patient_id,
                 type: 'connection_rejected',
                 title: 'Connection Declined',
@@ -1476,7 +1476,7 @@ function DoctorView({ tab, user, profile }) {
     async function handleDisconnectPatient(patUuid, patientName) {
         if (!window.confirm(`Are you sure you want to disconnect from ${patientName || 'this patient'}?`)) return
         try {
-            await supabaseGeneSetu.from('evionex_doctor_patients').delete().eq('doctor_id', user.id).eq('patient_id', patUuid)
+            await supabaseEviolife.from('evionex_doctor_patients').delete().eq('doctor_id', user.id).eq('patient_id', patUuid)
             await loadData()
         } catch (e) { alert('Failed to disconnect: ' + e.message) }
     }
@@ -1486,14 +1486,14 @@ function DoctorView({ tab, user, profile }) {
         if (!input) return
         setSendingInstRequest(true); setInstSearchError('')
         // Try by institution_code first (e.g. EVX-INST-XXXXX), then by institution_id field
-        const { data: byCode } = await supabaseGeneSetu.from('evionex_institutions').select('id').eq('institution_code', input.toUpperCase()).single()
-        const { data: byInstId } = !byCode ? await supabaseGeneSetu.from('evionex_institutions').select('id').eq('institution_id', input).single() : { data: null }
+        const { data: byCode } = await supabaseEviolife.from('evionex_institutions').select('id').eq('institution_code', input.toUpperCase()).single()
+        const { data: byInstId } = !byCode ? await supabaseEviolife.from('evionex_institutions').select('id').eq('institution_id', input).single() : { data: null }
         const institution = byCode || byInstId
         if (!institution) {
             setInstSearchError('Institution not found. Please check the code or ID and try again.')
             setSendingInstRequest(false); return
         }
-        const { error } = await supabaseGeneSetu.from('evionex_doctor_institution_requests').insert({ doctor_id: user.id, institution_id: institution.id })
+        const { error } = await supabaseEviolife.from('evionex_doctor_institution_requests').insert({ doctor_id: user.id, institution_id: institution.id })
         if (error) {
             if (error.code === '23505') setInstSearchError('You already have a pending or accepted connection with this institution.')
             else setInstSearchError('Failed to send request: ' + error.message)
@@ -1506,7 +1506,7 @@ function DoctorView({ tab, user, profile }) {
 
     async function withdrawInstitutionRequest(requestId) {
         if (!window.confirm('Withdraw this connection request?')) return
-        await supabaseGeneSetu.from('evionex_doctor_institution_requests').delete().eq('id', requestId)
+        await supabaseEviolife.from('evionex_doctor_institution_requests').delete().eq('id', requestId)
         await loadData()
     }
 
@@ -1533,7 +1533,7 @@ function DoctorView({ tab, user, profile }) {
                     <div className="form-group"><label className="form-label">License Number</label><input className="form-input" value={form.license_number} readOnly={!editMode} onChange={e => setForm(f => ({ ...f, license_number: e.target.value }))} placeholder={editMode ? 'Medical license' : 'Not set'} /></div>
                     <div className="form-group"><label className="form-label">Experience (years)</label><input className="form-input" type="number" value={form.experience_years} readOnly={!editMode} onChange={e => setForm(f => ({ ...f, experience_years: e.target.value }))} /></div>
                 </div>
-                {editMode && <div className="profile-actions"><button className="btn btn--sm btn--ghost" onClick={() => setEditMode(false)}>Cancel</button><button className="btn btn--sm btn-primary" disabled={saving} onClick={async () => { setSaving(true); await supabaseGeneSetu.from('evionex_doctors').update({ specialization: form.specialization || null, license_number: form.license_number || null, experience_years: form.experience_years ? parseInt(form.experience_years) : null }).eq('id', user.id); setSaving(false); setEditMode(false) }}>{saving ? 'Saving...' : 'Save Changes'}</button></div>}
+                {editMode && <div className="profile-actions"><button className="btn btn--sm btn--ghost" onClick={() => setEditMode(false)}>Cancel</button><button className="btn btn--sm btn-primary" disabled={saving} onClick={async () => { setSaving(true); await supabaseEviolife.from('evionex_doctors').update({ specialization: form.specialization || null, license_number: form.license_number || null, experience_years: form.experience_years ? parseInt(form.experience_years) : null }).eq('id', user.id); setSaving(false); setEditMode(false) }}>{saving ? 'Saving...' : 'Save Changes'}</button></div>}
             </div>
         </>
     )
@@ -1687,8 +1687,8 @@ function InstitutionView({ tab, user }) {
 
     async function loadData() {
         const [{ data: inst }, { data: allReqs }] = await Promise.all([
-            supabaseGeneSetu.from('evionex_institutions').select('*').eq('id', user.id).single(),
-            supabaseGeneSetu.from('evionex_doctor_institution_requests')
+            supabaseEviolife.from('evionex_institutions').select('*').eq('id', user.id).single(),
+            supabaseEviolife.from('evionex_doctor_institution_requests')
                 .select('*, evionex_doctors(id, doctor_id, specialization, experience_years, license_number, evionex_profiles(full_name))')
                 .eq('institution_id', user.id)
                 .order('created_at', { ascending: false }),
@@ -1703,7 +1703,7 @@ function InstitutionView({ tab, user }) {
         const allDoctorIds = accepted.map(r => r.doctor_id).filter(Boolean)
 
         if (allDoctorIds.length > 0) {
-            const { data: patRows } = await supabaseGeneSetu
+            const { data: patRows } = await supabaseEviolife
                 .from('evionex_doctor_patients')
                 .select('doctor_id')
                 .in('doctor_id', allDoctorIds)
@@ -1721,12 +1721,12 @@ function InstitutionView({ tab, user }) {
     async function handleAcceptDoctor(req) {
         setRespondingId(req.id)
         try {
-            await supabaseGeneSetu
+            await supabaseEviolife
                 .from('evionex_doctor_institution_requests')
                 .update({ status: 'accepted', responded_at: new Date().toISOString() })
                 .eq('id', req.id)
             // Notify the doctor
-            await supabaseGeneSetu.from('evionex_notifications').insert({
+            await supabaseEviolife.from('evionex_notifications').insert({
                 user_id: req.doctor_id,
                 type: 'connection_accepted',
                 title: 'Institution Connection Accepted',
@@ -1741,11 +1741,11 @@ function InstitutionView({ tab, user }) {
     async function handleRejectDoctor(req) {
         setRespondingId(req.id)
         try {
-            await supabaseGeneSetu
+            await supabaseEviolife
                 .from('evionex_doctor_institution_requests')
                 .update({ status: 'rejected', responded_at: new Date().toISOString() })
                 .eq('id', req.id)
-            await supabaseGeneSetu.from('evionex_notifications').insert({
+            await supabaseEviolife.from('evionex_notifications').insert({
                 user_id: req.doctor_id,
                 type: 'connection_rejected',
                 title: 'Institution Connection Declined',
@@ -1896,7 +1896,7 @@ function EmployeeView({ tab, user, profile }) {
     const [passwordSuccess, setPasswordSuccess] = useState('')
 
     async function loadDetails() {
-        const { data } = await supabaseGeneSetu
+        const { data } = await supabaseEviolife
             .from('evionex_employees')
             .select('*')
             .eq('id', user.id)
@@ -1921,7 +1921,7 @@ function EmployeeView({ tab, user, profile }) {
 
     async function handleSave() {
         setSaving(true); setSaved(false)
-        await supabaseGeneSetu.from('evionex_employees').update({
+        await supabaseEviolife.from('evionex_employees').update({
             aadhaar_encrypted: form.aadhaar_encrypted || null,
             pan_encrypted: form.pan_encrypted || null,
             phone: form.phone || null,
@@ -1941,12 +1941,12 @@ function EmployeeView({ tab, user, profile }) {
             setPasswordError('Passwords do not match.')
             setChangingPassword(false); return
         }
-        const { error } = await supabaseGeneSetu.auth.updateUser({ password: passwordForm.newPassword })
+        const { error } = await supabaseEviolife.auth.updateUser({ password: passwordForm.newPassword })
         if (error) {
             setPasswordError(error.message)
         } else {
             // Mark first login complete — password has been changed once
-            await supabaseGeneSetu.from('evionex_employees').update({
+            await supabaseEviolife.from('evionex_employees').update({
                 first_login_complete: true,
             }).eq('id', user.id)
             setEmployeeDetails(prev => ({ ...(prev || {}), first_login_complete: true }))

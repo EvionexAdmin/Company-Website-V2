@@ -2,7 +2,7 @@
 *Last Updated: April 21, 2026*
 
 ## 1. Introduction
-Gene Setu ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our mobile application and services.
+Eviolife ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our mobile application and services.
 
 ## 2. Information We Collect
 We collect information that you provide directly to us when you create an account, use our health tracking features, or communicate with us.

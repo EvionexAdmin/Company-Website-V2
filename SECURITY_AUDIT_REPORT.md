@@ -2,7 +2,7 @@
 
 **Date:** March 9, 2026  
 **Scope:** Full-stack security audit — React frontend, Supabase backend (PostgreSQL, Edge Functions, Auth, Storage), Razorpay payment integration, Cloudflare Turnstile CAPTCHA  
-**Project:** Gene Setu (`bpcprnncbdjjxzqpumzy`, ap-south-1) + Evionex Website (`wepnxeuklvvddgrlezyd`, ap-southeast-2)
+**Project:** Eviolife (`bpcprnncbdjjxzqpumzy`, ap-south-1) + Evionex Website (`wepnxeuklvvddgrlezyd`, ap-southeast-2)
 
 ---
 
@@ -65,16 +65,16 @@ A comprehensive security audit was performed across all application code, Supaba
 
 ### C5: Wrong Supabase Client in Payment Utility [CRITICAL]
 
-**Vulnerability:** `src/utils/razorpay.js` imported `supabase` from `supabaseClient.js` (Evionex Website project) but the payment Edge Functions are deployed on the Gene Setu project. All `functions.invoke()` calls would fail or route to the wrong project.
+**Vulnerability:** `src/utils/razorpay.js` imported `supabase` from `supabaseClient.js` (Evionex Website project) but the payment Edge Functions are deployed on the Eviolife project. All `functions.invoke()` calls would fail or route to the wrong project.
 
 **File Modified:** `src/utils/razorpay.js`
 
 **Changes:**
 ```diff
 - import { supabase } from '../lib/supabaseClient'
-+ import { supabaseGeneSetu } from '../lib/supabaseGeneSetu'
++ import { supabaseEviolife } from '../lib/supabaseEviolife'
 ```
-Updated both `supabase.functions.invoke()` calls to `supabaseGeneSetu.functions.invoke()`.
+Updated both `supabase.functions.invoke()` calls to `supabaseEviolife.functions.invoke()`.
 
 ---
 
@@ -100,7 +100,7 @@ Updated both `supabase.functions.invoke()` calls to `supabaseGeneSetu.functions.
 
 **Changes:** Replaced all instances with:
 ```js
-`${import.meta.env.VITE_GENE_SETU_SUPABASE_URL}/functions/v1/...`
+`${import.meta.env.VITE_EVIOLIFE_SUPABASE_URL}/functions/v1/...`
 ```
 
 ---
@@ -203,14 +203,14 @@ const sanitized = file.name
 
 ### L2: Dual Supabase Client Confusion [LOW]
 
-**Vulnerability:** Two Supabase client files (`supabaseClient.js` and `supabaseGeneSetu.js`) existed without documentation, leading to the wrong client being used in `razorpay.js` (C5).
+**Vulnerability:** Two Supabase client files (`supabaseClient.js` and `supabaseEviolife.js`) existed without documentation, leading to the wrong client being used in `razorpay.js` (C5).
 
 **File Modified:** `src/lib/supabaseClient.js`
 
 **Changes:** Added clarifying comments and null-safety:
 ```js
 // "Evionex Website" project — used by Contact & Careers pages (orders/payments).
-// For the "Gene Setu" healthcare project, use supabaseGeneSetu.js instead.
+// For the "Eviolife" healthcare project, use supabaseEviolife.js instead.
 ```
 Added `if (!supabaseUrl || !supabaseAnonKey)` warning and safe fallback to empty strings.
 
@@ -292,7 +292,7 @@ Zero compile/lint errors across the entire project after all changes.
 
 ### Enable Leaked Password Protection
 
-1. Go to **Supabase Dashboard** → Gene Setu project
+1. Go to **Supabase Dashboard** → Eviolife project
 2. Navigate to **Authentication** → **Providers** → **Email**
 3. Enable **"Leaked password protection"**
 4. This checks new passwords against the HaveIBeenPwned database
