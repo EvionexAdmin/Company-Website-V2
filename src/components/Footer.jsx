@@ -71,6 +71,7 @@ export default function Footer() {
                         <div className="footer__legal-links">
                             <Link to="/terms">Terms of Use</Link>
                             <Link to="/privacy-policy">Privacy Policy</Link>
+                            <a href="/delete-account/">Account Deletion</a>
                         </div>
                     </div>
                 </div>

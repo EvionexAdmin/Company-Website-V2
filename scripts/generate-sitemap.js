@@ -49,6 +49,7 @@ const routes = [
   { path: '/pricing',               src: 'src/pages/Pricing.jsx',        changefreq: 'weekly',  priority: '0.8' },
   { path: '/privacy-policy',        src: 'src/pages/PrivacyPolicy.jsx',  changefreq: 'yearly',  priority: '0.4' },
   { path: '/terms',                 src: 'src/pages/TermsOfUse.jsx',     changefreq: 'yearly',  priority: '0.4' },
+  { path: '/delete-account/',       src: 'public/delete-account/index.html', changefreq: 'yearly', priority: '0.4' },
 ]
 
 const urlEntries = routes
