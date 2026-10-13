@@ -1,14 +1,10 @@
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabaseEviolife } from '../lib/supabaseEviolife'
 import eviolifeMockup from '../assets/images/products/eviolife-mockup.png'
 import './Subscription.css'
 
-const SOUTH_ASIA_COUNTRIES = ['IN', 'PK', 'BD', 'LK', 'NP', 'MV', 'BT', 'AF']
-
-// Timezones for South Asian countries — used as primary region detection
-// (instant, no network call, works on all devices)
 const SOUTH_ASIA_TIMEZONES = [
     'Asia/Kolkata', 'Asia/Calcutta',   // India
     'Asia/Karachi',                     // Pakistan
@@ -63,16 +59,33 @@ const featureItems = [
 ]
 
 const reassuranceItems = [
-    'Billed monthly',
     'Cancel anytime',
     'Secure checkout',
+    'Premium health features',
 ]
 
 const formatCurrency = (currency, amount) => {
-    if (currency === 'INR') {
-        return `₹${Math.round(amount).toLocaleString('en-IN')}`
-    }
-    return `$${amount.toFixed(2)}`
+    return new Intl.NumberFormat(currency === 'INR' ? 'en-IN' : 'en-US', {
+        style: 'currency',
+        currency,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+    }).format(amount)
+}
+
+const PLAN_PRICES = {
+    INR: {
+        weeklyReference: 12,
+        monthlyCharge: 52,
+        yearlyCharge: 499,
+        yearlyRegularPrice: 624,
+    },
+    USD: {
+        weeklyReference: 1.5,
+        monthlyCharge: 6.5,
+        yearlyCharge: 63,
+        yearlyRegularPrice: 78,
+    },
 }
 
 /** Dynamically loads the Razorpay checkout.js script exactly once */
@@ -98,11 +111,20 @@ export default function Subscription() {
     const [processing, setProcessing] = useState(false)
     const [error, setError] = useState(null)
     const [subscribed, setSubscribed] = useState(false)
-    const [streak, setStreak] = useState(0)
+    const [planType, setPlanType] = useState('monthly')
+    const [couponCode, setCouponCode] = useState('')
+    const [coupon, setCoupon] = useState(null)
+    const [couponMessage, setCouponMessage] = useState('')
+    const [couponLoading, setCouponLoading] = useState(false)
+    const [subscriptionId, setSubscriptionId] = useState(null)
+    const [cancelAt, setCancelAt] = useState(null)
+    const [cancelScheduled, setCancelScheduled] = useState(false)
+    const [cancelling, setCancelling] = useState(false)
+    const [paymentPending, setPaymentPending] = useState(false)
     const [priceData, setPriceData] = useState({
-        currency: 'USD',
-        amount: 4,
-        symbol: '$',
+        currency: isSouthAsiaByTimezone() ? 'INR' : 'USD',
+        amount: 0,
+        symbol: '',
         regionLabel: 'Global pricing',
     })
 
@@ -123,57 +145,41 @@ export default function Subscription() {
             if (!user) return
 
             try {
-                const [locationResult, profileResult] = await Promise.allSettled([
-                    fetch('https://ipapi.co/json/'),
-                    supabaseEviolife
-                        .from('profiles')
-                        .select('current_streak, is_premium, subscription_tier')
-                        .eq('id', user.id)
-                        .single(),
-                ])
-
-                let currency = 'USD'
-                let amount = 4
-                let symbol = '$'
-                let regionLabel = 'Global pricing'
-
-                // Primary: instant timezone-based detection (no network, no rate limits)
-                if (isSouthAsiaByTimezone()) {
-                    currency = 'INR'
-                    amount = 38
-                    symbol = '₹'
-                    regionLabel = 'South Asia pricing'
-                } else {
-                    // Fallback: IP-based geo lookup
-                    if (locationResult.status === 'fulfilled') {
-                        try {
-                            const locationData = await locationResult.value.json()
-                            if (locationData?.country_code && SOUTH_ASIA_COUNTRIES.includes(locationData.country_code)) {
-                                currency = 'INR'
-                                amount = 38
-                                symbol = '₹'
-                                regionLabel = 'South Asia pricing'
-                            }
-                        } catch {
-                            // Keep global fallback if geo lookup fails
-                        }
-                    }
-                }
-
+                const currency = isSouthAsiaByTimezone() ? 'INR' : 'USD'
                 if (isMounted) {
-                    setPriceData({ currency, amount, symbol, regionLabel })
+                    setPriceData({
+                        currency,
+                        amount: 0,
+                        symbol: currency === 'INR' ? '₹' : '$',
+                        regionLabel: currency === 'INR' ? 'South Asia pricing' : 'Global pricing',
+                    })
                 }
 
-                if (profileResult.status === 'fulfilled' && !profileResult.value.error) {
-                    const profileData = profileResult.value.data
-                    const nextStreak = profileData?.current_streak || 0
-                    if (isMounted) {
-                        setStreak(nextStreak)
-                        // Already premium — show success state immediately
-                        if (profileData?.is_premium && profileData?.subscription_tier === 'premium') {
-                            setSubscribed(true)
-                        }
-                    }
+                const { data: profileData, error: profileError } = await supabaseEviolife
+                    .from('profiles')
+                    .select('is_premium, subscription_tier')
+                    .eq('id', user.id)
+                    .maybeSingle()
+
+                if (profileError) throw profileError
+                if (isMounted && profileData?.is_premium && profileData?.subscription_tier === 'premium') {
+                    setSubscribed(true)
+                }
+
+                const { data: subscription, error: subscriptionError } = await supabaseEviolife
+                    .from('subscriptions')
+                    .select('razorpay_subscription_id, current_period_end, cancel_at_period_end')
+                    .eq('user_id', user.id)
+                    .in('status', ['authenticated', 'active'])
+                    .order('created_at', { ascending: false })
+                    .limit(1)
+                    .maybeSingle()
+
+                if (subscriptionError) throw subscriptionError
+                if (isMounted && subscription) {
+                    setCancelScheduled(Boolean(subscription.cancel_at_period_end))
+                    setSubscriptionId(subscription.cancel_at_period_end ? null : subscription.razorpay_subscription_id)
+                    setCancelAt(subscription.current_period_end)
                 }
             } catch (err) {
                 console.error('Error loading subscription details:', err)
@@ -191,20 +197,75 @@ export default function Subscription() {
         }
     }, [user])
 
-    const hasDiscount = streak >= 30
-    const finalAmount = hasDiscount ? priceData.amount * 0.8 : priceData.amount
+    const selectedPlanPrice = PLAN_PRICES[priceData.currency]
+    const primaryPrice = planType === 'monthly'
+        ? `${formatCurrency(priceData.currency, selectedPlanPrice.weeklyReference)}/week`
+        : formatCurrency(priceData.currency, selectedPlanPrice.yearlyCharge)
+    const originalPrice = planType === 'yearly'
+        ? formatCurrency(priceData.currency, selectedPlanPrice.yearlyRegularPrice)
+        : null
 
-    const primaryPrice = useMemo(
-        () => formatCurrency(priceData.currency, finalAmount),
-        [priceData.currency, finalAmount]
-    )
-    const originalPrice = useMemo(
-        () => formatCurrency(priceData.currency, priceData.amount),
-        [priceData.currency, priceData.amount]
-    )
+    const handleApplyCoupon = useCallback(async () => {
+        const normalizedCode = couponCode.trim().toUpperCase()
+        if (!normalizedCode) {
+            setCoupon(null)
+            setCouponMessage('Enter a coupon code.')
+            return
+        }
+        if (priceData.currency !== 'INR') {
+            setCoupon(null)
+            setCouponMessage('Coupons are currently available for INR subscriptions only.')
+            return
+        }
+
+        setCouponLoading(true)
+        setCouponMessage('')
+        try {
+            const { data, error: couponError } = await supabaseEviolife.functions.invoke(
+                'validate-subscription-coupon',
+                { body: { code: normalizedCode, planType, currency: priceData.currency } }
+            )
+            if (couponError) throw couponError
+            if (!data?.valid) throw new Error(data?.error || 'This coupon is not available.')
+            setCoupon(data)
+            setCouponCode(normalizedCode)
+            setCouponMessage(`${data.discountPercent}% off your first invoice.`)
+        } catch (err) {
+            setCoupon(null)
+            setCouponMessage(err.message || 'Could not validate this coupon.')
+        } finally {
+            setCouponLoading(false)
+        }
+    }, [couponCode, planType, priceData.currency])
+
+    const handleCancelSubscription = useCallback(async () => {
+        if (!subscriptionId || !session) return
+        setCancelling(true)
+        setError(null)
+        try {
+            const { data, error: cancelError } = await supabaseEviolife.functions.invoke(
+                'cancel-razorpay-subscription',
+                { body: { subscriptionId } }
+            )
+            if (cancelError) throw cancelError
+            if (!data?.success) throw new Error(data?.error || 'Unable to cancel your subscription.')
+            setCancelAt(data.cancelAt || null)
+            setCancelScheduled(true)
+            setSubscriptionId(null)
+            setSubscribed(true)
+        } catch (err) {
+            setError(err.message || 'Unable to cancel your subscription.')
+        } finally {
+            setCancelling(false)
+        }
+    }, [subscriptionId, session])
 
     const handleSubscribe = useCallback(async () => {
         if (!user || !session) return
+        if (couponCode.trim() && coupon?.code !== couponCode.trim().toUpperCase()) {
+            setError('Apply the coupon before starting checkout, or remove the coupon code.')
+            return
+        }
         setProcessing(true)
         setError(null)
 
@@ -215,7 +276,7 @@ export default function Subscription() {
                 throw new Error('Failed to load payment gateway. Please check your connection.')
             }
 
-            // 2. Create subscription server-side (streak verified server-side to prevent tampering)
+            // Plan prices and coupon eligibility are validated by the server.
             const accessToken = session.access_token
             const createRes = await fetch(`${SUPABASE_FUNCTIONS_URL}/create-razorpay-subscription`, {
                 method: 'POST',
@@ -223,7 +284,11 @@ export default function Subscription() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`,
                 },
-                body: JSON.stringify({ currency: priceData.currency }),
+                body: JSON.stringify({
+                    currency: priceData.currency,
+                    planType,
+                    couponCode: coupon?.code || null,
+                }),
             })
 
             const createData = await createRes.json()
@@ -240,12 +305,12 @@ export default function Subscription() {
             const { subscription_id, key_id } = createData
 
             // 3. Open Razorpay checkout modal
-            await new Promise((resolve, reject) => {
+            const verification = await new Promise((resolve, reject) => {
                 const options = {
                     key: key_id,
                     subscription_id,
                     name: 'Eviolife',
-                    description: 'Eviolife Premium — Monthly',
+                    description: `Eviolife Premium — ${planType === 'monthly' ? 'Monthly' : 'Yearly'}`,
                     image: 'https://www.evionex.com/favicon.ico',
                     prefill: {
                         email: user.email || '',
@@ -262,27 +327,21 @@ export default function Subscription() {
                     handler: async (response) => {
                         try {
                             // 4. Verify HMAC signature server-side
-                            const verifyRes = await fetch(`${SUPABASE_FUNCTIONS_URL}/verify-razorpay-payment`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${accessToken}`,
-                                },
-                                body: JSON.stringify({
+                            const { data: verifyData, error: verifyError } = await supabaseEviolife.functions.invoke(
+                                'verify-razorpay-subscription',
+                                { body: {
                                     razorpay_payment_id: response.razorpay_payment_id,
                                     razorpay_subscription_id: response.razorpay_subscription_id,
                                     razorpay_signature: response.razorpay_signature,
-                                }),
-                            })
+                                } }
+                            )
 
-                            const verifyData = await verifyRes.json()
-
-                            if (!verifyRes.ok || !verifyData.success) {
-                                reject(new Error(verifyData?.message || 'Payment verification failed.'))
+                            if (verifyError || !verifyData?.success) {
+                                reject(new Error(verifyData?.error || verifyError?.message || 'Payment verification failed.'))
                                 return
                             }
 
-                            resolve()
+                            resolve(verifyData)
                         } catch (err) {
                             reject(err)
                         }
@@ -297,6 +356,7 @@ export default function Subscription() {
             })
 
             // 5. Verified — show premium success state
+            setPaymentPending(verification?.status !== 'active')
             setSubscribed(true)
 
         } catch (err) {
@@ -309,7 +369,7 @@ export default function Subscription() {
         } finally {
             setProcessing(false)
         }
-    }, [user, session, priceData.currency])
+    }, [user, session, priceData.currency, planType, coupon, couponCode])
 
     if (loading || !user) {
         return (
@@ -361,22 +421,73 @@ export default function Subscription() {
 
                         <div className="subscription-price-block">
                             <p className="subscription-price-block__label">{priceData.regionLabel}</p>
+                            <div className="subscription-plan-options" role="group" aria-label="Billing period">
+                                <button
+                                    type="button"
+                                    className={`subscription-plan-option${planType === 'monthly' ? ' is-selected' : ''}`}
+                                    aria-pressed={planType === 'monthly'}
+                                    onClick={() => { setPlanType('monthly'); setCoupon(null); setCouponMessage('') }}
+                                >
+                                    Monthly
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`subscription-plan-option${planType === 'yearly' ? ' is-selected' : ''}`}
+                                    aria-pressed={planType === 'yearly'}
+                                    onClick={() => { setPlanType('yearly'); setCoupon(null); setCouponMessage('') }}
+                                >
+                                    Yearly · save ~20%
+                                </button>
+                            </div>
                             <div className="subscription-price-block__price">
                                 <span className="subscription-price-block__value">
-                                    {hasDiscount ? primaryPrice : originalPrice}
+                                    {primaryPrice}
                                 </span>
-                                <span className="subscription-price-block__term">/ month</span>
+                                <span className="subscription-price-block__term">
+                                    {planType === 'monthly' ? ' reference price' : '/ year'}
+                                </span>
                             </div>
 
-                            {hasDiscount ? (
-                                <p className="subscription-price-block__discount subscription-price-block__discount--active">
-                                    🔥 20% streak discount applied — {streak}-day nutri-logging streak.
+                            {planType === 'monthly' ? (
+                                <p className="subscription-price-block__discount">
+                                    The subscription total and monthly renewal terms are shown before payment.
                                 </p>
                             ) : (
                                 <p className="subscription-price-block__discount">
-                                    Start at the monthly rate shown above. Streak rewards unlock automatically at renewal.
+                                    <s>{originalPrice}</s> — about 20% less than paying monthly.
                                 </p>
                             )}
+
+                            <div className="subscription-coupon">
+                                <label htmlFor="subscription-coupon">Coupon code</label>
+                                <div className="subscription-coupon__row">
+                                    <input
+                                        id="subscription-coupon"
+                                        type="text"
+                                        value={couponCode}
+                                        onChange={(event) => {
+                                            setCouponCode(event.target.value)
+                                            setCoupon(null)
+                                            setCouponMessage('')
+                                        }}
+                                        autoComplete="off"
+                                        maxLength={64}
+                                        placeholder="Enter coupon"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleApplyCoupon}
+                                        disabled={couponLoading || priceData.currency !== 'INR'}
+                                    >
+                                        {couponLoading ? 'Checking…' : 'Apply'}
+                                    </button>
+                                </div>
+                                {couponMessage && (
+                                    <p className={coupon ? 'subscription-coupon__message is-valid' : 'subscription-coupon__message'} role="status">
+                                        {couponMessage}
+                                    </p>
+                                )}
+                            </div>
                         </div>
 
                         <ul className="subscription-feature-list">
@@ -398,17 +509,39 @@ export default function Subscription() {
                                         <path d="M20 6L9 17l-5-5" />
                                     </svg>
                                 </div>
-                                <p className="subscription-success-state__title">You&apos;re now Premium</p>
-                                <p className="subscription-success-state__sub">
-                                    Your Eviolife subscription is active. Open the app to unlock all features.
+                                <p className="subscription-success-state__title">
+                                    {cancelScheduled
+                                        ? 'Cancellation scheduled'
+                                        : paymentPending ? 'Payment authorization received' : 'You’re now Premium'}
                                 </p>
-                                <button
-                                    type="button"
-                                    className="subscription-cta subscription-cta--secondary"
-                                    onClick={() => navigate('/portal/dashboard')}
-                                >
-                                    Go to Dashboard
-                                </button>
+                                <p className="subscription-success-state__sub">
+                                    {cancelScheduled
+                                        ? cancelAt
+                                            ? `Your plan is set to end on ${new Date(cancelAt).toLocaleDateString()}.`
+                                            : 'Your plan will remain active through the current billing period.'
+                                        : paymentPending
+                                            ? 'Razorpay is completing subscription activation. Premium access begins after the payment is confirmed.'
+                                            : 'Your Eviolife subscription is active. Open the app to unlock all features.'}
+                                </p>
+                                {error && <p className="subscription-error" role="alert">{error}</p>}
+                                {subscriptionId ? (
+                                    <button
+                                        type="button"
+                                        className="subscription-cta subscription-cta--secondary"
+                                        onClick={handleCancelSubscription}
+                                        disabled={cancelling}
+                                    >
+                                        {cancelling ? 'Cancelling…' : 'Cancel subscription'}
+                                    </button>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        className="subscription-cta subscription-cta--secondary"
+                                        onClick={() => navigate('/portal/dashboard')}
+                                    >
+                                        Go to Dashboard
+                                    </button>
+                                )}
                             </div>
                         ) : (
                             <>
@@ -431,11 +564,16 @@ export default function Subscription() {
                         )}
 
                         <p className="subscription-cta-note">
-                            Billed monthly. Cancel anytime. Secure checkout powered by Razorpay.
+                            {planType === 'monthly'
+                                ? `You will be charged ${formatCurrency(priceData.currency, selectedPlanPrice.monthlyCharge)} now and every month until cancelled.`
+                                : `You will be charged ${formatCurrency(priceData.currency, selectedPlanPrice.yearlyCharge)} now and every year until cancelled.`}
+                            {coupon && ` Your coupon applies ${coupon.discountPercent}% off the first invoice only.`}
+                        {' '}Razorpay bills subscriptions for up to 100 cycles; you can cancel before renewal.
+                        {' '}Secure checkout powered by Razorpay.
                         </p>
 
                         <div className="subscription-cta-row" aria-label="Subscription details">
-                            <span>Monthly billing</span>
+                            <span>{planType === 'monthly' ? 'Renews monthly' : 'Renews yearly'}</span>
                             <span>Instant access after payment</span>
                         </div>
                     </aside>

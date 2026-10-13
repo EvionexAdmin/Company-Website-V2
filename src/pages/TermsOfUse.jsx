@@ -123,6 +123,21 @@ export default function TermsOfUse() {
                                 given by a practitioner.
                             </li>
                         </ul>
+
+                        <h3 className="policy-subsection__title">Eviolife Premium subscriptions</h3>
+                        <p>
+                            The monthly plan is priced at ₹52 per month in INR or $6.50 per month in USD. Weekly
+                            amounts shown on the subscription page are reference prices only; the monthly charge is
+                            disclosed before payment. The yearly plan is ₹499 per year or $63 per year, shown with
+                            the applicable annual savings.
+                        </p>
+                        <p>
+                            Plans renew automatically for up to 100 billing cycles unless cancelled. You can request
+                            cancellation from the subscription page; a cancellation scheduled through Razorpay keeps
+                            access through the current paid period. A valid 30% or 50% coupon may be applied only to
+                            the first invoice of an INR subscription. Coupon availability and offer terms are shown
+                            before payment. Payments are processed by Razorpay.
+                        </p>
                     </div>
 
                     {/* 7. Healthcare Provider Listings and Advertising */}
