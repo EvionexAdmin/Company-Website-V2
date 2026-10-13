@@ -13,7 +13,7 @@ Razorpay requires `total_count` when creating a subscription. This checkout curr
 
 ## Coupon offers
 
-Coupons are checked against active entries in `public.promo_codes`. Only percentage discounts of exactly 30% or 50% are accepted, and coupon redemption is INR-only. Create a Razorpay Subscription Offer for each applicable plan/discount in the Razorpay Dashboard and configure that offer as a single-use/first-cycle offer.
+Coupons are checked against active entries in `public.promo_codes`. Only percentage discounts of exactly 30% or 50% are accepted, and coupon redemption is INR-only. Usage counts increment once after the first subscription payment is confirmed. Create a Razorpay Subscription Offer for each applicable plan/discount in the Razorpay Dashboard and configure that offer as a single-use/first-cycle offer.
 
 Add the corresponding Offer IDs to Supabase Function secrets:
 

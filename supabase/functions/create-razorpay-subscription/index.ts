@@ -80,6 +80,7 @@ Deno.serve(async (req: Request) => {
     const { error: insertError } = await db.from("subscriptions").insert({
       user_id: user.id,
       razorpay_subscription_id: subscription.id,
+      plan_id: planId,
       plan_name: `premium_${planType}`,
       plan_type: planType,
       currency,

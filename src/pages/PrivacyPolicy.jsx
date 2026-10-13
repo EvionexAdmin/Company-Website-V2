@@ -9,7 +9,7 @@ export default function PrivacyPolicy() {
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">Legal</span>
                         <h1>Privacy <span className="text-gradient">Policy</span></h1>
-                        <p>Last Updated: March 2026 &nbsp;|&nbsp; Version 1.0</p>
+                        <p>Last Updated: October 13, 2026 &nbsp;|&nbsp; Version 1.1</p>
                     </div>
                 </div>
             </section>
@@ -63,10 +63,10 @@ export default function PrivacyPolicy() {
 
                         <h3 className="policy-subsection__title">1.3 Acceptance of This Policy</h3>
                         <p>
-                            By accessing our Website, registering an account, using any of our platforms or applications,
-                            or availing our Services, you acknowledge that you have read, understood, and consent to the
-                            practices described in this Privacy Policy. If you do not agree with this Policy, you must
-                            immediately discontinue the use of our Services.
+                            This Policy explains our data practices; viewing it or continuing to use a Service does not,
+                            by itself, constitute consent to every form of data processing. Where applicable law requires
+                            consent, we request it separately for the relevant purpose. You may contact us to ask questions
+                            about this Policy or exercise applicable rights.
                         </p>
                         <div className="policy-highlight">
                             <p>
@@ -699,7 +699,12 @@ export default function PrivacyPolicy() {
                         <p><strong>Minor changes:</strong> Non-material updates may be posted without prior notice. We encourage you to review this Policy periodically.</p>
 
                         <h3 className="policy-subsection__title">13.3 Continued Use After Changes</h3>
-                        <p>Your continued use of our Services after the effective date of the updated Policy constitutes your acceptance of the changes. If you do not agree with the updated Policy, you must discontinue use of our Services and may request deletion of your data.</p>
+                        <p>
+                            Continued use of a Service after an update does not, by itself, constitute consent to processing
+                            where separate consent is required by law. We will request any required consent separately and
+                            provide information about material changes through the channels described above. You may contact
+                            us with questions or to exercise applicable rights.
+                        </p>
                     </div>
 
                     {/* 14. Contact Us */}

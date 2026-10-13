@@ -33,7 +33,7 @@ Deno.serve(async (req: Request) => {
         updated_at: new Date().toISOString(),
       })
       .eq("razorpay_subscription_id", subscriptionId)
-      .select("user_id")
+      .select("user_id, coupon_code")
       .maybeSingle()
     if (updateError) throw updateError
     if (!subscription) return jsonResponse(req, { error: "Subscription record not found." }, 404)
@@ -50,6 +50,14 @@ Deno.serve(async (req: Request) => {
         .update({ is_premium: false, subscription_tier: "free" })
         .eq("id", subscription.user_id)
       if (profileError) throw profileError
+    }
+
+    if (subscription.coupon_code && ["subscription.activated", "subscription.charged"].includes(event.event)) {
+      const { error: redemptionError } = await db.rpc("record_subscription_coupon_redemption", {
+        p_code: subscription.coupon_code,
+        p_subscription_id: subscriptionId,
+      })
+      if (redemptionError) throw redemptionError
     }
 
     return jsonResponse(req, { received: true })
