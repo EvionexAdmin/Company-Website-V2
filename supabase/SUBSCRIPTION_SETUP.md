@@ -5,9 +5,9 @@ The checkout uses server-owned Razorpay plans and prices. The edge function crea
 ## Deploy
 
 1. Review and apply `migrations/20261013000000_subscription_checkout.sql` after confirming the existing `subscriptions` and `profiles` schemas.
-2. Deploy `create-razorpay-subscription`, `validate-subscription-coupon`, `verify-razorpay-subscription`, `cancel-razorpay-subscription`, and `razorpay-subscription-webhook`.
+2. Deploy `create-razorpay-subscription`, `validate-subscription-coupon`, `verify-razorpay-subscription`, `cancel-razorpay-subscription`, and `razorpay-webhook`. The webhook keeps the existing Razorpay webhook URL.
 3. Configure `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, and `ALLOWED_ORIGIN` as Supabase Function secrets. Never place secret values in source control.
-4. Register the deployed `razorpay-subscription-webhook` URL in Razorpay and enable `subscription.activated`, `subscription.charged`, `subscription.halted`, `subscription.cancelled`, and `subscription.completed`.
+4. Confirm the existing Razorpay webhook URL still points to `/functions/v1/razorpay-webhook` and enable `subscription.activated`, `subscription.charged`, `subscription.halted`, `subscription.cancelled`, and `subscription.completed`.
 
 Razorpay requires `total_count` when creating a subscription. This checkout currently creates subscriptions for up to 100 billing cycles; the user can cancel earlier from the subscription page.
 

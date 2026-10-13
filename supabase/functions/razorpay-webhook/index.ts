@@ -25,29 +25,45 @@ Deno.serve(async (req: Request) => {
     const db = getAdminClient()
     const status = String(entity.status || "unknown")
     const periodEnd = Number(entity.current_end)
+    const currentPeriodEnd = Number.isFinite(periodEnd) && periodEnd > 0
+      ? new Date(periodEnd * 1000).toISOString()
+      : null
+    const remainsPaidThroughPeriod = event.event === "subscription.cancelled" &&
+      currentPeriodEnd !== null && Date.parse(currentPeriodEnd) > Date.now()
     const { data: subscription, error: updateError } = await db
       .from("subscriptions")
       .update({
         status,
-        current_period_end: Number.isFinite(periodEnd) && periodEnd > 0 ? new Date(periodEnd * 1000).toISOString() : null,
+        current_period_end: currentPeriodEnd,
+        cancel_at_period_end: remainsPaidThroughPeriod,
         updated_at: new Date().toISOString(),
       })
       .eq("razorpay_subscription_id", subscriptionId)
-      .select("user_id, coupon_code")
+      .select("user_id, coupon_code, plan_type")
       .maybeSingle()
     if (updateError) throw updateError
     if (!subscription) return jsonResponse(req, { error: "Subscription record not found." }, 404)
 
-    if (status === "active") {
+    if (status === "active" || remainsPaidThroughPeriod) {
       const { error: profileError } = await db
         .from("profiles")
-        .update({ is_premium: true, subscription_tier: "premium" })
+        .update({
+          is_premium: true,
+          subscription_tier: "premium",
+          subscription_expiry: currentPeriodEnd,
+          updated_at: new Date().toISOString(),
+        })
         .eq("id", subscription.user_id)
       if (profileError) throw profileError
     } else if (["cancelled", "completed", "halted"].includes(status)) {
       const { error: profileError } = await db
         .from("profiles")
-        .update({ is_premium: false, subscription_tier: "free" })
+        .update({
+          is_premium: false,
+          subscription_tier: "free",
+          subscription_expiry: null,
+          updated_at: new Date().toISOString(),
+        })
         .eq("id", subscription.user_id)
       if (profileError) throw profileError
     }

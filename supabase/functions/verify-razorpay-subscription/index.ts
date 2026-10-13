@@ -50,7 +50,12 @@ Deno.serve(async (req: Request) => {
     if (razorpaySubscription.status === "active") {
       const { error: profileError } = await db
         .from("profiles")
-        .update({ is_premium: true, subscription_tier: "premium" })
+        .update({
+          is_premium: true,
+          subscription_tier: "premium",
+          subscription_expiry: updates.current_period_end,
+          updated_at: new Date().toISOString(),
+        })
         .eq("id", user.id)
       if (profileError) throw new Error("Payment verified, but premium access could not be activated.")
     }
