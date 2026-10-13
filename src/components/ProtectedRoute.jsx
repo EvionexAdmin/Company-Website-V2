@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 /**
@@ -8,6 +8,7 @@ import { useAuth } from '../contexts/AuthContext'
  */
 export default function ProtectedRoute({ children }) {
     const { user, loading, isSuspended, signOut } = useAuth()
+    const location = useLocation()
 
     // Show loading while auth state is being determined
     if (loading) {
@@ -20,7 +21,8 @@ export default function ProtectedRoute({ children }) {
 
     // No authenticated user — redirect to login
     if (!user) {
-        return <Navigate to="/portal/login" replace />
+        const redirect = `${location.pathname}${location.search}${location.hash}`
+        return <Navigate to={`/portal/login?redirect=${encodeURIComponent(redirect)}`} replace />
     }
 
     // Account suspended — force sign out and redirect

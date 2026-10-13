@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -40,6 +40,7 @@ export default function App() {
                         <Route path="products/eviolife" element={<EviolifeDetail />} />
                         <Route path="products/evinote" element={<EviNoteDetail />} />
                         <Route path="products/luminary" element={<LuminaryDetail />} />
+                        <Route path="pricing" element={<Navigate to="/subscribe/eviolife" replace />} />
                         <Route path="team" element={<Team />} />
                         <Route path="careers" element={<Careers />} />
                         <Route path="contact" element={<Contact />} />
