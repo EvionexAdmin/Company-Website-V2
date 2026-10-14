@@ -9,7 +9,7 @@ export default function PrivacyPolicy() {
                     <div className="section-header animate-fade-in-up">
                         <span className="tag">Legal</span>
                         <h1>Privacy <span className="text-gradient">Policy</span></h1>
-                        <p>Last Updated: October 13, 2026 &nbsp;|&nbsp; Version 1.1</p>
+                        <p>Last Updated: October 14, 2026 &nbsp;|&nbsp; Version 1.2</p>
                     </div>
                 </div>
             </section>
@@ -31,6 +31,13 @@ export default function PrivacyPolicy() {
                             having its registered office at DP Road, Aundh, Haveli, Pune – 411007, Maharashtra, India
                             (hereinafter referred to as "Evionex", "we", "us", or "our"), in accordance with:
                         </p>
+                        <p>
+                            This Policy specifically covers the Android mobile app listed on Google Play as
+                            <strong> Gene Setu: Your AI Health &amp; Fitness Digital Twin</strong>, with Google Play
+                            developer name <strong>Gene Setu</strong> and package ID <strong>com.evionex.genesetu</strong>.
+                            The app is now named <strong>Evio Life</strong>. These names refer to the same app and
+                            account. The app is published and operated by <strong>Evionex Private Limited</strong>.
+                        </p>
                         <ul>
                             <li>The Information Technology Act, 2000 and rules thereunder</li>
                             <li>The Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011 ("IT-SPDI Rules")</li>
@@ -41,6 +48,7 @@ export default function PrivacyPolicy() {
                         <p>This Policy describes how we collect, use, store, share, and protect your personal data when you:</p>
                         <ul>
                             <li>Visit and use our website at <a href="https://www.evionex.com" target="_blank" rel="noopener noreferrer">https://www.evionex.com</a> ("Website")</li>
+                            <li>Use our mobile app <strong>Gene Setu: Your AI Health &amp; Fitness Digital Twin</strong> (now named <strong>Evio Life</strong>)</li>
                             <li>Use our healthcare platform <strong>Eviolife</strong> (for patients, doctors, and healthcare institutions)</li>
                             <li>Use our research and laboratory management platform <strong>EviNote</strong> (for research bodies, laboratories, and principal investigators)</li>
                             <li>Use our educational platform <strong>Luminary</strong> (for universities and academic institutions)</li>

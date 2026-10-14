@@ -1,8 +1,10 @@
 # Privacy Policy
-*Last Updated: April 21, 2026*
+*Last Updated: October 14, 2026*
 
 ## 1. Introduction
-Eviolife ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our mobile application and services.
+This Privacy Policy is published by **Evionex Private Limited** (CIN: U62011PN2025PTC246808), the developer and legal entity responsible for the Android app listed on Google Play as **Gene Setu: Your AI Health & Fitness Digital Twin** (Google Play developer name: **Gene Setu**; package ID: `com.evionex.genesetu`). The app is now named **Evio Life**. Gene Setu and Evio Life refer to the same app and account.
+
+Evionex Private Limited ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use the Gene Setu (now Evio Life) mobile application and related services.
 
 ## 2. Information We Collect
 We collect information that you provide directly to us when you create an account, use our health tracking features, or communicate with us.

@@ -70,7 +70,7 @@ export default function Footer() {
                         <p>© 2026 Evionex Private Limited. All rights reserved.</p>
                         <div className="footer__legal-links">
                             <Link to="/terms">Terms of Use</Link>
-                            <Link to="/privacy-policy">Privacy Policy</Link>
+                            <a href="/privacy-policy/">Privacy Policy</a>
                             <a href="/delete-account/">Account Deletion</a>
                         </div>
                     </div>
