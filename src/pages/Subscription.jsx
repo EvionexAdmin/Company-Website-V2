@@ -198,11 +198,27 @@ export default function Subscription() {
     }, [user])
 
     const selectedPlanPrice = PLAN_PRICES[priceData.currency]
+    const discountFactor = coupon?.discountPercent ? (1 - coupon.discountPercent / 100) : 1
+    const discountedWeekly = Math.round(selectedPlanPrice.weeklyReference * discountFactor * 100) / 100
+    const discountedMonthly = Math.round(selectedPlanPrice.monthlyCharge * discountFactor * 100) / 100
+    const discountedYearly = Math.round(selectedPlanPrice.yearlyCharge * discountFactor * 100) / 100
+
     const primaryPrice = planType === 'monthly'
-        ? `${formatCurrency(priceData.currency, selectedPlanPrice.weeklyReference)}/week`
-        : formatCurrency(priceData.currency, selectedPlanPrice.yearlyCharge)
+        ? coupon?.discountPercent
+            ? `${formatCurrency(priceData.currency, discountedWeekly)}/week`
+            : `${formatCurrency(priceData.currency, selectedPlanPrice.weeklyReference)}/week`
+        : coupon?.discountPercent
+            ? formatCurrency(priceData.currency, discountedYearly)
+            : formatCurrency(priceData.currency, selectedPlanPrice.yearlyCharge)
+
     const originalPrice = planType === 'yearly'
         ? formatCurrency(priceData.currency, selectedPlanPrice.yearlyRegularPrice)
+        : null
+    const originalMonthlyWeekly = planType === 'monthly' && coupon?.discountPercent
+        ? `${formatCurrency(priceData.currency, selectedPlanPrice.weeklyReference)}/week`
+        : null
+    const originalMonthlyTotal = planType === 'monthly' && coupon?.discountPercent
+        ? `${formatCurrency(priceData.currency, selectedPlanPrice.monthlyCharge)}/month`
         : null
 
     const handleApplyCoupon = useCallback(async () => {
@@ -450,7 +466,11 @@ export default function Subscription() {
 
                             {planType === 'monthly' ? (
                                 <p className="subscription-price-block__discount">
-                                    The subscription total and monthly renewal terms are shown before payment.
+                                    {originalMonthlyWeekly ? (
+                                        <><s>{originalMonthlyWeekly}</s> ({coupon.discountPercent}% off applied) · Billed {formatCurrency(priceData.currency, discountedMonthly)}/month (was <s>{originalMonthlyTotal}</s>).</>
+                                    ) : (
+                                        'The subscription total and monthly renewal terms are shown before payment.'
+                                    )}
                                 </p>
                             ) : (
                                 <p className="subscription-price-block__discount">
