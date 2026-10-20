@@ -33,10 +33,10 @@ export default function PrivacyPolicy() {
                         </p>
                         <p>
                             This Policy specifically covers the Android mobile app listed on Google Play as
-                            <strong> Gene Setu: Your AI Health &amp; Fitness Digital Twin</strong>, with Google Play
-                            developer name <strong>Gene Setu</strong> and package ID <strong>com.evionex.genesetu</strong>.
-                            The app is now named <strong>Evio Life</strong>. These names refer to the same app and
-                            account. The app is published and operated by <strong>Evionex Private Limited</strong>.
+                            <strong> Evio Life: Your AI Health &amp; Fitness Digital Twin</strong>, with package ID
+                            <strong>com.evionex.genesetu</strong>. The app was previously published as
+                            <strong>Gene Setu</strong>; both names refer to the same app and account. The app is
+                            published and operated by <strong>Evionex Private Limited</strong>.
                         </p>
                         <ul>
                             <li>The Information Technology Act, 2000 and rules thereunder</li>
@@ -48,8 +48,8 @@ export default function PrivacyPolicy() {
                         <p>This Policy describes how we collect, use, store, share, and protect your personal data when you:</p>
                         <ul>
                             <li>Visit and use our website at <a href="https://www.evionex.com" target="_blank" rel="noopener noreferrer">https://www.evionex.com</a> ("Website")</li>
-                            <li>Use our mobile app <strong>Gene Setu: Your AI Health &amp; Fitness Digital Twin</strong> (now named <strong>Evio Life</strong>)</li>
-                            <li>Use our healthcare platform <strong>Eviolife</strong> (for patients, doctors, and healthcare institutions)</li>
+                            <li>Use our mobile app <strong>Evio Life: Your AI Health &amp; Fitness Digital Twin</strong> (previously published as <strong>Gene Setu</strong>)</li>
+                            <li>Use our healthcare platform <strong>Evio Life</strong> (for patients, doctors, and healthcare institutions)</li>
                             <li>Use our research and laboratory management platform <strong>EviNote</strong> (for research bodies, laboratories, and principal investigators)</li>
                             <li>Use our educational platform <strong>Luminary</strong> (for universities and academic institutions)</li>
                             <li>Avail our genetic testing and genomic analysis services</li>

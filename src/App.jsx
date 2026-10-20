@@ -1,5 +1,5 @@
-import { lazy, Suspense } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { lazy, Suspense, useEffect } from 'react'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -27,8 +27,34 @@ const Dashboard = lazy(() => import('./pages/Dashboard'))
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
 const TermsOfUse = lazy(() => import('./pages/TermsOfUse'))
 const Subscription = lazy(() => import('./pages/Subscription'))
+const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 
 export default function App() {
+    const navigate = useNavigate()
+
+    // Supabase redirects to the site URL when the app cannot open the reset
+    // link itself. Those links carry their parameters in the query string, so
+    // send the visitor to the reset page instead of the home page.
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search)
+        const isAuthLink =
+            params.has('error_code') ||
+            params.has('error_description') ||
+            params.has('code') ||
+            window.location.hash.includes('access_token') ||
+            window.location.hash.includes('error_code')
+
+        if (isAuthLink && !window.location.hash.startsWith('#/portal/reset-password')) {
+            // Keep the query string, the reset page needs those parameters.
+            window.history.replaceState(
+                null,
+                '',
+                `${window.location.pathname}${window.location.search}#/portal/reset-password`
+            )
+            navigate('/portal/reset-password', { replace: true })
+        }
+    }, [navigate])
+
     return (
         <ErrorBoundary>
             <Suspense fallback={null}>
@@ -52,6 +78,8 @@ export default function App() {
                         <Route path="portal/login" element={<Login />} />
                         <Route path="portal/signup" element={<Signup />} />
                         <Route path="portal/verify-email" element={<VerifyEmail />} />
+                        <Route path="portal/reset-password" element={<ResetPassword />} />
+                        <Route path="reset-password" element={<ResetPassword />} />
                         <Route path="portal/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                         <Route path="privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="privacy" element={<PrivacyPolicy />} />
