@@ -116,6 +116,22 @@ export function AuthProvider({ children }) {
         return { data, error }
     }
 
+    /**
+     * Signs in with Google. The user is redirected to Google and comes back
+     * to the portal, where the session is picked up by onAuthStateChange.
+     */
+    async function signInWithGoogle() {
+        const redirectTo = `${window.location.origin}/#/portal/dashboard`
+        const { data, error } = await supabaseEviolife.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo,
+                queryParams: { access_type: 'offline', prompt: 'consent' },
+            },
+        })
+        return { data, error }
+    }
+
     async function signOut() {
         // 1. Try Supabase signOut (best effort — don't let errors block logout)
         try {
@@ -153,6 +169,7 @@ export function AuthProvider({ children }) {
         loading,
         signUp,
         signIn,
+        signInWithGoogle,
         signOut,
         fetchProfile,
         isSuspended,
