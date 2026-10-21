@@ -39,18 +39,24 @@ export default function ResetPassword() {
             return
         }
 
-        // A code means the link used the PKCE flow.
-        const code = params.get('code') || hashParams.get('code')
-        if (code) {
+        // A code means the link used the PKCE flow. When it arrives in the
+        // query string supabase-js exchanges it automatically while it
+        // initialises, so wait for that instead of exchanging the same
+        // single-use code a second time (which would make a valid link look
+        // expired). A code kept inside the hash route has to be exchanged here.
+        const queryCode = params.get('code')
+        const hashCode = hashParams.get('code')
+        if (queryCode) {
             supabaseEviolife.auth
-                .exchangeCodeForSession(code)
-                .then(({ error }) => {
-                    if (error) {
-                        setStatus('expired')
-                        return
-                    }
-                    setStatus('ready')
-                })
+                .getSession()
+                .then(({ data }) => setStatus(data?.session ? 'ready' : 'expired'))
+                .catch(() => setStatus('expired'))
+            return
+        }
+        if (hashCode) {
+            supabaseEviolife.auth
+                .exchangeCodeForSession(hashCode)
+                .then(({ error }) => setStatus(error ? 'expired' : 'ready'))
                 .catch(() => setStatus('expired'))
             return
         }

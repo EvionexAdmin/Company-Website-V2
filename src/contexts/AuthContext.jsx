@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { supabaseEviolife } from '../lib/supabaseEviolife'
+import { safeRedirectPath } from '../lib/safeRedirect'
 
 const AuthContext = createContext({})
 
@@ -24,8 +25,27 @@ export function AuthProvider({ children }) {
             if (error && error.code !== 'PGRST116') {
                 console.error('Error fetching profile:', error)
             }
-            setProfile(data || null)
-            return data || null
+            if (data) {
+                setProfile(data)
+                return data
+            }
+
+            // Accounts made in the Evio Life app never got a portal profile,
+            // so the portal used to ask them to verify an address that is
+            // already verified. The database creates the missing row for this
+            // authenticated user (a no-op when one already exists).
+            const { data: ensured, error: ensureError } = await supabaseEviolife
+                .rpc('evionex_ensure_portal_profile')
+
+            if (ensureError) {
+                console.warn('Could not create the portal profile:', ensureError.message)
+                setProfile(null)
+                return null
+            }
+
+            const row = Array.isArray(ensured) ? ensured[0] : ensured
+            setProfile(row || null)
+            return row || null
         } catch (err) {
             console.error('Error fetching profile:', err)
             return null
@@ -117,11 +137,13 @@ export function AuthProvider({ children }) {
     }
 
     /**
-     * Signs in with Google. The user is redirected to Google and comes back
-     * to the portal, where the session is picked up by onAuthStateChange.
+     * Signs in with Google. Supabase finishes the PKCE exchange when the
+     * browser returns, and the route in `next` is the page the user lands on
+     * (the code arrives in the query string, before the hash).
      */
-    async function signInWithGoogle() {
-        const redirectTo = `${window.location.origin}/#/portal/dashboard`
+    async function signInWithGoogle(next = '/portal/dashboard') {
+        const target = safeRedirectPath(next) || '/portal/dashboard'
+        const redirectTo = `${window.location.origin}/#${target}`
         const { data, error } = await supabaseEviolife.auth.signInWithOAuth({
             provider: 'google',
             options: {

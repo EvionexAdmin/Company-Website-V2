@@ -76,7 +76,7 @@ const TABS = {
 }
 
 export default function Dashboard() {
-    const { user, session, profile, loading, signOut, isPatient, isDoctor, isAdmin, isEmployee, isInstitution, isSuspended } = useAuth()
+    const { user, session, profile, loading, signOut, fetchProfile, isPatient, isDoctor, isAdmin, isEmployee, isInstitution, isSuspended } = useAuth()
     const navigate = useNavigate()
     const [activeTab, setActiveTab] = useState('overview')
 
@@ -95,15 +95,47 @@ export default function Dashboard() {
     }
 
     if (!profile) {
+        // The sign-in already succeeded, so "verify your email" is only right
+        // when Supabase still needs the address confirmed. An account that is
+        // already confirmed only misses its portal profile, which the portal
+        // creates on the fly.
+        const emailVerified = Boolean(
+            user?.email_confirmed_at ||
+            user?.identities?.some((identity) => identity.provider !== 'email')
+        )
+
         return (
             <div className="portal">
                 <div className="portal__inner" style={{ gridTemplateColumns: '1fr' }}>
                     <div className="glass-card" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
                         <div style={{ marginBottom: '1rem', opacity: 0.3, display: 'flex', justifyContent: 'center' }}>{ICONS.mail}</div>
-                        <h2 style={{ marginBottom: '0.5rem' }}>Verify Your Email</h2>
-                        <p style={{ color: 'var(--text-muted)', maxWidth: 400, margin: '0 auto' }}>
-                            Check your inbox for a confirmation link to activate your Evionex account.
+                        <h2 style={{ marginBottom: '0.5rem' }}>{emailVerified ? 'Setting up your account' : 'Verify Your Email'}</h2>
+                        <p style={{ color: 'var(--text-muted)', maxWidth: 460, margin: '0 auto' }}>
+                            {emailVerified
+                                ? 'Your sign-in worked. We are still preparing your portal profile — this normally takes a second. If it keeps happening, contact support and we will fix it for you.'
+                                : 'Check your inbox for a confirmation link to activate your Evionex account.'}
                         </p>
+                        {emailVerified && (
+                            <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                <button
+                                    type="button"
+                                    className="btn btn--sm btn-primary"
+                                    onClick={() => fetchProfile(user.id)}
+                                >
+                                    Refresh
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn--sm btn-secondary"
+                                    onClick={() => {
+                                        signOut()
+                                        window.location.replace('/#/portal/login')
+                                    }}
+                                >
+                                    Sign out
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

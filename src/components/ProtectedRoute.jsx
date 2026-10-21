@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { safeRedirectPath } from '../lib/safeRedirect'
 
 /**
  * ProtectedRoute — wraps any route that requires authentication.
@@ -19,9 +20,11 @@ export default function ProtectedRoute({ children }) {
         )
     }
 
-    // No authenticated user — redirect to login
+    // No authenticated user — redirect to login with the page they wanted.
+    // safeRedirectPath drops any hash that carries auth tokens instead of a
+    // route, so an implicit-flow callback never ends up in the login URL.
     if (!user) {
-        const redirect = `${location.pathname}${location.search}${location.hash}`
+        const redirect = safeRedirectPath(`${location.pathname}${location.search}${location.hash}`) || '/'
         return <Navigate to={`/portal/login?redirect=${encodeURIComponent(redirect)}`} replace />
     }
 

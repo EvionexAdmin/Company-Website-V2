@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabaseEviolife } from '../lib/supabaseEviolife'
+import { safeRedirectPath } from '../lib/safeRedirect'
 import TurnstileWidget from '../components/TurnstileWidget'
 import loginBackground from '../assets/images/auth/login-background.webp'
 import './Auth.css'
@@ -97,6 +98,8 @@ export default function Login() {
                 const msg = signInError.message || ''
                 if (msg.includes('suspended')) {
                     setError(msg)
+                } else if (msg.toLowerCase().includes('email not confirmed')) {
+                    setError('This address still has to be confirmed. Open the verification email we sent you, confirm the address, then sign in again.')
                 } else {
                     setError('Invalid credentials. Please try again.')
                 }
@@ -105,7 +108,7 @@ export default function Login() {
                 setTurnstileKey((k) => k + 1)
                 setLoading(false)
             } else {
-                navigate(redirectParam || '/portal/dashboard', { replace: true })
+                navigate(safeRedirectPath(redirectParam) || '/portal/dashboard', { replace: true })
             }
         } catch {
             setError('An unexpected error occurred. Please try again.')
@@ -120,7 +123,7 @@ export default function Login() {
         setLoading(true)
 
         try {
-            const { error: googleError } = await signInWithGoogle()
+            const { error: googleError } = await signInWithGoogle(safeRedirectPath(redirectParam) || '/portal/dashboard')
             if (googleError) {
                 setError(googleError.message || 'Google sign-in could not be started.')
                 setLoading(false)

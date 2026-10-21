@@ -1,7 +1,8 @@
 import { useState, useCallback } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabaseEviolife } from '../lib/supabaseEviolife'
+import { safeRedirectPath } from '../lib/safeRedirect'
 import TurnstileWidget from '../components/TurnstileWidget'
 import loginBackground from '../assets/images/auth/login-background.webp'
 import './Auth.css'
@@ -22,6 +23,7 @@ export default function Signup() {
     const [turnstileKey, setTurnstileKey] = useState(0)
     const { signUp } = useAuth()
     const location = useLocation()
+    const navigate = useNavigate()
 
     // Preserve redirect param (e.g. from pricing page payment flow)
     const redirectParam = new URLSearchParams(location.search).get('redirect')
@@ -107,7 +109,7 @@ export default function Signup() {
             }
 
             // ── Proceed with signup ──
-            const { error: signUpError } = await signUp({
+            const { data: signUpData, error: signUpError } = await signUp({
                 email: formData.email,
                 password: formData.password,
                 role: formData.role,
@@ -121,6 +123,11 @@ export default function Signup() {
                 // Reset Turnstile — tokens are single-use
                 setTurnstileToken(null)
                 setTurnstileKey((k) => k + 1)
+            } else if (signUpData?.session) {
+                // Email confirmation is switched off, so Supabase signed the
+                // user in immediately. Go straight to the portal instead of
+                // asking them to verify an address that is already usable.
+                navigate(safeRedirectPath(redirectParam) || '/portal/dashboard', { replace: true })
             } else {
                 setSuccess('Account created! Please check your email to verify your account before logging in.')
             }

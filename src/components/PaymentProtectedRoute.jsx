@@ -1,5 +1,6 @@
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { safeRedirectPath } from '../lib/safeRedirect'
 
 /**
  * PaymentProtectedRoute — wraps payment/checkout pages that require authentication.
@@ -11,6 +12,7 @@ import { useAuth } from '../contexts/AuthContext'
  */
 export default function PaymentProtectedRoute({ children }) {
     const { user, loading, isSuspended, signOut } = useAuth()
+    const location = useLocation()
 
     // Show loading while auth state is being determined
     if (loading) {
@@ -23,7 +25,8 @@ export default function PaymentProtectedRoute({ children }) {
 
     // No authenticated user — redirect to login with return path
     if (!user) {
-        return <Navigate to={`/portal/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`} replace />
+        const redirect = safeRedirectPath(`${location.pathname}${location.search}${location.hash}`) || '/'
+        return <Navigate to={`/portal/login?redirect=${encodeURIComponent(redirect)}`} replace />
     }
 
     // Account suspended — force sign out and redirect
