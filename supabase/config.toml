@@ -384,6 +384,9 @@ verify_jwt = false
 verify_jwt = false
 [functions.create-razorpay-subscription]
 verify_jwt = false
+# Called by the payment functions of the app project with the service key.
+[functions.send-payment-receipt]
+verify_jwt = false
 
 [functions.verify-razorpay-payment]
 verify_jwt = false

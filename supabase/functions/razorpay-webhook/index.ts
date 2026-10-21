@@ -1,4 +1,5 @@
 import { constantTimeEqual, getAdminClient, hmacHex, jsonResponse } from "../_shared/subscription.ts"
+import { sendSubscriptionReceipt } from "../_shared/receipt.ts"
 
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return jsonResponse(req, { error: "Method not allowed" }, 405)
@@ -39,7 +40,7 @@ Deno.serve(async (req: Request) => {
         updated_at: new Date().toISOString(),
       })
       .eq("razorpay_subscription_id", subscriptionId)
-      .select("user_id, coupon_code, plan_type")
+      .select("user_id, coupon_code, plan_type, seats, seat_emails")
       .maybeSingle()
     if (updateError) throw updateError
     if (!subscription) return jsonResponse(req, { error: "Subscription record not found." }, 404)
@@ -74,6 +75,33 @@ Deno.serve(async (req: Request) => {
         p_subscription_id: subscriptionId,
       })
       if (redemptionError) throw redemptionError
+    }
+
+    // The customer gets a receipt for every payment. The reference keeps it
+    // to one receipt per invoice.
+    if (["subscription.activated", "subscription.charged", "subscription.authenticated"].includes(event.event)) {
+      const { data: user } = await db
+        .from("profiles")
+        .select("email, full_name")
+        .eq("id", subscription.user_id)
+        .maybeSingle()
+
+      if (user?.email) {
+        await sendSubscriptionReceipt({
+          db,
+          userId: subscription.user_id,
+          email: user.email,
+          name: user.full_name,
+          subscriptionId,
+          paymentId: entity?.latest_invoice ? String(entity.latest_invoice) : null,
+          status,
+          periodEnd: currentPeriodEnd,
+          planType: (subscription.plan_type as "monthly" | "yearly") || "monthly",
+          couponCode: subscription.coupon_code,
+          seats: subscription.seats || 0,
+          seatEmails: subscription.seat_emails || [],
+        })
+      }
     }
 
     return jsonResponse(req, { received: true })

@@ -1,4 +1,5 @@
 import { getAdminClient, getAuthenticatedUser, getRazorpayCredentials, handleOptions, hmacHex, jsonResponse, razorpayRequest, constantTimeEqual } from "../_shared/subscription.ts"
+import { sendSubscriptionReceipt } from "../_shared/receipt.ts"
 
 Deno.serve(async (req: Request) => {
   const earlyResponse = handleOptions(req)
@@ -20,7 +21,7 @@ Deno.serve(async (req: Request) => {
     const db = getAdminClient()
     const { data: localSubscription, error: lookupError } = await db
       .from("subscriptions")
-      .select("id, user_id, regular_plan_id")
+      .select("id, user_id, regular_plan_id, plan_type, coupon_code, seats, seat_emails")
       .eq("razorpay_subscription_id", subscriptionId)
       .eq("user_id", user.id)
       .maybeSingle()
@@ -47,7 +48,7 @@ Deno.serve(async (req: Request) => {
       .eq("id", localSubscription.id)
     if (updateError) throw new Error("Unable to save subscription verification.")
 
-    if (razorpaySubscription.status === "active") {
+    if (razorpaySubscription.status === "active" || razorpaySubscription.status === "authenticated") {
       const { error: profileError } = await db
         .from("profiles")
         .update({
@@ -71,6 +72,22 @@ Deno.serve(async (req: Request) => {
           console.error("Could not schedule the regular price", switchError)
         }
       }
+
+      // The customer gets a receipt with the payment details.
+      await sendSubscriptionReceipt({
+        db,
+        userId: user.id,
+        email: user.email || "",
+        name: (user.user_metadata?.full_name as string) || (user.user_metadata?.name as string) || null,
+        subscriptionId,
+        paymentId,
+        status: razorpaySubscription.status,
+        periodEnd: updates.current_period_end,
+        planType: (localSubscription.plan_type as "monthly" | "yearly") || "monthly",
+        couponCode: localSubscription.coupon_code,
+        seats: localSubscription.seats || 0,
+        seatEmails: localSubscription.seat_emails || [],
+      })
     }
 
     return jsonResponse(req, { success: true, status: razorpaySubscription.status })

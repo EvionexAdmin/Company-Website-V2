@@ -3,6 +3,7 @@
 // This file runs in the Deno/Supabase Edge Runtime — Deno globals are always available there.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { lifetimePeriodYears } from "../_shared/pricing.ts";
+import { sendOneOffReceipt } from "../_shared/receipt.ts";
 import { razorpayRequest } from "../_shared/subscription.ts";
 
 // --- Security: Restrict CORS to explicit origins only ---
@@ -203,7 +204,7 @@ Deno.serve(async (req: Request) => {
         // premium access and the family accounts that were added.
         let premiumActivated = false;
         if (isValid && orderData?.plan_name?.startsWith("premium_")) {
-            const planType = orderData.plan_name.replace("premium_", "");
+            const planType = orderData.plan_name.replace("premium_", "") as "monthly" | "yearly" | "lifetime";
             const expiry = new Date();
             expiry.setFullYear(expiry.getFullYear() + lifetimePeriodYears());
 
@@ -230,6 +231,60 @@ Deno.serve(async (req: Request) => {
                 if (seatError) {
                     console.error("Could not activate the family accounts:", seatError.message);
                 }
+
+                // The family accounts and the coupon of this purchase.
+                const { data: seats } = await supabase
+                    .from("subscription_seats")
+                    .select("email")
+                    .eq("owner_user_id", callerUser.id);
+                const { data: coupon } = await supabase
+                    .from("subscriptions")
+                    .select("coupon_code, seats")
+                    .eq("user_id", callerUser.id)
+                    .order("created_at", { ascending: false })
+                    .limit(1)
+                    .maybeSingle();
+
+                // The lifetime plan is stored as a subscription row as well, so
+                // the app and the receipt know the plan, the seats and when the
+                // access runs out.
+                const { error: lifetimeError } = await supabase
+                    .from("subscriptions")
+                    .insert({
+                        user_id: callerUser.id,
+                        razorpay_subscription_id: `lifetime_${razorpay_order_id}`,
+                        plan_id: razorpay_order_id,
+                        plan_name: "premium_lifetime",
+                        plan_type: "lifetime",
+                        currency: orderData?.currency || "INR",
+                        amount: (orderData?.amount || 0) / 100,
+                        seats: (coupon?.seats as number) || (seats?.length || 0),
+                        seat_emails: (seats || []).map((row) => row.email),
+                        coupon_code: (coupon?.coupon_code as string) || null,
+                        status: "active",
+                        current_period_end: expiry.toISOString(),
+                        updated_at: new Date().toISOString(),
+                    });
+                if (lifetimeError) {
+                    console.error("Could not store the lifetime plan:", lifetimeError.message);
+                }
+
+                // The customer gets a receipt with the payment details.
+                await sendOneOffReceipt({
+                    db: supabase,
+                    userId: callerUser.id,
+                    email: callerUser.email || "",
+                    name: (callerUser.user_metadata?.full_name as string) || (callerUser.user_metadata?.name as string) || null,
+                    orderId: razorpay_order_id,
+                    paymentId: razorpay_payment_id,
+                    amount: (orderData?.amount || 0) / 100,
+                    currency: orderData?.currency || "INR",
+                    planType: planType === "lifetime" ? "lifetime" : "monthly",
+                    couponCode: (coupon?.coupon_code as string) || null,
+                    seats: (coupon?.seats as number) || (seats?.length || 0),
+                    seatEmails: (seats || []).map((row) => row.email),
+                    validUntil: expiry.toISOString(),
+                });
             }
         }
 
