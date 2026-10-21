@@ -736,3 +736,266 @@
 @keyframes subscription-spin {
     to { transform: rotate(360deg); }
 }
+/* =============================================
+   STEP PROGRESS INDICATOR
+   ============================================= */
+
+.subscription-steps {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    list-style: none;
+    counter-reset: subscription-step;
+}
+
+.subscription-step {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 0.85rem;
+    background: rgba(148, 163, 184, 0.05);
+    transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+    opacity: 0.72;
+}
+
+.subscription-step.is-active {
+    border-color: rgba(0, 212, 200, 0.45);
+    background: rgba(0, 212, 200, 0.08);
+    opacity: 1;
+}
+
+.subscription-step.is-done {
+    opacity: 1;
+}
+
+.subscription-step__index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #e2e8f0;
+    background: rgba(148, 163, 184, 0.18);
+}
+
+.subscription-step.is-active .subscription-step__index {
+    color: #03111c;
+    background: #00d4c8;
+}
+
+.subscription-step.is-done .subscription-step__index {
+    color: #03111c;
+    background: #5eead4;
+}
+
+.subscription-step__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.subscription-step__text strong {
+    font-size: 0.82rem;
+    line-height: 1.2;
+}
+
+.subscription-step__text small {
+    font-size: 0.68rem;
+    opacity: 0.6;
+    line-height: 1.3;
+}
+
+/* =============================================
+   FAMILY & FRIENDS ACCOUNTS
+   ============================================= */
+
+.subscription-family {
+    margin-top: 1rem;
+    padding: 0.9rem;
+    border: 1px solid rgba(0, 212, 200, 0.2);
+    border-radius: 0.9rem;
+    background: rgba(0, 212, 200, 0.05);
+}
+
+.subscription-family__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.subscription-family__head label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.subscription-family__badge {
+    font-size: 0.66rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #5eead4;
+    border: 1px solid rgba(94, 234, 212, 0.35);
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+}
+
+.subscription-family__hint {
+    margin: 0.35rem 0 0.6rem;
+    font-size: 0.72rem;
+    line-height: 1.45;
+    opacity: 0.7;
+}
+
+.subscription-family__row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.subscription-family__row input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.55rem 0.7rem;
+    border-radius: 0.6rem;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: rgba(2, 12, 27, 0.6);
+    color: inherit;
+    font-size: 0.85rem;
+}
+
+.subscription-family__row button {
+    flex-shrink: 0;
+    padding: 0.55rem 1rem;
+    border-radius: 0.6rem;
+    border: none;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #03111c;
+    background: #00d4c8;
+}
+
+.subscription-family__row button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.subscription-family__list {
+    list-style: none;
+    margin: 0.6rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.subscription-family__list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.35rem 0.55rem;
+    border-radius: 0.55rem;
+    background: rgba(148, 163, 184, 0.08);
+    font-size: 0.75rem;
+}
+
+.subscription-family__list li span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.subscription-family__list li button {
+    border: none;
+    background: transparent;
+    color: #ff9f9f;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0 0.2rem;
+}
+
+.subscription-family__saving {
+    margin: 0.55rem 0 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #5eead4;
+}
+
+/* =============================================
+   TRUST SIGNALS
+   ============================================= */
+
+.subscription-trust {
+    margin-top: 0.9rem;
+    padding: 0.85rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 0.9rem;
+    background: rgba(148, 163, 184, 0.05);
+}
+
+.subscription-trust__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+}
+
+.subscription-trust__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+.subscription-trust__item svg {
+    width: 0.9rem;
+    height: 0.9rem;
+    color: #5eead4;
+    flex-shrink: 0;
+}
+
+.subscription-trust__policy {
+    margin: 0.6rem 0 0;
+    font-size: 0.7rem;
+    line-height: 1.5;
+    opacity: 0.7;
+}
+
+.subscription-trust__support {
+    margin: 0.35rem 0 0;
+    font-size: 0.72rem;
+    opacity: 0.75;
+}
+
+.subscription-trust__support a {
+    color: #5eead4;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* Plan option sub labels */
+.subscription-plan-option small {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    opacity: 0.65;
+    margin-top: 0.1rem;
+}

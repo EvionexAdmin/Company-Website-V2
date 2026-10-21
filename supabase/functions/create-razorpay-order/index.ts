@@ -2,6 +2,13 @@
 // @ts-nocheck
 // This file runs in the Deno/Supabase Edge Runtime — Deno globals are always available there.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import {
+    isCurrency,
+    isPlanType,
+    normalizeSeatCount,
+    resolvePlanAmount,
+} from "../_shared/pricing.ts";
+import { resolveCouponPercent } from "../_shared/subscription.ts";
 
 // --- Security: Restrict CORS to explicit origins only ---
 function buildAllowedOrigins() {
@@ -75,7 +82,7 @@ Deno.serve(async (req: Request) => {
             );
         }
 
-        const { amount, currency = "INR", plan_name, customer_name, customer_email } =
+        const { amount, currency = "INR", plan_name, customer_name, customer_email, planType, seats, couponCode, seatEmails } =
             await req.json();
 
         // Validate required fields
@@ -97,6 +104,53 @@ Deno.serve(async (req: Request) => {
                     headers: { ...corsHeaders, "Content-Type": "application/json" },
                 }
             );
+        }
+
+        // Premium plans are priced on the server so the amount cannot be
+        // tampered with in the browser.
+        let orderAmount = Number(amount)
+        let orderCurrency = currency
+        let extraSeats = 0
+        let resolvedPlanName = plan_name
+        let couponPercent = 0
+        const invitedEmails: string[] = []
+
+        if (planType && isPlanType(planType)) {
+            if (!isCurrency(currency)) {
+                return new Response(
+                    JSON.stringify({ error: "Unsupported currency for this plan." }),
+                    { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+                )
+            }
+            extraSeats = normalizeSeatCount(seats)
+            orderAmount = resolvePlanAmount(currency, planType, extraSeats)
+            orderCurrency = currency
+            resolvedPlanName = `premium_${planType}`
+
+            // A coupon is applied by Razorpay for the subscription plans. The
+            // one-off lifetime plan is discounted here instead.
+            if (couponCode) {
+                const coupon = await resolveCouponPercent(couponCode)
+                if (!coupon) {
+                    return new Response(
+                        JSON.stringify({ error: "Coupon is invalid, expired, or unavailable." }),
+                        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+                    )
+                }
+                if (planType === "lifetime") {
+                    couponPercent = coupon.discountPercent
+                    orderAmount = Math.round(orderAmount * (1 - couponPercent / 100))
+                }
+            }
+
+            for (const entry of Array.isArray(seatEmails) ? seatEmails : []) {
+                const email = String(entry || "").trim().toLowerCase()
+                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) continue
+                if (email === String(callerUser.email || "").trim().toLowerCase()) continue
+                if (invitedEmails.includes(email)) continue
+                invitedEmails.push(email)
+                if (invitedEmails.length >= 6) break
+            }
         }
 
         // Read Razorpay credentials from environment secrets
@@ -134,13 +188,14 @@ Deno.serve(async (req: Request) => {
                     "Basic " + btoa(`${razorpayKeyId}:${razorpayKeySecret}`),
             },
             body: JSON.stringify({
-                amount,
-                currency,
+                amount: orderAmount,
+                currency: orderCurrency,
                 receipt,
                 notes: {
-                    plan_name,
+                    plan_name: resolvedPlanName,
                     customer_name: customer_name || "",
                     customer_email: customer_email || "",
+                    seats: String(extraSeats),
                 },
             }),
         });
@@ -167,9 +222,9 @@ Deno.serve(async (req: Request) => {
 
         const { error: dbError } = await supabase.from("orders").insert({
             razorpay_order_id: order.id,
-            amount,
-            currency,
-            plan_name,
+            amount: orderAmount,
+            currency: orderCurrency,
+            plan_name: resolvedPlanName,
             status: "created",
             customer_name: customer_name || null,
             customer_email: customer_email || null,
@@ -179,6 +234,20 @@ Deno.serve(async (req: Request) => {
         if (dbError) {
             console.error("Database insert error:", dbError);
             // Don't fail the request — the Razorpay order was already created
+        }
+
+        // The family accounts are invited and activated once the payment is
+        // confirmed.
+        if (invitedEmails.length) {
+            const { error: seatError } = await supabase.from("subscription_seats").upsert(
+                invitedEmails.map((email) => ({
+                    owner_user_id: callerUser.id,
+                    email,
+                    status: "pending",
+                })),
+                { onConflict: "owner_user_id,email" },
+            );
+            if (seatError) console.error("Could not save the family accounts:", seatError.message);
         }
 
         return new Response(

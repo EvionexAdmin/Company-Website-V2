@@ -2,6 +2,8 @@
 // @ts-nocheck
 // This file runs in the Deno/Supabase Edge Runtime — Deno globals are always available there.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { lifetimePeriodYears } from "../_shared/pricing.ts";
+import { razorpayRequest } from "../_shared/subscription.ts";
 
 // --- Security: Restrict CORS to explicit origins only ---
 function buildAllowedOrigins() {
@@ -137,15 +139,36 @@ Deno.serve(async (req: Request) => {
         const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
         const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-        // Look up the original order
-        const { data: orderData, error: orderError } = await supabase
+        // Look up the original order. The orders table lives in the website
+        // project, so the order is read from Razorpay when it is not stored
+        // locally. The plan is kept in the order notes.
+        let orderData: { id?: string; plan_name?: string; amount?: number; currency?: string } | null = null;
+        const { data: localOrder, error: orderError } = await supabase
             .from("orders")
-            .select("id")
+            .select("id, plan_name, amount, currency")
             .eq("razorpay_order_id", razorpay_order_id)
-            .single();
+            .maybeSingle();
 
         if (orderError) {
             console.error("Order lookup error:", orderError);
+        }
+        orderData = localOrder || null;
+
+        if (!orderData?.plan_name) {
+            try {
+                const razorpayOrder = await razorpayRequest(
+                    `/orders/${razorpay_order_id}`,
+                    undefined,
+                    "GET",
+                );
+                orderData = {
+                    plan_name: razorpayOrder?.notes?.plan_name,
+                    amount: razorpayOrder?.amount,
+                    currency: razorpayOrder?.currency,
+                };
+            } catch (orderFetchError) {
+                console.error("Could not read the order from Razorpay", orderFetchError);
+            }
         }
 
         // Insert payment record
@@ -162,7 +185,7 @@ Deno.serve(async (req: Request) => {
         }
 
         // Update order status
-        if (orderData) {
+        if (orderData?.id) {
             const { error: updateError } = await supabase
                 .from("orders")
                 .update({
@@ -176,10 +199,45 @@ Deno.serve(async (req: Request) => {
             }
         }
 
+        // A paid premium plan (for example the lifetime plan) activates the
+        // premium access and the family accounts that were added.
+        let premiumActivated = false;
+        if (isValid && orderData?.plan_name?.startsWith("premium_")) {
+            const planType = orderData.plan_name.replace("premium_", "");
+            const expiry = new Date();
+            expiry.setFullYear(expiry.getFullYear() + lifetimePeriodYears());
+
+            const { error: premiumError } = await supabase
+                .from("profiles")
+                .update({
+                    is_premium: true,
+                    subscription_tier: "premium",
+                    subscription_expiry: expiry.toISOString(),
+                    updated_at: new Date().toISOString(),
+                })
+                .eq("id", callerUser.id);
+
+            if (premiumError) {
+                console.error("Could not activate premium:", premiumError.message);
+            } else {
+                premiumActivated = true;
+
+                const { error: seatError } = await supabase
+                    .from("subscription_seats")
+                    .update({ status: "active" })
+                    .eq("owner_user_id", callerUser.id)
+                    .eq("status", "pending");
+                if (seatError) {
+                    console.error("Could not activate the family accounts:", seatError.message);
+                }
+            }
+        }
+
         return new Response(
             JSON.stringify({
                 verified: isValid,
                 payment_id: razorpay_payment_id,
+                premium_activated: premiumActivated,
             }),
             {
                 status: 200,

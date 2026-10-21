@@ -72,15 +72,40 @@ export async function razorpayRequest(path: string, body?: Record<string, unknow
     },
     ...(body ? { body: JSON.stringify(body) } : {}),
   })
-  const result = await response.json()
+  const raw = await response.text()
+  let result: Record<string, any> = {}
+  if (raw) {
+    try {
+      result = JSON.parse(raw)
+    } catch {
+      result = { error: { description: raw.slice(0, 200) } }
+    }
+  }
   if (!response.ok) {
-    console.error("Razorpay API request failed", { path, status: response.status, error: result?.error?.description })
-    throw new Error(result?.error?.description || "Razorpay could not process the request.")
+    console.error("Razorpay API request failed", {
+      path,
+      status: response.status,
+      body: raw.slice(0, 300),
+      error: result?.error?.description,
+    })
+    throw new Error(
+      result?.error?.description ||
+        result?.message ||
+        `Razorpay error ${response.status}${raw ? `: ${raw.slice(0, 160)}` : " (empty response)"}`,
+    )
+  }
+  if (!raw) {
+    console.error("Razorpay returned an empty response", { path, status: response.status })
+    throw new Error("The payment gateway returned an empty response. Please try again.")
   }
   return result
 }
 
-export async function resolveCoupon(code: string, planType: "monthly" | "yearly") {
+/**
+ * Validates a coupon code and returns the discount percentage.
+ * Returns null when the code is unknown, expired or used up.
+ */
+export async function resolveCouponPercent(code: string) {
   const normalizedCode = code.trim().toUpperCase()
   if (!normalizedCode || normalizedCode.length > 64) return null
 
@@ -107,11 +132,13 @@ export async function resolveCoupon(code: string, planType: "monthly" | "yearly"
   }
   if (data.max_uses != null && Number(data.current_uses || 0) >= Number(data.max_uses)) return null
 
-  const offerId = Deno.env.get(`RAZORPAY_OFFER_INR_${planType.toUpperCase()}_${discountPercent}`)
-  if (!offerId) {
-    throw new Error("This coupon is not enabled for checkout yet.")
-  }
-  return { code: normalizedCode, discountPercent, offerId }
+  return { code: normalizedCode, discountPercent }
+}
+
+export async function resolveCoupon(code: string, planType: "monthly" | "yearly" | "lifetime") {
+  const resolved = await resolveCouponPercent(code)
+  if (!resolved) return null
+  return { ...resolved, planType }
 }
 
 export async function hmacHex(value: string, secret: string) {

@@ -20,7 +20,7 @@ Deno.serve(async (req: Request) => {
     const db = getAdminClient()
     const { data: localSubscription, error: lookupError } = await db
       .from("subscriptions")
-      .select("id, user_id")
+      .select("id, user_id, regular_plan_id")
       .eq("razorpay_subscription_id", subscriptionId)
       .eq("user_id", user.id)
       .maybeSingle()
@@ -58,6 +58,19 @@ Deno.serve(async (req: Request) => {
         })
         .eq("id", user.id)
       if (profileError) throw new Error("Payment verified, but premium access could not be activated.")
+
+      // A coupon makes the first cycle cheaper. From the second cycle the
+      // regular price takes over.
+      if (localSubscription.regular_plan_id) {
+        try {
+          await razorpayRequest(`/subscriptions/${subscriptionId}`, {
+            plan_id: localSubscription.regular_plan_id,
+            schedule_change_at: "cycle_end",
+          }, "PATCH")
+        } catch (switchError) {
+          console.error("Could not schedule the regular price", switchError)
+        }
+      }
     }
 
     return jsonResponse(req, { success: true, status: razorpaySubscription.status })
