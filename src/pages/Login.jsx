@@ -13,12 +13,39 @@ export default function Login() {
     const [loading, setLoading] = useState(false)
     const [turnstileToken, setTurnstileToken] = useState(null)
     const [turnstileKey, setTurnstileKey] = useState(0) // key to force remount & reset widget
+    const [forgotMode, setForgotMode] = useState(false)
+    const [forgotSent, setForgotSent] = useState(false)
     const { signIn, signInWithGoogle } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
 
     // Read redirect param (e.g. from pricing page payment flow)
     const redirectParam = new URLSearchParams(location.search).get('redirect')
+
+    // Sends the password reset link. The link comes back to the reset page.
+    async function handleForgotPassword(e) {
+        e.preventDefault()
+        setError('')
+
+        if (!identifier.trim()) {
+            setError('Enter the email address of your account.')
+            return
+        }
+
+        setLoading(true)
+        try {
+            const { error: resetError } = await supabaseEviolife.auth.resetPasswordForEmail(
+                identifier.trim().toLowerCase(),
+                { redirectTo: `${window.location.origin}/#/portal/reset-password` },
+            )
+            if (resetError) throw resetError
+            setForgotSent(true)
+        } catch (resetError) {
+            setError(resetError?.message || 'Could not send the reset link. Please try again.')
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const handleTurnstileVerify = useCallback((token) => {
         setTurnstileToken(token)
@@ -119,6 +146,54 @@ export default function Login() {
 
                         {error && <div className="evx-auth__alert evx-auth__alert--error">{error}</div>}
 
+                        {forgotMode ? (
+                            <form className="evx-auth__form" onSubmit={handleForgotPassword}>
+                                <p className="evx-auth__subtitle" style={{ marginTop: 0 }}>
+                                    {forgotSent
+                                        ? 'If an account exists for that address, a reset link is on its way. The link opens this page so you can choose a new password.'
+                                        : 'Enter the email address of your account and we will send you a link to choose a new password.'}
+                                </p>
+
+                                {!forgotSent && (
+                                    <label className="evx-auth__field" htmlFor="forgot-identifier">
+                                        <span>Email address</span>
+                                        <input
+                                            id="forgot-identifier"
+                                            className="evx-auth__input"
+                                            type="email"
+                                            value={identifier}
+                                            onChange={(e) => setIdentifier(e.target.value)}
+                                            placeholder="you@example.com"
+                                            required
+                                            autoComplete="email"
+                                        />
+                                    </label>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    className="evx-auth__submit"
+                                    disabled={loading || forgotSent}
+                                >
+                                    {loading ? 'Sending...' : forgotSent ? 'Link sent' : 'Send reset link'}
+                                </button>
+
+                                <div className="evx-auth__meta-row" style={{ justifyContent: 'center' }}>
+                                    <button
+                                        type="button"
+                                        className="evx-auth__inline-link"
+                                        onClick={() => {
+                                            setForgotMode(false)
+                                            setForgotSent(false)
+                                            setError('')
+                                        }}
+                                    >
+                                        Back to sign in
+                                    </button>
+                                </div>
+                            </form>
+                        ) : (
+                            <>
                         <form className="evx-auth__form" onSubmit={handleSubmit}>
                             <label className="evx-auth__field" htmlFor="login-identifier">
                                 <span>Email or Username</span>
@@ -153,7 +228,17 @@ export default function Login() {
                                     <input type="checkbox" name="remember" />
                                     <span>Keep me signed in</span>
                                 </label>
-                                <Link className="evx-auth__inline-link" to="/contact">Reset password</Link>
+                                <button
+                                    type="button"
+                                    className="evx-auth__inline-link"
+                                    onClick={() => {
+                                        setForgotMode(true)
+                                        setForgotSent(false)
+                                        setError('')
+                                    }}
+                                >
+                                    Reset password
+                                </button>
                             </div>
 
                             <TurnstileWidget
@@ -198,6 +283,8 @@ export default function Login() {
                             New to our platform?{' '}
                             <Link to={`/portal/signup${redirectParam ? `?redirect=${encodeURIComponent(redirectParam)}` : ''}`}>Create Account</Link>
                         </p>
+                            </>
+                        )}
                     </section>
                 </div>
             </section>

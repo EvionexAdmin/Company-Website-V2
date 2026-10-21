@@ -32,19 +32,31 @@ const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 export default function App() {
     const navigate = useNavigate()
 
-    // Supabase redirects to the site URL when the app cannot open the reset
-    // link itself. Those links carry their parameters in the query string, so
-    // send the visitor to the reset page instead of the home page.
+    // Supabase redirects to the site URL when a password reset link cannot
+    // open the app itself. Only those links belong on the reset page: a
+    // sign-in or confirmation link also carries a `code`, but it already has
+    // its own route in the hash and has to stay there.
     useEffect(() => {
         const params = new URLSearchParams(window.location.search)
-        const isAuthLink =
+        const hash = window.location.hash || ''
+        const hasHashRoute = hash.startsWith('#/')
+
+        // The link was refused by Supabase (expired, used before, ...).
+        const isRecoveryError =
             params.has('error_code') ||
             params.has('error_description') ||
-            params.has('code') ||
-            window.location.hash.includes('access_token') ||
-            window.location.hash.includes('error_code')
+            hash.includes('error_code')
 
-        if (isAuthLink && !window.location.hash.startsWith('#/portal/reset-password')) {
+        // A recovery link that fell back to the site URL has no route at all.
+        const isRecoveryCode = params.has('code') && !hasHashRoute
+
+        // The implicit flow puts the tokens in the hash.
+        const isRecoveryToken = hash.includes('access_token') && hash.includes('type=recovery')
+
+        if (
+            (isRecoveryError || isRecoveryCode || isRecoveryToken) &&
+            !hash.startsWith('#/portal/reset-password')
+        ) {
             // Keep the query string, the reset page needs those parameters.
             window.history.replaceState(
                 null,

@@ -24,16 +24,23 @@ export default function ResetPassword() {
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search)
-        const errorCode = params.get('error_code')
-        const errorDescription = params.get('error_description')
+        // The router puts the route in the hash, so a link like
+        // "#/portal/reset-password?code=..." keeps its code there.
+        const hashQuery = window.location.hash.includes('?')
+            ? window.location.hash.slice(window.location.hash.indexOf('?') + 1)
+            : ''
+        const hashParams = new URLSearchParams(hashQuery)
+
+        const errorCode = params.get('error_code') || hashParams.get('error_code')
+        const errorDescription = params.get('error_description') || hashParams.get('error_description')
 
         if (errorCode || errorDescription) {
             setStatus('expired')
             return
         }
 
-        // A code in the query string means the link used the PKCE flow.
-        const code = params.get('code')
+        // A code means the link used the PKCE flow.
+        const code = params.get('code') || hashParams.get('code')
         if (code) {
             supabaseEviolife.auth
                 .exchangeCodeForSession(code)
