@@ -8,66 +8,216 @@ import './ProductDetail.css'
 
 const accentColor = '#00bafd'
 
+// Evio Life on Google Play. The campaign id keeps installs coming from the
+// website grouped in the Play Console.
+const PLAY_STORE_URL =
+    'https://play.google.com/store/apps/details?id=com.evionex.genesetu&pcampaignid=web_share'
+
 const overview = [
     {
-        icon: '👶',
-        title: 'What Does Eviolife Do?',
-        text: 'Eviolife is a platform that screens an individual\'s DNA to check for over 6,000 inherited conditions from metabolic disorders to rare genetic diseases using a simple sample. You get a clear, certified report reviewed by a human geneticist.'
+        icon: '🩺',
+        title: 'What Is Eviolife?',
+        text: 'Eviolife is your personal health app. It turns the data you already generate every day — meals, workouts, lab values, scans, medicines — into one readable picture of your health, and tells you what to do next.',
     },
     {
         icon: '💡',
-        title: 'Why Early Screening Matters',
-        text: 'Millions in India are affected by genetic conditions every year yet most are diagnosed years too late. Early detection means early action. Eviolife puts that power in your hands from day one.'
+        title: 'Why It Matters',
+        text: 'Health data is scattered across lab PDFs, chat threads and memory. Eviolife keeps it in one timeline, spots the drift early, and keeps your doctor in the loop instead of waiting for the annual check-up.',
     },
     {
-        icon: '🏠',
+        icon: '📱',
         title: 'How Does It Work?',
-        text: 'Order online. We will reach out and guide you to your nearest collection clinic. Your results reviewed by a geneticist are delivered within 3-4 weeks, along with 1 year of access to the Eviolife health platform.'
+        text: 'Download the app, sign in with Google, and start logging. The AI assistants learn your baseline, the trackers fill themselves in, and every report, prescription and scan ends up in one secure repository.',
     },
     {
         icon: '🤝',
         title: 'For Healthcare Professionals',
-        text: 'Eviolife is also built for doctors and clinics who want to offer genomic screening to their patients. Integrate Eviolife into your care workflow.',
-        link: { label: 'Contact us for integration →', to: '/contact' }
+        text: 'Eviolife gives clinics a way to follow up between visits: patients keep their logs up to date and share the records you need, so consultations start with the full picture.',
+        link: { label: 'Contact us for integration →', to: '/contact' },
     },
 ]
 
 const features = [
-    { title: 'Screen for 6,000+ Conditions in One Test', desc: 'A single DNA sample screens for over 6,000 inherited conditions metabolic, neurological, cardiac, and more. No repeat tests. No guesswork. Results are reviewed by a certified geneticist and surfaced in plain language.', media: { src: '/media/eviolife/wes-results.mp4', type: 'video' } },
-    { title: 'Know When Something Is Off Before It Becomes Serious', desc: 'Eviolife tracks lab values, growth markers, and vital signs over time. Automated alerts notify you when anything drifts outside the healthy range, so you and your doctor can act early.', media: { src: '/media/eviolife/biomarker-tracking.mp4', type: 'video' } },
-    { title: 'One Place for an Entire Health Story', desc: 'Vaccinations, prescriptions, lab reports, genetic data all in one secure timeline. Accessible instantly from any device, and shareable with any doctor in seconds.', media: { src: ehrRepositoryImage, type: 'image' } },
-    { title: 'AI That Supports Your Doctor, Not Replaces Them', desc: 'Our AI flags early risk patterns and suggests possible conditions based on health data giving your doctor a head start. All findings are reviewed by clinicians before reaching you.', media: { src: '/media/eviolife/live-diagnostics.mp4', type: 'video' } },
-    { title: 'Never Miss a Dose or a Dangerous Interaction', desc: 'Log every medication prescribed. Eviolife sends reminders, tracks dosage history, and cross-checks against the genetic profile to flag any pharmacogenomic risks.', media: { src: '/media/eviolife/medication-tracking.mp4', type: 'video' } },
-    { title: 'Eat Right Backed by DNA', desc: 'Log meals and feeding patterns and let Eviolife\'s AI analyze nutrient intake against the genetic profile and health needs. Get personalised dietary guidance informed by real biology.', media: { src: '/media/eviolife/nutrilogging.mp4', type: 'video' } },
+    {
+        title: 'Smart NutriLogging That Actually Knows Your Kitchen',
+        desc: 'Log a meal in seconds and Eviolife works out the calories, macros and micronutrients against your goal — across Indian and international foods, home recipes and restaurant dishes. The nutrition assistant explains what the numbers mean for you and what to change next.',
+        media: { src: '/media/eviolife/nutrilogging.mp4', type: 'video' },
+    },
+    {
+        title: 'Biomarkers You Can See Over Time',
+        desc: 'Upload a blood report and Eviolife reads the values, files them in your timeline and tracks every biomarker as a trend instead of a single number. When something drifts outside the healthy range, you find out in days instead of years.',
+        media: { src: '/media/eviolife/biomarker-tracking.mp4', type: 'video' },
+    },
+    {
+        title: 'AI Insights Your Doctor Can Use',
+        desc: 'The AI layer reads across your logs — food, movement, sleep, vitals, labs — and surfaces the patterns that matter: early risk signals, possible interactions, and the questions worth raising at your next consultation. Nothing reaches you before a clinician has reviewed it.',
+        media: { src: '/media/eviolife/live-diagnostics.mp4', type: 'video' },
+    },
+    {
+        title: 'Meds & Supplements, Under Control',
+        desc: 'Prescriptions, supplements and schedules in one place, with reminders that actually fire, an adherence history you can show your doctor, and cross-checks against the rest of your health data for risky combinations.',
+        media: { src: '/media/eviolife/medication-tracking.mp4', type: 'video' },
+    },
+    {
+        title: 'One Health Record for Your Whole Life',
+        desc: 'Vaccinations, lab reports, scans, prescriptions, genetic results and appointments in a single secure timeline — readable in seconds, exportable whenever you need it, and shareable with any doctor in a click.',
+        media: { src: ehrRepositoryImage, type: 'image' },
+    },
+    {
+        title: 'Genetic Risk Assessment, When You Want It',
+        desc: 'Optional Whole Exome Sequencing screening reads your DNA for 6,000+ inherited conditions and turns the findings into plain-language guidance, reviewed by a geneticist and folded into the same record as everything else. It is one module of the app, not the whole product.',
+        media: { src: '/media/eviolife/wes-results.mp4', type: 'video' },
+    },
 ]
 
 const featureLabels = [
-    'WES Data Analysis',
+    'Smart NutriLogging',
     'Biomarker Tracking',
-    'Life Record Management',
-    'AI Diagnostics',
-    'Medication Tracking',
-    'NutriLogging',
+    'AI Health Insights',
+    'Meds & Supplements',
+    'Health Record',
+    'Genetic Risk',
+]
+
+// Every module that ships in the app. This is the product today — the genetic
+// test is one of these, not the headline.
+const appModules = [
+    { icon: '📊', name: 'Dashboard', desc: 'Your health nerve centre: live stats, streaks and what needs attention today.' },
+    { icon: '🥗', name: 'Nutrition Log', desc: 'Meals, macros, calories, recipes and an AI nutrition coach that knows your goal.' },
+    { icon: '🏋️', name: 'Training Zone', desc: 'Workouts built for the muscle groups you want, with AI suggestions and progression charts.' },
+    { icon: '🧩', name: 'Game Zone', desc: 'Daily logic puzzles and brain games to keep your cognitive health in shape.' },
+    { icon: '🩸', name: 'Blood Reports', desc: 'Upload a report, read it in plain language, and follow every biomarker as a trend.' },
+    { icon: '🩻', name: 'MRI Insights', desc: 'AI-assisted observations on your MRI and CT scans, ready to discuss with your doctor.' },
+    { icon: '💊', name: 'Meds & Sups', desc: 'Reminders, adherence history and interaction checks for every prescription and supplement.' },
+    { icon: '🧬', name: 'Genetic Risk', desc: 'Optional WES screening for 6,000+ conditions with a geneticist-certified report.' },
+    { icon: '🛒', name: 'Health Marketplace', desc: 'Book tests, panels and scans, and consult verified doctors and hospitals near you.' },
+    { icon: '👶', name: 'Parent Mode', desc: 'Prenatal and postnatal tracking plus growth milestones for your child.' },
+    { icon: '👨‍👩‍👧', name: 'Health Monitor', desc: 'Family groups and controlled sharing of records with the people you trust.' },
+    { icon: '🗂️', name: 'Repository', desc: 'Every medical document you own, filed, searchable and shareable in seconds.' },
+]
+
+const overviewFaqs = [
+    {
+        q: 'What is Eviolife?',
+        a: 'Eviolife is a personal health app that brings your everyday health data into one place: what you eat, how you train, your lab values, your scans, your medicines and — if you want it — your genetic risk profile. The AI layer reads across all of it and turns it into guidance you can act on today, while every record stays in a single secure repository for you and your doctor.',
+    },
+    {
+        q: 'Who is it for?',
+        a: 'Anyone who wants a clear picture of their own health: people managing a chronic condition, people who want to start exercising or eating better, busy parents tracking their children, and anyone who has ever been handed a lab report and had no idea what it meant. Families share one account with separate, permissioned profiles through Health Monitor and Parent Mode.',
+    },
+    {
+        q: 'Is Eviolife a medical device or a replacement for my doctor?',
+        a: 'No. Eviolife is a health companion and a record-keeping system, not a diagnostic device and not a replacement for medical care. Its AI surfaces patterns and prompts; it does not diagnose. Anything clinical — lab interpretation, imaging observations, genetic findings — is reviewed by qualified clinicians before it reaches you, and your doctor still makes every decision about your care.',
+    },
+    {
+        q: 'Do I need a subscription to use it?',
+        a: 'You can download the app and start using the core trackers straight away. Premium unlocks the AI assistants, deeper analysis, unlimited family seats and marketplace benefits. Plans are billed through the app or on the website, and you can cancel whenever you like.',
+    },
+]
+
+const gettingStartedFaqs = [
+    {
+        q: 'How do I get Eviolife?',
+        a: 'Download Eviolife from the Google Play Store onto your Android phone, then sign in with the Google account you already use. The whole set-up takes a couple of minutes: pick your goal, tell the app a little about yourself, and the trackers, assistants and reminders start working from there.',
+    },
+    {
+        q: 'What should I do in the first week?',
+        a: 'Start with one habit, not ten. Log your meals for a few days so the nutrition assistant can learn your baseline, add one or two blood reports if you have them, and connect a wearable if you own one. Eviolife fills in the trends from there — the more it knows, the more useful the advice becomes.',
+    },
+    {
+        q: 'Can I use Eviolife with my family?',
+        a: 'Yes. Parent Mode gives you a dedicated view for your child, including prenatal and postnatal tracking and growth milestones. Health Monitor lets you group family members and decide exactly who can see which records — sharing is always permissioned, never automatic.',
+    },
+]
+
+const insideFaqs = [
+    {
+        q: 'What can the AI assistants actually do?',
+        a: 'The nutrition assistant reads your food log, your goal and your recent activity, then tells you what to change and why. The workout assistant builds sessions around the muscle groups you want to work and adapts as your progression changes. Both run on-device where the hardware allows it, so your raw health data does not need to leave your phone for routine use.',
+    },
+    {
+        q: 'How does the blood report and MRI analysis work?',
+        a: 'You upload a photo or a PDF. Eviolife extracts the values, files them in your timeline and highlights what is outside the reference range and how it compares with your previous results. For MRI and CT scans you get AI-assisted observations that are meant to support — never replace — the radiologist and your doctor.',
+    },
+    {
+        q: 'What is Genetic Risk Assessment and do I need it?',
+        a: 'It is the optional genetics module. A sample is analysed with Whole Exome Sequencing and screened against more than 6,000 inherited conditions; a geneticist reviews the findings and the results are folded into your record so the rest of the app can work with them. Plenty of people use Eviolife happily without it — nutrition, training, labs, scans and medicines work on their own.',
+    },
+    {
+        q: 'Can I book doctors, tests and scans from the app?',
+        a: 'Yes. The Health Marketplace lets you browse health tests, blood panels and MRI scans, and consult verified doctors and hospitals near you, including teleconsultations. Appointments, prescriptions and results all land back in your repository, so nothing gets lost in a chat thread.',
+    },
+]
+
+const privacyFaqs = [
+    {
+        q: 'How is my health data protected?',
+        a: 'Your records are encrypted in transit and at rest, access is controlled by role and permission, and your family sharing is explicit rather than implicit. The AI layer is built so that routine analysis can run on your device, and your genomic data is never sold, traded or shared with insurers, employers or advertisers.',
+    },
+    {
+        q: 'Is Eviolife compliant with Indian health data rules?',
+        a: 'Eviolife is designed around the Digital Information Security in Healthcare Act (DISHA) framework and the existing IT Act provisions for sensitive personal data, with purpose limitation, data minimisation and consent-based processing built into the product.',
+    },
+    {
+        q: 'Who can see my records?',
+        a: 'By default, only you. You decide when to share: with a family member through Health Monitor, with a doctor through the marketplace, or by exporting a summary for any consultation. Sharing can be withdrawn at any time, and the repository always keeps an audit trail of what was shared and when.',
+    },
+]
+
+const pricingFaqs = [
+    {
+        q: 'Is the app free?',
+        a: 'The core experience is free to download and use. Premium plans unlock the AI assistants, deeper analytics, the health marketplace benefits and additional family seats. You can see the current plans on the website or inside the app before you commit to anything.',
+    },
+    {
+        q: 'What happens if I cancel?',
+        a: 'Your data stays yours. Your records remain in the repository and you can export them at any time; the premium features simply stop. There is no lock-in and no deletion of your history because you did not renew.',
+    },
+    {
+        q: 'Is it available outside India?',
+        a: 'The app is built for a global audience — the nutrition database covers international as well as Indian foods, the app speaks English, Hindi and Marathi, and the marketplace is expanding beyond the cities it serves today.',
+    },
+]
+
+const faqCategories = [
+    { category: 'What Is Eviolife?', icon: '🩺', faqs: overviewFaqs },
+    { category: 'Getting Started', icon: '📱', faqs: gettingStartedFaqs },
+    { category: 'Inside the App', icon: '⚙️', faqs: insideFaqs },
+    { category: 'Privacy & Data Safety', icon: '🔒', faqs: privacyFaqs },
+    { category: 'Plans & Pricing', icon: '💳', faqs: pricingFaqs },
+]
+
+const trustBarItems = [
+    { icon: '🤖', label: 'AI Health Assistants' },
+    { icon: '📱', label: 'Available on Google Play' },
+    { icon: '🔒', label: 'Encrypted Health Records' },
+    { icon: '🧬', label: '6,000+ Conditions Screened' },
 ]
 
 const eviolifeOgImage = new URL('../assets/images/products/eviolife-logo.png', import.meta.url).href
 
+// The structured data is built from the same questions the page shows, so the
+// two never drift apart.
 const eviolifeProductLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: 'Eviolife',
     applicationCategory: 'HealthApplication',
-    operatingSystem: 'Web',
+    operatingSystem: 'Android',
     url: 'https://www.evionex.com/products/eviolife',
     image: eviolifeOgImage,
-    description: 'AI-enabled Electronic Health Record platform using Whole Exome Sequencing to screen 6,000+ diseases with biomarker tracking, nutrigenomics, and pharmacogenomics.',
+    description:
+        'Eviolife is a personal health app that brings nutrition, training, blood reports, MRI insights, medication reminders, genetic risk assessment, family health and a doctor marketplace into one secure record, with AI assistants that turn your own data into guidance you can act on.',
+    downloadUrl: PLAY_STORE_URL,
+    installUrl: PLAY_STORE_URL,
     offers: {
         '@type': 'Offer',
-        price: '19500',
+        price: '0',
         priceCurrency: 'INR',
-        availability: 'https://schema.org/PreOrder',
-        url: 'https://www.evionex.com/products/eviolife',
+        availability: 'https://schema.org/InStock',
+        url: PLAY_STORE_URL,
     },
+    aggregateRating: undefined,
     brand: {
         '@type': 'Brand',
         name: 'Evionex',
@@ -77,179 +227,28 @@ const eviolifeProductLd = {
 const eviolifeFaqLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: [
-        {
+    mainEntity: faqCategories.flatMap((category) =>
+        category.faqs.map((faq) => ({
             '@type': 'Question',
-            name: 'What happens after I place my Eviolife order?',
+            name: faq.q,
             acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'After ordering, the team contacts you to schedule sample collection. The sample goes to an NABL-accredited lab for Whole Exome Sequencing, is reviewed by a geneticist, and results arrive in about 3–4 weeks with platform access.',
+                text: faq.a,
             },
-        },
-        {
-            '@type': 'Question',
-            name: 'How is the genetic sample collected?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'A small blood or saliva sample is collected (heel prick for infants). The process is quick and minimally invasive.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'Is Eviolife compliant with Indian health data rules?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Eviolife is built with privacy-first architecture, follows DISHA-aligned practices, encrypts data in transit and at rest, and uses access controls to protect genomic data.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'Is the laboratory accredited?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Eviolife uses its own NABL-accredited lab and follows CLIA and CAP grade processes to ensure accurate Whole Exome Sequencing and reporting.',
-            },
-        },
-    ],
+        }))
+    ),
 }
 
-const faqCategories = [
-    {
-        category: 'What is the Process?',
-        icon: '🔬',
-        faqs: [
-            {
-                q: 'What exactly happens after I place my order?',
-                a: 'Once you place your order for the Eviolife Genetic Testing Package, our team will reach out to you within 24 hours to schedule a convenient sample collection appointment. The sample will be collected at a clinic and that\'s it from your side. From there, the sample is securely transported to our own accredited laboratory where Whole Exome Sequencing (WES) is performed, and the genetic data is analyzed by us and reviewed by a qualified geneticist before the final report is delivered to you.'
-            },
-            {
-                q: 'How is the genetic sample collected - is it a blood test, saliva swab, or something else?',
-                a: 'The sample collection process is gentle and minimally invasive. Depending on the individual\'s age, a small blood or saliva sample is collected. For infants, a simple heel prick is used. The procedure takes just a few seconds, and we ensure that the process is as comfortable as possible.'
-            },
-            {
-                q: 'Can the sample be collected at home or do I need to visit a collection center?',
-                a: 'With our widespread network of doctors across India, we will make sure that you don\'t have to travel too far to secure health for you or your family.'
-            },
-            {
-                q: 'Which certified labs process the WES (Whole Exome Sequencing) data?',
-                a: 'Your sample is processed at our own laboratory which is NABL-accredited and follows stringent international quality standards. We use next-generation sequencing platforms to perform Whole Exome Sequencing with industry-leading accuracy. Every step from DNA extraction to variant analysis is carried out under strict quality controls to ensure reliable and reproducible results.'
-            },
-            {
-                q: 'How long does it take to receive the results?',
-                a: 'From the time your sample reaches the laboratory, you can expect to receive your Geneticist Certified Report within 3-4 Weeks (or earlier in some cases) after sample collection. We know the waiting period can feel anxious, so our team will keep you updated on the progress of your report and you will be able to track its progress through the Eviolife app and our website. Once ready, you will receive a notification and can access the full report through the Eviolife+ platform along with a downloadable PDF.'
-            },
-        ]
-    },
-    {
-        category: 'What Do I Get?',
-        icon: '📋',
-        faqs: [
-            {
-                q: 'What does the Geneticist Certified Report include?',
-                a: 'The report is a comprehensive, easy-to-understand document that covers the results of the Whole Exome Sequencing analysis across 6,000+ genetic conditions. It includes a summary of any identified genetic variants, their clinical significance, carrier status information, and pharmacogenomic insights that may be relevant to future health. The report is reviewed and certified by a qualified geneticist to ensure medical accuracy before it reaches you. From there on you will be guided by your doctor, who will assist you in understanding the report and provide you with the best possible care.'
-            },
-            {
-                q: 'Who is the geneticist reviewing the report what are their qualifications?',
-                a: 'Every Eviolife report is reviewed by a board-certified clinical geneticist with a specialization in medical genetics and genomics. Our geneticists hold qualifications such as MD/DNB in Medical Genetics or equivalent credentials recognized by Indian medical bodies. They bring years of experience in interpreting next-generation sequencing data, ensuring that every flagged variant is clinically validated and contextualized for the individual\'s health profile.'
-            },
-            {
-                q: 'What does "6,000+ diseases screened" mean in practice will I receive results for all of them?',
-                a: 'When we say 6,000+ diseases screened, it means our AI and sequencing pipeline analyzes the exome data against a database of over 6,000 known genetic conditions. Your final report will highlight only the findings that are clinically significant meaning conditions where a disease-causing or carrier variant has been identified. You will not receive 6,000 separate results; instead, you get a focused, meaningful report that tells you exactly what matters for health.'
-            },
-            {
-                q: 'What is the Eviolife+ platform and what can I do with it during my 1-year access?',
-                a: 'Eviolife+ is a personal digital health companion. During your 1-year access, you can view the full genetic report, track health milestones and biomarkers, log vaccinations and medications, and receive AI-powered health insights personalized to the genetic profile. Think of it as a secure, intelligent health diary that grows with you and keeps you aware of any potential health issues. Should you choose to extend your access, the medical reports you process and submit through the Eviolife+ platform will be continually analysed and we will provide you with relevant health insights and recommendations.'
-            },
-        ]
-    },
-    {
-        category: 'Is It Safe and Private?',
-        icon: '🔒',
-        faqs: [
-            {
-                q: 'How is the genomic data stored and protected?',
-                a: 'The genomic data is encrypted both in transit and at rest using industry-standard AES-256 encryption, the same level of security used by leading banks and healthcare institutions worldwide. Access to the data is strictly controlled through multi-factor authentication and role-based permissions. Our servers are hosted in secure, compliant data centres, and no one not even our own team can access the raw genetic data without your explicit consent.'
-            },
-            {
-                q: 'Is Eviolife compliant with India\'s DISHA (Digital Information Security in Healthcare Act)?',
-                a: 'Eviolife is designed with privacy-first architecture and is built to comply with India\'s emerging Digital Information Security in Healthcare Act (DISHA) framework, as well as existing IT Act provisions related to sensitive personal data. We follow the highest standards of data governance, including purpose limitation, data minimization, and consent-based processing. As DISHA regulations continue to evolve, we are committed to meeting and exceeding every requirement to protect your family\'s data.'
-            },
-            {
-                q: 'Will the genetic data ever be shared with third parties?',
-                a: 'Absolutely not, the genetic data will never be shared with any third party without your explicit consent and even then we do not sell, trade, or share personal genomic data with insurance companies, employers, pharmaceutical firms, or any other external entity. Your data belongs to you and your family alone. If there is ever a research opportunity that could benefit public health, we will always seek your informed consent separately before any anonymized data is considered.'
-            },
-            {
-                q: 'What happens to my data after the 1-year platform access expires?',
-                a: 'After your 1-year Eviolife+ access period ends, you will have the option to renew your subscription to continue enjoying the full platform features. If you choose not to renew, your genetic report and key health records will remain available for download for export indefinitely but will not be analysed further. You may also request a complete data export or permanent deletion at any time we believe you should have full control over your family\'s health data.'
-            },
-        ]
-    },
-    {
-        category: 'Is This Medically Credible?',
-        icon: '🏅',
-        faqs: [
-            {
-                q: 'Is Eviolife approved or recognized by any Indian medical body (ICMR, NMC, NABL)?',
-                a: 'Our own laboratories are NABL-accredited, which is the gold standard for clinical laboratories in India. Our platform and processes are developed in alignment with ICMR guidelines for genomic research and diagnostics. While genetic screening platforms in India do not currently require a separate NMC approval, Eviolife adheres to all applicable regulatory frameworks and industry best practices to ensure clinical credibility and patient safety.'
-            },
-            {
-                q: 'Are the labs used for WES NABL-accredited or internationally certified (CLIA/CAP)?',
-                a: 'Yes, our own laboratory is NABL-accredited, ensuring it meets rigorous national quality benchmarks. We also hold international certifications such as CAP (College of American Pathologists) and CLIA (Clinical Laboratory Improvement Amendments), which are recognized globally as markers of laboratory excellence. This means the sample is processed to the same standards followed by world-class genomics labs.'
-            },
-            {
-                q: 'What clinical evidence supports the accuracy of Eviolife\'s AI diagnostics?',
-                a: 'Eviolife\'s AI is used strictly to monitor and process the downstream metrics from our WES results, not for raw data processing. Our variant interpretation pipeline follows the guidelines set by the American College of Medical Genetics and Genomics (ACMG), which is the international benchmark for clinical variant classification. Every flagged finding is additionally reviewed by a human geneticist, ensuring a dual layer of accuracy before any result reaches you.'
-            },
-        ]
-    },
-    {
-        category: 'Counselling and Follow-Up',
-        icon: '🤝',
-        faqs: [
-            {
-                q: 'What does the "Expert Personalized Counselling" include who provides it and when?',
-                a: 'Once the Geneticist Certified Report is ready, you will receive a one-on-one genetic counselling session with a doctor. During this session, the doctor will walk you through the report findings in simple, non-technical language, answer all your questions, and help you understand what the results mean for health. The session is typically conducted either physically or over a video call at a time that suits you, and there is no additional charge for this consultation.'
-            },
-            {
-                q: 'What do I do if the report flags a genetic condition?',
-                a: 'First, please know that a flagged finding does not necessarily mean the individual will develop a condition it means that you still have time to take appropriate measures. You will be referred by a doctor to a geneticist who will explain the specific finding in detail and recommend appropriate next steps, which may include confirmatory testing, specialist referrals, or simply monitoring. Eviolife is designed to catch potential issues early so that you and your doctor can take timely, informed action in the best window for intervention.'
-            },
-            {
-                q: 'Does Eviolife connect me with doctors or specialists for follow-up care?',
-                a: 'Yes, if the report identifies a finding that requires specialist attention, our care coordination team will help connect you with relevant specialists, clinical geneticists, or metabolic disorder experts in your city. We maintain a referral network of trusted healthcare professionals across India who are experienced in managing genetic conditions. Our goal is to ensure that you are never left navigating the next steps alone.'
-            },
-        ]
-    },
-    {
-        category: 'Pricing and Logistics',
-        icon: '💰',
-        faqs: [
-            {
-                q: 'Is the ₹18,000 a one-time fee or are there hidden costs?',
-                a: 'The ₹18,000 is a single, all-inclusive fee with absolutely no hidden charges. This price covers everything home sample collection, Whole Exome Sequencing, AI-powered analysis, the Geneticist Certified Report, one personalized genetic counselling session, and 1 year of access to the Eviolife+ platform. There are no surprise add-ons, lab fees, or consultation charges beyond what is included in the package.'
-            },
-            {
-                q: 'What is included in the 1-year Eviolife+ platform access?',
-                a: 'Your 1-year Eviolife+ subscription gives you full access to a digital health profile, including the detailed genetic report, biomarker tracking dashboard, vaccination and medication logs, nutritional insights, and AI-powered health recommendations. You can also securely share the report with your doctor or specialist directly from the platform. After the first year, you may choose to renew the subscription to continue using all platform features.'
-            },
-            {
-                q: 'Can I get a refund if I change my mind before the test is conducted?',
-                a: 'Yes, we offer a full refund if you cancel your order before the sample has been collected and dispatched to the laboratory. Once the sample reaches the lab and processing begins, cancellation is no longer possible due to the nature of genomic sequencing. If you have any concerns or second thoughts, we encourage you to speak with our care team they are happy to address any questions before you proceed.'
-            },
-            {
-                q: 'Is this available across all cities in India or only in select locations?',
-                a: 'Eviolife is currently available in Mumbai, Delhi, Bangalore, Hyderabad, Chennai, Pune, Kolkata, Ahmedabad and is expanding rapidly to Tier-2 and Tier-3 cities. If your city is not yet covered, you can still access the service by visiting one of our NABL-accredited laboratories near you. Please check with our care team for the latest availability in your area.'
-            },
-        ]
-    },
-]
-
-const trustBarItems = [
-    { icon: '🏥', label: 'NABL-Accredited Labs' },
-    { icon: '📋', label: 'Geneticist-Certified Reports' },
-    { icon: '🔒', label: 'DISHA Compliant' },
-    { icon: '🧬', label: '6,000+ Diseases Screened' },
-]
+function PlayStoreIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+                fill="currentColor"
+                d="M5 17.66 8.41 12.8 3 5.27v13.32c0 .39.31.7.71.7L5 17.66Zm.84.88 3.24-3.7h4.79L7.47 20.5c-.85.45-1.65.3-1.63-1.96Zm3.23-4.74 1.63-1.86 5.66 1.86H9.07Zm11.45-6.17-4.36-2.53-3.46 3.77 1.63 1.86 6.19-3.1ZM7.47 3.5l6.44 3.69-3.21 3.66L7.47 3.5Zm-1.63 1.96c-.02-2.26.78-3.41 1.63-2.96l3.7 4.24-3.7 4.86-1.63-6.14Z"
+            />
+        </svg>
+    )
+}
 
 export default function EviolifeDetail() {
     const [openFaqIndex, setOpenFaqIndex] = useState(null)
@@ -257,8 +256,9 @@ export default function EviolifeDetail() {
     const progressRef = useRef(null)
 
     usePageMetadata({
-        title: 'Eviolife — AI-enabled Electronic Health Record | Evionex',
-        description: 'Screen 6,000+ genetic conditions, track biomarkers, and manage lifelong health records with Eviolife, the AI-enabled EHR from Evionex.',
+        title: 'Eviolife — Your Personal Health App | Evionex',
+        description:
+            'Eviolife is a personal health app: smart nutrition logging, AI training plans, blood report and MRI insights, medication reminders, genetic risk assessment, family health and a doctor marketplace — all in one secure record.',
         canonicalPath: '/products/eviolife',
         image: eviolifeOgImage,
         ogType: 'product',
@@ -290,16 +290,25 @@ export default function EviolifeDetail() {
                         Healthcare Solution
                     </span>
                     <p className="product-detail__hero-desc">
-                        Give yourself or your family the most complete health start possible. We screen for 6,000+ genetic conditions using advanced DNA analysis and keep the complete health record safe for life.
+                        Your personal health app. Log what you eat, how you train, your labs, your scans and your
+                        medicines — Eviolife puts them in one secure record and turns them into guidance you can
+                        act on today.
                     </p>
 
                     {/* CTA Buttons */}
                     <div className="product-detail__hero-buttons">
-                        <Link to="/subscribe/eviolife" className="btn btn-primary btn-large" style={{ background: accentColor }}>
-                            Subscribe Now
-                        </Link>
+                        <a
+                            href={PLAY_STORE_URL}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="btn btn-primary btn-large"
+                            style={{ background: accentColor, display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}
+                        >
+                            <PlayStoreIcon />
+                            Get it on Google Play
+                        </a>
                         <a href="#features" onClick={scrollToFeatures} className="btn btn-secondary btn-large">
-                            See How It Works ↓
+                            See What's Inside ↓
                         </a>
                     </div>
 
@@ -346,43 +355,43 @@ export default function EviolifeDetail() {
                     <h2 className="product-detail__features-title">
                         Powerful Features <span style={{ color: accentColor }}>For individuals of all ages</span>
                     </h2>
-                    
+
                     {/* Desktop Version */}
                     <div className="accordion-features-desktop accordion-features__container">
                         <div className="accordion-features__media" style={{ borderColor: accentColor + '20' }}>
-                                {hoveredFeature !== null && features[hoveredFeature].media.type === 'video' ? (
-                                    <>
-                                        <video
-                                            key={hoveredFeature}
-                                            className="accordion-features__video"
-                                            autoPlay
-                                            loop
-                                            muted
-                                            playsInline
-                                            preload="metadata"
-                                            onTimeUpdate={(e) => {
-                                                if (progressRef.current) {
-                                                    const progress = (e.target.currentTime / e.target.duration) * 100;
-                                                    progressRef.current.style.width = `${progress}%`;
-                                                }
-                                            }}
-                                        >
-                                            <source src={features[hoveredFeature].media.src} type="video/mp4" />
-                                        </video>
-                                        <div className="accordion-features__progress-bar-container">
-                                            <div 
-                                                ref={progressRef}
-                                                className="accordion-features__progress-bar"
-                                                style={{ backgroundColor: accentColor, opacity: 0.8 }}
-                                            />
-                                        </div>
-                                    </>
-                                ) : hoveredFeature !== null && features[hoveredFeature].media.type === 'image' ? (
-                                    <img src={features[hoveredFeature].media.src} alt={features[hoveredFeature].title} className="accordion-features__image" />
-                                ) : (
-                                    <img src={defaultBg} alt="Default Feature" className="accordion-features__image" />
-                                )}
-                            </div>
+                            {hoveredFeature !== null && features[hoveredFeature].media.type === 'video' ? (
+                                <>
+                                    <video
+                                        key={hoveredFeature}
+                                        className="accordion-features__video"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        preload="metadata"
+                                        onTimeUpdate={(e) => {
+                                            if (progressRef.current) {
+                                                const progress = (e.target.currentTime / e.target.duration) * 100;
+                                                progressRef.current.style.width = `${progress}%`;
+                                            }
+                                        }}
+                                    >
+                                        <source src={features[hoveredFeature].media.src} type="video/mp4" />
+                                    </video>
+                                    <div className="accordion-features__progress-bar-container">
+                                        <div
+                                            ref={progressRef}
+                                            className="accordion-features__progress-bar"
+                                            style={{ backgroundColor: accentColor, opacity: 0.8 }}
+                                        />
+                                    </div>
+                                </>
+                            ) : hoveredFeature !== null && features[hoveredFeature].media.type === 'image' ? (
+                                <img src={features[hoveredFeature].media.src} alt={features[hoveredFeature].title} className="accordion-features__image" />
+                            ) : (
+                                <img src={defaultBg} alt="Default Feature" className="accordion-features__image" />
+                            )}
+                        </div>
                         <div className="accordion-features__list">
                             {features.map((feature, i) => (
                                 <div
@@ -441,6 +450,31 @@ export default function EviolifeDetail() {
                 </div>
             </section>
 
+            {/* Everything in the app */}
+            <section className="product-detail__modules" id="modules-section">
+                <div className="container">
+                    <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                        <span className="product-detail__faq-label" style={{ color: accentColor }}>One App</span>
+                        <h2 className="product-detail__features-title">
+                            Everything <span style={{ color: accentColor }}>inside Eviolife</span>
+                        </h2>
+                        <p className="product-detail__faq-subtitle" style={{ marginBottom: 0 }}>
+                            Every module shares the same record, so a lab result changes your nutrition advice and a
+                            training streak shows up in your next consultation.
+                        </p>
+                    </div>
+                    <div className="product-detail__modules-grid">
+                        {appModules.map((module) => (
+                            <div key={module.name} className="product-detail__module-card">
+                                <span className="product-detail__module-icon">{module.icon}</span>
+                                <h3>{module.name}</h3>
+                                <p>{module.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* FAQ Section */}
             <section className="product-detail__faq">
                 <div className="container">
@@ -450,7 +484,8 @@ export default function EviolifeDetail() {
                             Frequently Asked <span style={{ color: accentColor }}>Questions</span>
                         </h2>
                         <p className="product-detail__faq-subtitle">
-                            Everything you need to know about the Eviolife Genetic Testing Package. We've answered the most common questions from people just like you.
+                            Everything you need to know before you start tracking your health with Eviolife. We've
+                            answered the most common questions from people just like you.
                         </p>
                     </div>
 
@@ -502,12 +537,46 @@ export default function EviolifeDetail() {
                         <div className="product-detail__faq-doctor-block">
                             <span className="product-detail__faq-label product-detail__faq-label--doctor" style={{ color: accentColor }}>For Doctors</span>
                             <p className="product-detail__faq-doctor-text">
-                                Are you a clinician or hospital looking to integrate Eviolife? Contact our team.
+                                Are you a clinician or hospital looking to bring your patients' data into one place? Contact our team.
                             </p>
                             <Link to="/contact" className="btn btn-primary" style={{ background: accentColor, fontSize: '0.95rem', padding: '0.7rem 1.75rem' }}>
                                 Integrate With Us →
                             </Link>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Bottom CTA */}
+            <section className="product-detail__cta">
+                <div className="container">
+                    <div className="product-detail__cta-box" style={{ borderColor: accentColor + '20' }}>
+                        <h2>Start Tracking Your Health Today</h2>
+                        <p>
+                            Download Eviolife, sign in with Google and let your own data start working for you — or
+                            talk to us about bringing it to your patients.
+                        </p>
+                        <div className="product-detail__cta-buttons">
+                            <a
+                                href={PLAY_STORE_URL}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn btn-primary btn-large"
+                                style={{ background: accentColor, display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}
+                            >
+                                <PlayStoreIcon />
+                                Get Eviolife on Google Play
+                            </a>
+                            <Link to="/subscribe/eviolife" className="btn btn-secondary btn-large">
+                                View Plans
+                            </Link>
+                            <Link to="/contact" className="btn btn-secondary btn-large">
+                                Talk to Us
+                            </Link>
+                        </div>
+                        <p className="product-detail__cta-micro-trust">
+                            Free to download · Works with your Google account · Your data stays yours
+                        </p>
                     </div>
                 </div>
             </section>

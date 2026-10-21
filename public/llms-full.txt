@@ -35,18 +35,24 @@ All products are designed for institutional use by universities, research labora
 
 **URL**: https://www.evionex.com/products/eviolife
 
-Eviolife is an AI-enabled Electronic Health Record (EHR) platform that leverages Whole Exome Sequencing (WES) to analyse over 6,000 diseases. It is designed for healthcare facilities that want to offer genomics-driven, personalized healthcare.
+Eviolife is a personal health app (Android, available on Google Play). It collects the health data a person already generates every day — meals, workouts, lab values, scans, medicines — keeps it in one secure record, and uses AI to turn it into guidance the person can act on. Genetic screening is available as an optional module, not as the centre of the product.
 
 **Key Features:**
-- Whole Exome Sequencing (WES) analysis covering 6,000+ diseases
-- Biomarker tracking for long-term health monitoring
-- Nutrigenomics — personalized nutrition recommendations based on genetic profile
-- Pharmacogenomics — drug response predictions based on genetic data
-- Medication tracking and management
-- Life-long health records accessible by patients and providers
-- AI-powered health insights and disease risk assessment
+- Smart NutriLogging — meal logging across Indian and global foods, macro and calorie tracking, recipe tools and an AI nutrition coach
+- Training Zone — AI-built workouts, muscle-group targeting, progression tracking and heatmaps
+- Blood Reports and Biomarker Tracking — upload lab reports, read them in plain language, follow every biomarker as a trend
+- MRI Insights — AI-assisted observations on MRI and CT scans for discussion with a doctor
+- Meds & Supplements — reminders, adherence history and interaction checks
+- Genetic Risk Assessment (optional) — Whole Exome Sequencing screening across 6,000+ inherited conditions with a geneticist-certified report
+- Health Marketplace — book tests, panels and scans, consult verified doctors and hospitals, teleconsultations
+- Parent Mode and Health Monitor — child milestone tracking, family groups and permissioned record sharing
+- Repository and sharing — every medical document in one secure, exportable timeline
+- Game Zone — daily logic puzzles and brain games for cognitive health
+- Stakes, streaks and challenges to keep the daily habits going
 
-**Target Users:** Hospitals, diagnostic labs, genomic research facilities, healthcare providers
+**Target Users:** Individuals and families tracking their own health, and the clinicians and clinics that support them
+
+**App Store:** https://play.google.com/store/apps/details?id=com.evionex.genesetu
 
 ---
 

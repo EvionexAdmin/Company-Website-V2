@@ -126,11 +126,11 @@ const megaMenuConfig = {
             {
                 id: 'products-eviolife',
                 label: 'Eviolife',
-                description: 'AI-enabled health intelligence using genomic insights and longitudinal records.',
+                description: 'A personal health app that turns your own data into guidance you can act on.',
                 href: '/products/eviolife',
                 preview: {
                     title: 'Eviolife',
-                    description: 'Screen 6,000+ conditions and track lifelong biomarker health data.',
+                    description: 'Nutrition, training, labs, scans, medicines and genetics in one record.',
                     src: eviolifePreview,
                     alt: 'Eviolife product preview',
                 },

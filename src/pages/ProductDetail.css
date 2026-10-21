@@ -194,6 +194,50 @@
     font-size: 0.95rem;
 }
 
+/* Modules Section (everything inside the app) */
+.product-detail__modules {
+    padding: 4rem 0;
+}
+
+.product-detail__modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    margin-top: 2rem;
+}
+
+.product-detail__module-card {
+    padding: 1.5rem;
+    border-radius: var(--radius-lg, 16px);
+    background: var(--bg-card-surface);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.product-detail__module-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 186, 253, 0.35);
+}
+
+.product-detail__module-icon {
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.product-detail__module-card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+}
+
+.product-detail__module-card p {
+    color: var(--text-secondary);
+    line-height: 1.65;
+    font-size: 0.9rem;
+}
+
 /* Features Section */
 .product-detail__features {
     padding: 4rem 0;
@@ -491,6 +535,10 @@
     }
 
     .product-detail__overview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-detail__modules-grid {
         grid-template-columns: 1fr;
     }
 

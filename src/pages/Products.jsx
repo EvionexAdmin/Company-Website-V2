@@ -22,15 +22,15 @@ const products = [
         name: 'Eviolife',
         type: 'Healthcare Solution',
         tagColor: '#00bafd',
-        description: 'An AI-enabled Electronic Health Record platform that leverages Whole Exome Sequencing (WES) data to analyze 6,000+ diseases in individuals of all ages, along with maintaining their complete life records.',
+        description: 'A personal health app that brings nutrition, training, blood reports, MRI insights, medication reminders, genetic risk assessment, family health and a doctor marketplace into one secure record, with AI assistants that turn your own data into guidance you can act on.',
         logo: eviolifeLogo,
         features: [
-            { title: 'WES Data Analysis', desc: 'Whole Exome Sequencing analysis covering 6,000+ genetic conditions.', media: { src: '/media/eviolife/wes-results.mp4', type: 'video' } },
-            { title: 'Biomarker Tracking', desc: 'Track biomarkers throughout life to monitor health.', media: { src: '/media/eviolife/biomarker-tracking.mp4', type: 'video' } },
-            { title: 'Life Record Management', desc: 'Maintain complete health records from birth through life with secure, accessible storage.', media: { src: ehrRepositoryImage, type: 'image' } },
-            { title: 'AI Diagnostics', desc: 'Machine learning models for early disease detection and predictive health analytics.', media: { src: '/media/eviolife/live-diagnostics.mp4', type: 'video' } },
-            { title: 'Medication Tracking', desc: 'Track medications and prescriptions with reminders and dosage tracking.', media: { src: '/media/eviolife/medication-tracking.mp4', type: 'video' } },
-            { title: 'NutriLogging', desc: 'Track nutrition and diet with AI-powered insights.', media: { src: '/media/eviolife/nutrilogging.mp4', type: 'video' } },
+            { title: 'Smart NutriLogging', desc: 'Log meals across Indian and global foods and get AI guidance for your nutrition goal.', media: { src: '/media/eviolife/nutrilogging.mp4', type: 'video' } },
+            { title: 'Biomarker Tracking', desc: 'Upload a blood report and follow every biomarker as a trend over time.', media: { src: '/media/eviolife/biomarker-tracking.mp4', type: 'video' } },
+            { title: 'AI Health Insights', desc: 'AI that reads across your logs and surfaces the patterns worth acting on.', media: { src: '/media/eviolife/live-diagnostics.mp4', type: 'video' } },
+            { title: 'Meds & Supplements', desc: 'Reminders, adherence history and interaction checks for every prescription.', media: { src: '/media/eviolife/medication-tracking.mp4', type: 'video' } },
+            { title: 'One Health Record', desc: 'Labs, scans, prescriptions and appointments in a single secure timeline.', media: { src: ehrRepositoryImage, type: 'image' } },
+            { title: 'Genetic Risk Assessment', desc: 'Optional WES screening across 6,000+ inherited conditions, geneticist reviewed.', media: { src: '/media/eviolife/wes-results.mp4', type: 'video' } },
         ],
         learnMorePath: '/products/eviolife',
     },
@@ -77,7 +77,7 @@ export default function Products() {
 
     usePageMetadata({
         title: 'Evionex Products — Eviolife, EviNote, Luminary',
-        description: 'Explore Evionex products: Eviolife (genomic healthcare), EviNote (electronic lab notebook), and Luminary (AI-powered learning platform).',
+        description: 'Explore Evionex products: Eviolife (personal health app), EviNote (electronic lab notebook), and Luminary (AI-powered learning platform).',
         canonicalPath: '/products',
         image: defaultOgImage,
     })

@@ -44,7 +44,7 @@ const PRODUCT_ITEMS = [
     {
         name: 'Eviolife',
         type: 'Healthcare Solution',
-        description: '6000+ Diseases, Nutrigenomic and Pharmacogenomic Profile, all through a single test, and that\'s just the beginning.',
+        description: 'Your personal health app: nutrition, training, labs, scans, medicines and genetics — all in one record, with AI that turns it into guidance you can act on.',
         color: '#00bafd'
     }
 ]

@@ -22,7 +22,7 @@ Key facts:
 ## Products
 
 - [Products Overview](https://www.evionex.com/products): All three Evionex products — Eviolife, EviNote, and Luminary — with feature highlights and demo links
-- [Eviolife](https://www.evionex.com/products/eviolife): AI-enabled Electronic Health Record platform using Whole Exome Sequencing (WES) to analyse 6,000+ diseases, with biomarker tracking, nutrigenomics, pharmacogenomics, medication tracking, and life-long health records
+- [Eviolife](https://www.evionex.com/products/eviolife): Personal health app for Android — smart nutrition logging, AI training plans, blood report and MRI insights, medication and supplement reminders, optional Whole Exome Sequencing genetic risk assessment (6,000+ conditions), family health, a doctor and diagnostics marketplace, and one secure health record; available on Google Play
 - [EviNote](https://www.evionex.com/products/evinote): Complete Laboratory Management Platform — electronic lab notebook, scientific illustrator, resource and equipment management, budget tracking, lab duties, and project tracking; includes AI-powered features
 - [Luminary](https://www.evionex.com/products/luminary): World's first AI-powered Learning Enhancement System (AILES) for universities — AI-driven quizzes, digital journals, interview practice, competitive exam prep, performance leaderboards, and comprehensive testing tools
 - [Pricing](https://www.evionex.com/pricing): Subscription plans and pricing tiers for all three products, designed for institutions of all sizes
