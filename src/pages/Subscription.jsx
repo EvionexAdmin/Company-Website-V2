@@ -155,31 +155,51 @@ export default function Subscription() {
                     })
                 }
 
-                const { data: profileData, error: profileError } = await supabaseEviolife
-                    .from('profiles')
-                    .select('is_premium, subscription_tier')
-                    .eq('id', user.id)
-                    .maybeSingle()
+                // Check profile for premium status (support both evionex_profiles and profiles)
+                try {
+                    const { data: profileData } = await supabaseEviolife
+                        .from('profiles')
+                        .select('is_premium, subscription_tier')
+                        .eq('id', user.id)
+                        .maybeSingle()
 
-                if (profileError) throw profileError
-                if (isMounted && profileData?.is_premium && profileData?.subscription_tier === 'premium') {
-                    setSubscribed(true)
+                    if (isMounted && profileData?.is_premium && profileData?.subscription_tier === 'premium') {
+                        setSubscribed(true)
+                    }
+                } catch (profErr) {
+                    console.warn('Could not query profiles table, checking evionex_profiles:', profErr)
+                    try {
+                        const { data: evioProfile } = await supabaseEviolife
+                            .from('evionex_profiles')
+                            .select('is_premium, subscription_tier')
+                            .eq('id', user.id)
+                            .maybeSingle()
+
+                        if (isMounted && evioProfile?.is_premium && evioProfile?.subscription_tier === 'premium') {
+                            setSubscribed(true)
+                        }
+                    } catch {
+                        // Table doesn't have these columns, ignore safely
+                    }
                 }
 
-                const { data: subscription, error: subscriptionError } = await supabaseEviolife
-                    .from('subscriptions')
-                    .select('razorpay_subscription_id, current_period_end, cancel_at_period_end')
-                    .eq('user_id', user.id)
-                    .in('status', ['authenticated', 'active'])
-                    .order('created_at', { ascending: false })
-                    .limit(1)
-                    .maybeSingle()
+                try {
+                    const { data: subscription } = await supabaseEviolife
+                        .from('subscriptions')
+                        .select('razorpay_subscription_id, current_period_end, cancel_at_period_end')
+                        .eq('user_id', user.id)
+                        .in('status', ['authenticated', 'active'])
+                        .order('created_at', { ascending: false })
+                        .limit(1)
+                        .maybeSingle()
 
-                if (subscriptionError) throw subscriptionError
-                if (isMounted && subscription) {
-                    setCancelScheduled(Boolean(subscription.cancel_at_period_end))
-                    setSubscriptionId(subscription.cancel_at_period_end ? null : subscription.razorpay_subscription_id)
-                    setCancelAt(subscription.current_period_end)
+                    if (isMounted && subscription) {
+                        setCancelScheduled(Boolean(subscription.cancel_at_period_end))
+                        setSubscriptionId(subscription.cancel_at_period_end ? null : subscription.razorpay_subscription_id)
+                        setCancelAt(subscription.current_period_end)
+                    }
+                } catch (subErr) {
+                    console.warn('Could not query subscriptions:', subErr)
                 }
             } catch (err) {
                 console.error('Error loading subscription details:', err)
@@ -723,9 +743,9 @@ export default function Subscription() {
                                         ))}
                                     </ul>
                                 )}
-                                {extraSeats > 0 && (
+                                {extraSeats > 0 && breakdown && (
                                     <p className="subscription-family__saving">
-                                        You save {formatCurrency(priceData.currency, breakdown.discountAmount / 100)} on this plan.
+                                        You save {formatCurrency(priceData.currency, (breakdown.discountAmount || 0) / 100)} on this plan.
                                     </p>
                                 )}
                             </div>

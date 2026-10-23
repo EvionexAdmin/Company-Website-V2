@@ -241,14 +241,90 @@ const eviolifeFaqLd = {
 
 function PlayStoreIcon() {
     return (
-        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <svg width="22" height="22" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
             <path
-                fill="currentColor"
-                d="M5 17.66 8.41 12.8 3 5.27v13.32c0 .39.31.7.71.7L5 17.66Zm.84.88 3.24-3.7h4.79L7.47 20.5c-.85.45-1.65.3-1.63-1.96Zm3.23-4.74 1.63-1.86 5.66 1.86H9.07Zm11.45-6.17-4.36-2.53-3.46 3.77 1.63 1.86 6.19-3.1ZM7.47 3.5l6.44 3.69-3.21 3.66L7.47 3.5Zm-1.63 1.96c-.02-2.26.78-3.41 1.63-2.96l3.7 4.24-3.7 4.86-1.63-6.14Z"
+                fill="#00F076"
+                d="M325.3 234.3L10.6 51.9C6.4 57.5 4 64.6 4 72.3v367.4c0 7.7 2.4 14.8 6.6 20.4l314.7-225.8z"
+            />
+            <path
+                fill="#00D2FF"
+                d="M407.2 292.8l-81.9-58.5L10.6 459.7c3.9 4.3 9.4 7.3 15.6 7.3 4.2 0 8.2-1.3 11.6-3.7l369.4-210.5z"
+            />
+            <path
+                fill="#FF3A44"
+                d="M407.2 219.2L37.8 8.9C34.4 6.5 30.4 5.2 26.2 5.2c-6.2 0-11.7 3-15.6 7.3l314.7 225.8 81.9-19.1z"
+            />
+            <path
+                fill="#FFC400"
+                d="M470.5 242.9l-63.3-36.1-81.9 27.5 81.9 58.5 63.3-36.1c9.4-5.4 15.5-15.4 15.5-26.9s-6.1-21.5-15.5-26.9z"
             />
         </svg>
     )
 }
+
+const eviolifePlans = [
+    {
+        name: 'Free Starter',
+        badge: 'Get Started',
+        price: '₹0',
+        billing: 'Free forever · 14-day full premium trial',
+        description: 'Instant access upon downloading the app. Start logging, tracking, and exploring your health baseline today.',
+        isFree: true,
+        features: [
+            '14 Days Free Premium Trial included on login',
+            'Smart NutriLogging (Indian & international meals, calories, macros & micros)',
+            'Biomarker & Lab Report upload with trend tracking',
+            'Medication & Supplement reminders with adherence logs',
+            'Wearable & Smartwatch connection (Fitbit, Apple Watch & more)',
+            'AI Nutrition & Workout assistant guidance',
+            'Digital Twin health baseline preview & live vitals monitoring',
+            'One Health Record repository for all medical documents',
+        ],
+        ctaText: 'Download on Google Play',
+        ctaLink: PLAY_STORE_URL,
+        external: true,
+    },
+    {
+        name: 'Weekly Premium',
+        badge: 'Most Flexible',
+        price: '₹18',
+        billing: 'per week, billed monthly (~₹78/mo)',
+        description: 'Complete AI health assistance and unlimited monitoring for active individuals.',
+        isFree: false,
+        features: [
+            'All Free tier features included',
+            'Continuous AI Health Insights and early drift detection',
+            'Nutrition label scanner for packaged foods',
+            'Doctor Connect — share records directly for consultations',
+            'Advanced exercise filtering & personalized progression',
+            'Unlimited medical records storage & instant export',
+            'Priority support',
+        ],
+        ctaText: 'Start Premium',
+        ctaLink: '/subscribe/eviolife',
+        external: false,
+    },
+    {
+        name: 'Yearly Premium',
+        badge: 'Save ~20%',
+        price: '₹499',
+        billing: 'per year (less than ₹42/month)',
+        description: 'The best value plan for individuals & families serious about proactive longevity.',
+        isFree: false,
+        features: [
+            'All Weekly Premium features included',
+            'Full year of continuous health tracking & AI biomarker trends',
+            'Family monitoring for up to 7 members (8% off each extra seat)',
+            'Parent Mode & growth milestones tracking',
+            'Health Marketplace priority booking & verified clinic discounts',
+            '256-bit encrypted secure cloud backup',
+            'Priority 24/7 customer & clinician support',
+        ],
+        ctaText: 'Get Yearly Plan',
+        ctaLink: '/subscribe/eviolife',
+        external: false,
+    },
+]
 
 export default function EviolifeDetail() {
     const [openFaqIndex, setOpenFaqIndex] = useState(null)
@@ -278,6 +354,14 @@ export default function EviolifeDetail() {
         }
     }
 
+    const scrollToPlans = (e) => {
+        e.preventDefault()
+        const plansSection = document.querySelector('#pricing-plans-section')
+        if (plansSection) {
+            plansSection.scrollIntoView({ behavior: 'smooth' })
+        }
+    }
+
     return (
         <div className="product-detail">
             {/* Hero */}
@@ -302,10 +386,17 @@ export default function EviolifeDetail() {
                             target="_blank"
                             rel="noreferrer"
                             className="btn btn-primary btn-large"
-                            style={{ background: accentColor, display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}
+                            style={{ background: accentColor, display: 'inline-flex', alignItems: 'center', gap: '0.65rem' }}
                         >
                             <PlayStoreIcon />
                             Get it on Google Play
+                        </a>
+                        <a
+                            href="#pricing-plans-section"
+                            onClick={scrollToPlans}
+                            className="btn btn-secondary btn-large"
+                        >
+                            View Plans
                         </a>
                         <a href="#features" onClick={scrollToFeatures} className="btn btn-secondary btn-large">
                             See What's Inside ↓
@@ -469,6 +560,73 @@ export default function EviolifeDetail() {
                                 <span className="product-detail__module-icon">{module.icon}</span>
                                 <h3>{module.name}</h3>
                                 <p>{module.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Plans & Pricing */}
+            <section className="product-detail__plans" id="pricing-plans-section">
+                <div className="container">
+                    <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                        <span className="product-detail__faq-label" style={{ color: accentColor }}>Transparent Pricing</span>
+                        <h2 className="product-detail__features-title">
+                            Simple Plans <span style={{ color: accentColor }}>for Every Health Goal</span>
+                        </h2>
+                        <p className="product-detail__faq-subtitle" style={{ marginBottom: 0 }}>
+                            Get started free with a 14-day trial of all premium features included upon sign-in. Upgrade anytime for deeper continuous analytics and family sharing.
+                        </p>
+                    </div>
+
+                    <div className="product-detail__plans-grid">
+                        {eviolifePlans.map((plan) => (
+                            <div
+                                key={plan.name}
+                                className={`product-detail__plan-card ${plan.isFree ? 'product-detail__plan-card--free' : ''}`}
+                            >
+                                <div className="product-detail__plan-badge">{plan.badge}</div>
+                                <h3 className="product-detail__plan-name">{plan.name}</h3>
+                                <div className="product-detail__plan-price-wrap">
+                                    <span className="product-detail__plan-price">{plan.price}</span>
+                                    <span className="product-detail__plan-billing">{plan.billing}</span>
+                                </div>
+                                <p className="product-detail__plan-desc">{plan.description}</p>
+                                
+                                <div className="product-detail__plan-features-header">
+                                    {plan.isFree ? 'Included Free Benefits & Trial:' : 'Features & Benefits:'}
+                                </div>
+                                <ul className="product-detail__plan-features">
+                                    {plan.features.map((feat, idx) => (
+                                        <li key={idx} className="product-detail__plan-feature-item">
+                                            <span className="product-detail__plan-feature-icon" aria-hidden="true">✓</span>
+                                            <span>{feat}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                <div className="product-detail__plan-action">
+                                    {plan.external ? (
+                                        <a
+                                            href={plan.ctaLink}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="btn btn-primary btn-large product-detail__plan-btn"
+                                            style={{ background: accentColor, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', width: '100%' }}
+                                        >
+                                            <PlayStoreIcon />
+                                            {plan.ctaText}
+                                        </a>
+                                    ) : (
+                                        <Link
+                                            to={plan.ctaLink}
+                                            className="btn btn-secondary btn-large product-detail__plan-btn"
+                                            style={{ width: '100%', textAlign: 'center' }}
+                                        >
+                                            {plan.ctaText} →
+                                        </Link>
+                                    )}
+                                </div>
                             </div>
                         ))}
                     </div>
