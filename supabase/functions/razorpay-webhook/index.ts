@@ -57,16 +57,28 @@ Deno.serve(async (req: Request) => {
         .eq("id", subscription.user_id)
       if (profileError) throw profileError
     } else if (["cancelled", "completed", "halted"].includes(status)) {
-      const { error: profileError } = await db
-        .from("profiles")
-        .update({
-          is_premium: false,
-          subscription_tier: "free",
-          subscription_expiry: null,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", subscription.user_id)
-      if (profileError) throw profileError
+      // A replaced plan (changed through this page) finishes at its cycle
+      // end while the new subscription is already running. Premium is only
+      // removed when no other paid subscription is left.
+      const { data: otherSubscriptions } = await db
+        .from("subscriptions")
+        .select("id")
+        .eq("user_id", subscription.user_id)
+        .in("status", ["authenticated", "active"])
+        .neq("razorpay_subscription_id", subscriptionId)
+        .limit(1)
+      if (!otherSubscriptions?.length) {
+        const { error: profileError } = await db
+          .from("profiles")
+          .update({
+            is_premium: false,
+            subscription_tier: "free",
+            subscription_expiry: null,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", subscription.user_id)
+        if (profileError) throw profileError
+      }
     }
 
     if (subscription.coupon_code && ["subscription.activated", "subscription.charged"].includes(event.event)) {

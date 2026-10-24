@@ -7,31 +7,14 @@ import {
     normalizeSeatEmails,
     resolvePriceBreakdown,
     seatDiscountPercent,
+    isSouthAsiaByTimezone,
+    isValidEmail,
 } from '../lib/pricing'
 import eviolifeMockup from '../assets/images/products/eviolife-mockup.png'
 import './Subscription.css'
 
-const SOUTH_ASIA_TIMEZONES = [
-    'Asia/Kolkata', 'Asia/Calcutta',   // India
-    'Asia/Karachi',                     // Pakistan
-    'Asia/Dhaka',                       // Bangladesh
-    'Asia/Colombo',                     // Sri Lanka
-    'Asia/Kathmandu', 'Asia/Katmandu', // Nepal
-    'Indian/Maldives',                  // Maldives
-    'Asia/Thimphu',                     // Bhutan
-    'Asia/Kabul',                       // Afghanistan
-]
-
-function isSouthAsiaByTimezone() {
-    try {
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
-        return SOUTH_ASIA_TIMEZONES.includes(tz)
-    } catch {
-        return false
-    }
-}
-
 const SUPABASE_FUNCTIONS_URL = 'https://bpcprnncbdjjxzqpumzy.supabase.co/functions/v1'
+
 
 const featureItems = [
     {
@@ -108,7 +91,12 @@ export default function Subscription() {
     const [loading, setLoading] = useState(true)
     const [processing, setProcessing] = useState(false)
     const [error, setError] = useState(null)
+    // subscribed = true only when the user has an ACTIVE PAID subscription (not trial)
     const [subscribed, setSubscribed] = useState(false)
+    // onTrial = true when user has premium via free trial only (no paid sub)
+    const [onTrial, setOnTrial] = useState(false)
+    // managingPlan = subscriber who wants to change/add family seats
+    const [managingPlan, setManagingPlan] = useState(false)
     const [planType, setPlanType] = useState('monthly')
     const [seatEmails, setSeatEmails] = useState([])
     const [seatInput, setSeatInput] = useState('')
@@ -155,38 +143,12 @@ export default function Subscription() {
                     })
                 }
 
-                // Check profile for premium status (support both evionex_profiles and profiles)
-                try {
-                    const { data: profileData } = await supabaseEviolife
-                        .from('profiles')
-                        .select('is_premium, subscription_tier')
-                        .eq('id', user.id)
-                        .maybeSingle()
-
-                    if (isMounted && profileData?.is_premium && profileData?.subscription_tier === 'premium') {
-                        setSubscribed(true)
-                    }
-                } catch (profErr) {
-                    console.warn('Could not query profiles table, checking evionex_profiles:', profErr)
-                    try {
-                        const { data: evioProfile } = await supabaseEviolife
-                            .from('evionex_profiles')
-                            .select('is_premium, subscription_tier')
-                            .eq('id', user.id)
-                            .maybeSingle()
-
-                        if (isMounted && evioProfile?.is_premium && evioProfile?.subscription_tier === 'premium') {
-                            setSubscribed(true)
-                        }
-                    } catch {
-                        // Table doesn't have these columns, ignore safely
-                    }
-                }
-
+                // Check for an ACTIVE PAID subscription first (not trial)
+                // Only a real Razorpay subscription row marks someone as truly subscribed
                 try {
                     const { data: subscription } = await supabaseEviolife
                         .from('subscriptions')
-                        .select('razorpay_subscription_id, current_period_end, cancel_at_period_end')
+                        .select('razorpay_subscription_id, current_period_end, cancel_at_period_end, plan_type')
                         .eq('user_id', user.id)
                         .in('status', ['authenticated', 'active'])
                         .order('created_at', { ascending: false })
@@ -194,9 +156,32 @@ export default function Subscription() {
                         .maybeSingle()
 
                     if (isMounted && subscription) {
+                        // They have an actual paid subscription
+                        setSubscribed(true)
                         setCancelScheduled(Boolean(subscription.cancel_at_period_end))
-                        setSubscriptionId(subscription.cancel_at_period_end ? null : subscription.razorpay_subscription_id)
+                        // Lifetime plans store a non-Razorpay id and cannot be
+                        // cancelled, so only real Razorpay ids are cancellable.
+                        const razorpayId = String(subscription.razorpay_subscription_id || '')
+                        const isCancellableRazorpaySub = /^sub_[a-zA-Z0-9]+$/.test(razorpayId)
+                        setSubscriptionId(
+                            subscription.cancel_at_period_end || !isCancellableRazorpaySub ? null : razorpayId
+                        )
                         setCancelAt(subscription.current_period_end)
+                    } else if (isMounted) {
+                        // No paid subscription — check if they have premium via trial
+                        try {
+                            const { data: profileData } = await supabaseEviolife
+                                .from('profiles')
+                                .select('is_premium, subscription_tier')
+                                .eq('id', user.id)
+                                .maybeSingle()
+                            if (isMounted && profileData?.is_premium && profileData?.subscription_tier === 'premium') {
+                                // Premium but no paid sub row = they're on a free trial
+                                setOnTrial(true)
+                            }
+                        } catch {
+                            // ignore profile query failure
+                        }
                     }
                 } catch (subErr) {
                     console.warn('Could not query subscriptions:', subErr)
@@ -251,6 +236,7 @@ export default function Subscription() {
     const primaryPrice = useMemo(() => {
         if (!breakdown) return ''
         if (planType === 'monthly') {
+            // Weekly reference already scaled for seats in resolvePriceBreakdown
             const weekly = breakdown.weeklyReference
             return `${formatCurrency(priceData.currency, weekly)}/week`
         }
@@ -262,21 +248,16 @@ export default function Subscription() {
 
     const originalPrice = useMemo(() => {
         if (!breakdown) return null
-        if (planType === 'yearly') {
-            return formatCurrency(priceData.currency, breakdown.baseAmount / 100)
+        // For USD lifetime show the original pre-discount price (50% off badge),
+        // scaled for the number of accounts on the plan.
+        if (planType === 'lifetime' && breakdown.originalAmount && priceData.currency === 'USD') {
+            return formatCurrency(priceData.currency, (breakdown.originalAmount * breakdown.totalAccounts) / 100)
         }
-        if (planType === 'lifetime') {
+        if (planType === 'yearly') {
             return formatCurrency(priceData.currency, breakdown.baseAmount / 100)
         }
         return null
     }, [breakdown, planType, priceData.currency])
-
-    const monthlyEquivalent = useMemo(() => {
-        if (!breakdown) return null
-        if (planType === 'yearly') return breakdown.baseAmount / 12
-        if (planType === 'lifetime') return breakdown.baseAmount / 60
-        return breakdown.totalAmount / 100
-    }, [breakdown, planType])
 
     const handleApplyCoupon = useCallback(async () => {
         const normalizedCode = couponCode.trim().toUpperCase()
@@ -340,7 +321,7 @@ export default function Subscription() {
     const addSeatEmail = useCallback(() => {
         const email = seatInput.trim().toLowerCase()
         if (!email) return
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (!isValidEmail(email)) {
             setError('Enter a valid email address.')
             return
         }
@@ -455,6 +436,9 @@ export default function Subscription() {
 
                 setPaymentPending(verification?.premium_activated === false)
                 setSubscribed(true)
+                setManagingPlan(false)
+                setOnTrial(false)
+                setSubscriptionId(null)
                 return
             }
 
@@ -470,6 +454,10 @@ export default function Subscription() {
                     couponCode: coupon?.code || null,
                     seats,
                     seatEmails: invitedEmails,
+                    // Existing subscribers changing plan or adding family
+                    // seats are allowed to start the new subscription; the
+                    // server ends the previous one at its cycle end.
+                    changePlan: managingPlan,
                 }),
             })
 
@@ -540,6 +528,9 @@ export default function Subscription() {
             // 5. Verified — show premium success state
             setPaymentPending(verification?.status !== 'active')
             setSubscribed(true)
+            setManagingPlan(false)
+            setOnTrial(false)
+            setSubscriptionId(null)
 
         } catch (err) {
             if (err.message === 'dismissed') {
@@ -551,7 +542,7 @@ export default function Subscription() {
         } finally {
             setProcessing(false)
         }
-    }, [user, session, priceData.currency, planType, coupon, couponCode, invitedEmails, breakdown])
+    }, [user, session, priceData.currency, planType, coupon, couponCode, invitedEmails, breakdown, managingPlan])
 
     if (loading || !user) {
         return (
@@ -661,7 +652,7 @@ export default function Subscription() {
                                 </span>
                                 <span className="subscription-price-block__term">
                                     {planType === 'monthly'
-                                        ? 'per week, billed monthly'
+                                        ? 'billed monthly'
                                         : planType === 'yearly'
                                             ? 'per year'
                                             : 'one-off payment'}
@@ -682,7 +673,10 @@ export default function Subscription() {
                                     )}.</>
                                 )}
                                 {planType === 'lifetime' && (
-                                    <>Pay once, keep premium for 5 years
+                                    <>Pay once, keep premium for 50 years
+                                    {priceData.currency === 'USD' && breakdown?.originalAmount && (
+                                        <> · <s>{formatCurrency('USD', breakdown.originalAmount / 100)}</s> <strong style={{ color: '#5eead4' }}>50% off</strong></>
+                                    )}
                                     {couponApplies && couponPercent > 0 && (
                                         <> · coupon takes {couponPercent}% off</>
                                     )}.</>
@@ -700,8 +694,8 @@ export default function Subscription() {
                                     </span>
                                 </div>
                                 <p className="subscription-family__hint">
-                                    Add up to {MAX_EXTRA_SEATS} extra accounts. Every account takes 8% off the
-                                    total, up to a maximum of {30}% off.
+                                    Add up to {MAX_EXTRA_SEATS} extra accounts. Each extra account is charged at the
+                                    plan price, then every account takes 8% off the total — up to 30% off.
                                 </p>
                                 <div className="subscription-family__row">
                                     <input
@@ -795,7 +789,18 @@ export default function Subscription() {
                             ))}
                         </ul>
 
-                        {subscribed ? (
+                        {/* Free trial notice banner */}
+                        {onTrial && !subscribed && (
+                            <div className="subscription-trial-banner" role="status" aria-live="polite">
+                                <span className="subscription-trial-banner__icon" aria-hidden="true">⏳</span>
+                                <span>
+                                    You&rsquo;re on a <strong>14-day free trial</strong>. Subscribe now to keep premium uninterrupted when it ends.
+                                </span>
+                            </div>
+                        )}
+
+                        {/* For paid subscribers: show manage banner but let them still access checkout form */}
+                        {subscribed && !managingPlan && (
                             <div className="subscription-success-state" role="status">
                                 <div className="subscription-success-state__icon" aria-hidden="true">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -817,26 +822,38 @@ export default function Subscription() {
                                             : 'Your Evio Life plan is active. Open the app to unlock all features.'}
                                 </p>
                                 {error && <p className="subscription-error" role="alert">{error}</p>}
-                                {subscriptionId ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', width: '100%' }}>
+                                    {subscriptionId ? (
+                                        <button
+                                            type="button"
+                                            className="subscription-cta subscription-cta--secondary"
+                                            onClick={handleCancelSubscription}
+                                            disabled={cancelling}
+                                        >
+                                            {cancelling ? 'Cancelling...' : 'Cancel subscription'}
+                                        </button>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            className="subscription-cta subscription-cta--secondary"
+                                            onClick={() => navigate('/portal/dashboard')}
+                                        >
+                                            Go to Dashboard
+                                        </button>
+                                    )}
                                     <button
                                         type="button"
                                         className="subscription-cta subscription-cta--secondary"
-                                        onClick={handleCancelSubscription}
-                                        disabled={cancelling}
+                                        onClick={() => setManagingPlan(true)}
                                     >
-                                        {cancelling ? 'Cancelling...' : 'Cancel subscription'}
+                                        Change plan or add family seats
                                     </button>
-                                ) : (
-                                    <button
-                                        type="button"
-                                        className="subscription-cta subscription-cta--secondary"
-                                        onClick={() => navigate('/portal/dashboard')}
-                                    >
-                                        Go to Dashboard
-                                    </button>
-                                )}
+                                </div>
                             </div>
-                        ) : (
+                        )}
+
+                        {/* Checkout form — shown when: not subscribed, on trial, or managing existing plan */}
+                        {(!subscribed || managingPlan) && (
                             <>
                                 {error && (
                                     <p className="subscription-error" role="alert">{error}</p>

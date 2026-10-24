@@ -804,8 +804,27 @@
 .product-detail__plan-price-wrap {
     display: flex;
     align-items: baseline;
+    flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 0.75rem;
+}
+
+.product-detail__plan-original-price {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    font-weight: 500;
+}
+
+.product-detail__plan-discount-badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(0, 212, 200, 0.18);
+    border: 1px solid rgba(0, 212, 200, 0.4);
+    color: #5eead4;
+    font-size: 0.7rem;
+    font-weight: 700;
 }
 
 .product-detail__plan-price {

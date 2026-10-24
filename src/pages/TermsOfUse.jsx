@@ -126,10 +126,12 @@ export default function TermsOfUse() {
 
                         <h3 className="policy-subsection__title">Eviolife Premium subscriptions</h3>
                         <p>
-                            The monthly plan is priced at ₹52 per month in INR or $6.50 per month in USD. Weekly
+                            The monthly plan is priced at ₹78 per month in INR or $6.50 per month in USD. Weekly
                             amounts shown on the subscription page are reference prices only; the monthly charge is
                             disclosed before payment. The yearly plan is ₹499 per year or $63 per year, shown with
-                            the applicable annual savings.
+                            the applicable annual savings. The lifetime plan is a single payment of ₹2,495 in INR or
+                            $157.50 in USD (50% off the standard $315 price) and keeps premium access active for
+                            50 years.
                         </p>
                         <p>
                             Plans renew automatically for up to 100 billing cycles unless cancelled. You can request

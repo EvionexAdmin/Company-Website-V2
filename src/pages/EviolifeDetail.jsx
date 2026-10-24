@@ -1,9 +1,10 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import eviolifeMockup from '../assets/images/products/eviolife-mockup.png'
 import defaultBg from '../assets/images/auth/login-background.webp'
 import ehrRepositoryImage from '../assets/images/products/ehr-repository.jpeg'
 import usePageMetadata from '../lib/usePageMetadata'
+import { isSouthAsiaByTimezone, PLAN_CATALOG } from '../lib/pricing'
 import './ProductDetail.css'
 
 const accentColor = '#00bafd'
@@ -262,74 +263,109 @@ function PlayStoreIcon() {
     )
 }
 
-const eviolifePlans = [
-    {
-        name: 'Free Starter',
-        badge: 'Get Started',
-        price: '₹0',
-        billing: 'Free forever · 14-day full premium trial',
-        description: 'Instant access upon downloading the app. Start logging, tracking, and exploring your health baseline today.',
-        isFree: true,
-        features: [
-            '14 Days Free Premium Trial included on login',
-            'Smart NutriLogging (Indian & international meals, calories, macros & micros)',
-            'Biomarker & Lab Report upload with trend tracking',
-            'Medication & Supplement reminders with adherence logs',
-            'Wearable & Smartwatch connection (Fitbit, Apple Watch & more)',
-            'AI Nutrition & Workout assistant guidance',
-            'Digital Twin health baseline preview & live vitals monitoring',
-            'One Health Record repository for all medical documents',
-        ],
-        ctaText: 'Download on Google Play',
-        ctaLink: PLAY_STORE_URL,
-        external: true,
-    },
-    {
-        name: 'Weekly Premium',
-        badge: 'Most Flexible',
-        price: '₹18',
-        billing: 'per week, billed monthly (~₹78/mo)',
-        description: 'Complete AI health assistance and unlimited monitoring for active individuals.',
-        isFree: false,
-        features: [
-            'All Free tier features included',
-            'Continuous AI Health Insights and early drift detection',
-            'Nutrition label scanner for packaged foods',
-            'Doctor Connect — share records directly for consultations',
-            'Advanced exercise filtering & personalized progression',
-            'Unlimited medical records storage & instant export',
-            'Priority support',
-        ],
-        ctaText: 'Start Premium',
-        ctaLink: '/subscribe/eviolife',
-        external: false,
-    },
-    {
-        name: 'Yearly Premium',
-        badge: 'Save ~20%',
-        price: '₹499',
-        billing: 'per year (less than ₹42/month)',
-        description: 'The best value plan for individuals & families serious about proactive longevity.',
-        isFree: false,
-        features: [
-            'All Weekly Premium features included',
-            'Full year of continuous health tracking & AI biomarker trends',
-            'Family monitoring for up to 7 members (8% off each extra seat)',
-            'Parent Mode & growth milestones tracking',
-            'Health Marketplace priority booking & verified clinic discounts',
-            '256-bit encrypted secure cloud backup',
-            'Priority 24/7 customer & clinician support',
-        ],
-        ctaText: 'Get Yearly Plan',
-        ctaLink: '/subscribe/eviolife',
-        external: false,
-    },
-]
+function buildEviolifePlans(currency) {
+    const isINR = currency === 'INR'
+    const sym = isINR ? '₹' : '$'
+    const catalog = PLAN_CATALOG[currency]
+    const weeklyRef = catalog.monthly.weeklyReference
+    const yearlyAmt = catalog.yearly.amount / 100
+    const lifetimeAmt = catalog.lifetime.amount / 100
+    const lifetimeOriginal = catalog.lifetime.originalAmount ? catalog.lifetime.originalAmount / 100 : null
+    const lifetimeDiscountBadge = catalog.lifetime.discountBadge || null
+
+    return [
+        {
+            name: 'Free Starter',
+            badge: 'Get Started',
+            price: `${sym}0`,
+            billing: 'Free forever · 14-day full premium trial',
+            description: 'Instant access upon downloading the app. Start logging, tracking, and exploring your health baseline today.',
+            isFree: true,
+            features: [
+                '14 Days Free Premium Trial included on login',
+                'Smart NutriLogging (Indian & international meals, calories, macros & micros)',
+                'Biomarker & Lab Report upload with trend tracking',
+                'Medication & Supplement reminders with adherence logs',
+                'Wearable & Smartwatch connection (Fitbit, Apple Watch & more)',
+                'AI Nutrition & Workout assistant guidance',
+                'Digital Twin health baseline preview & live vitals monitoring',
+                'One Health Record repository for all medical documents',
+            ],
+            ctaText: 'Download on Google Play',
+            ctaLink: PLAY_STORE_URL,
+            external: true,
+        },
+        {
+            name: 'Weekly Premium',
+            badge: 'Most Flexible',
+            price: `${sym}${weeklyRef}/week`,
+            billing: isINR ? `billed monthly (~${sym}${Math.round(weeklyRef * 4.33)}/mo)` : `billed monthly (~${sym}${(weeklyRef * 4.33).toFixed(2)}/mo)`,
+            description: 'Complete AI health assistance and unlimited monitoring for active individuals.',
+            isFree: false,
+            features: [
+                'All Free tier features included',
+                'Continuous AI Health Insights and early drift detection',
+                'Nutrition label scanner for packaged foods',
+                'Doctor Connect — share records directly for consultations',
+                'Advanced exercise filtering & personalized progression',
+                'Unlimited medical records storage & instant export',
+                'Priority support',
+            ],
+            ctaText: 'Start Premium',
+            ctaLink: '/subscribe/eviolife',
+            external: false,
+        },
+        {
+            name: 'Yearly Premium',
+            badge: 'Save ~20%',
+            price: `${sym}${isINR ? Math.round(yearlyAmt) : yearlyAmt.toFixed(2)}`,
+            billing: `per year (less than ${sym}${isINR ? Math.round(yearlyAmt / 12) : (yearlyAmt / 12).toFixed(2)}/month)`,
+            description: 'The best value plan for individuals & families serious about proactive longevity.',
+            isFree: false,
+            features: [
+                'All Weekly Premium features included',
+                'Full year of continuous health tracking & AI biomarker trends',
+                'Family monitoring for up to 7 members (8% off each extra seat)',
+                'Parent Mode & growth milestones tracking',
+                'Health Marketplace priority booking & verified clinic discounts',
+                '256-bit encrypted secure cloud backup',
+                'Priority 24/7 customer & clinician support',
+            ],
+            ctaText: 'Get Yearly Plan',
+            ctaLink: '/subscribe/eviolife',
+            external: false,
+        },
+        {
+            name: 'Lifetime Premium',
+            badge: lifetimeDiscountBadge || 'Best Deal',
+            price: `${sym}${isINR ? Math.round(lifetimeAmt) : lifetimeAmt.toFixed(2)}`,
+            originalPrice: lifetimeOriginal ? `${sym}${lifetimeOriginal.toFixed(2)}` : null,
+            discountBadge: lifetimeDiscountBadge,
+            billing: 'Pay once · premium for 50 years',
+            description: 'One payment, decades of health intelligence. Never worry about renewals again.',
+            isFree: false,
+            features: [
+                'All Yearly Premium features included',
+                'Lifetime premium access — 50 years guaranteed',
+                'All future feature updates included',
+                'Family monitoring for up to 7 members',
+                'Priority lifetime support',
+                'Locked in at today\'s price forever',
+            ],
+            ctaText: 'Get Lifetime Access',
+            ctaLink: '/subscribe/eviolife',
+            external: false,
+        },
+    ]
+}
 
 export default function EviolifeDetail() {
     const [openFaqIndex, setOpenFaqIndex] = useState(null)
     const [hoveredFeature, setHoveredFeature] = useState(null)
     const progressRef = useRef(null)
+
+    const currency = useMemo(() => isSouthAsiaByTimezone() ? 'INR' : 'USD', [])
+    const eviolifePlans = useMemo(() => buildEviolifePlans(currency), [currency])
 
     usePageMetadata({
         title: 'Eviolife — Your Personal Health App | Evionex',
@@ -588,11 +624,17 @@ export default function EviolifeDetail() {
                                 <div className="product-detail__plan-badge">{plan.badge}</div>
                                 <h3 className="product-detail__plan-name">{plan.name}</h3>
                                 <div className="product-detail__plan-price-wrap">
+                                    {plan.originalPrice && (
+                                        <span className="product-detail__plan-original-price">{plan.originalPrice}</span>
+                                    )}
+                                    {plan.discountBadge && (
+                                        <span className="product-detail__plan-discount-badge">{plan.discountBadge}</span>
+                                    )}
                                     <span className="product-detail__plan-price">{plan.price}</span>
                                     <span className="product-detail__plan-billing">{plan.billing}</span>
                                 </div>
                                 <p className="product-detail__plan-desc">{plan.description}</p>
-                                
+
                                 <div className="product-detail__plan-features-header">
                                     {plan.isFree ? 'Included Free Benefits & Trial:' : 'Features & Benefits:'}
                                 </div>

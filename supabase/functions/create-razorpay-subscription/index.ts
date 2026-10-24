@@ -3,6 +3,7 @@ import {
   isCurrency,
   isPlanType,
   normalizeSeatCount,
+  normalizeSeatEmails,
   planKeyFor,
   resolveFirstCycleAmount,
   resolvePriceBreakdown,
@@ -14,24 +15,6 @@ const PLAN_LABEL: Record<string, string> = {
   yearly: "Yearly",
 }
 
-/** Keeps the invited addresses unique, lower case and free of the owner's own address. */
-function normalizeSeatEmails(value: unknown, ownerEmail?: string): string[] {
-  if (!Array.isArray(value)) return []
-  const owner = String(ownerEmail || "").trim().toLowerCase()
-  const seen = new Set<string>()
-  const emails: string[] = []
-  for (const entry of value) {
-    const email = String(entry || "").trim().toLowerCase()
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) continue
-    if (owner && email === owner) continue
-    if (seen.has(email)) continue
-    seen.add(email)
-    emails.push(email)
-    if (emails.length >= 6) break
-  }
-  return emails
-}
-
 Deno.serve(async (req: Request) => {
   const earlyResponse = handleOptions(req)
   if (earlyResponse) return earlyResponse
@@ -40,13 +23,15 @@ Deno.serve(async (req: Request) => {
     const user = await getAuthenticatedUser(req)
     if (!user) return jsonResponse(req, { error: "Unauthorized" }, 401)
 
-    const { currency, planType, couponCode, seats, seatEmails } = await req.json()
+    const { currency, planType, couponCode, seats, seatEmails, changePlan } = await req.json()
     if (!isCurrency(currency) || !isPlanType(planType) || planType === "lifetime") {
       return jsonResponse(req, { error: "Invalid subscription plan." }, 400)
     }
 
-    const extraSeats = normalizeSeatCount(seats)
     const invitedEmails = normalizeSeatEmails(seatEmails, user.email)
+    // The number of seats is derived from the validated emails, never trusted
+    // from the client, so the price always matches the invited accounts.
+    const extraSeats = normalizeSeatCount(Math.max(normalizeSeatCount(seats), invitedEmails.length))
 
     let coupon: Awaited<ReturnType<typeof resolveCoupon>> = null
     if (couponCode) {
@@ -60,14 +45,42 @@ Deno.serve(async (req: Request) => {
     const db = getAdminClient()
     const { data: existingSubscription, error: existingError } = await db
       .from("subscriptions")
-      .select("status")
+      .select("id, razorpay_subscription_id")
       .eq("user_id", user.id)
       .in("status", ["authenticated", "active"])
+      .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle()
     if (existingError) throw new Error("Unable to check existing subscription.")
+
     if (existingSubscription) {
-      return jsonResponse(req, { error: "already_subscribed" }, 409)
+      // An existing premium subscriber may change plan (for example to a
+      // family plan or to yearly). Their current subscription is ended at
+      // the cycle end so nothing is charged twice.
+      if (changePlan !== true) {
+        return jsonResponse(req, { error: "already_subscribed" }, 409)
+      }
+      const existingId = String(existingSubscription.razorpay_subscription_id || "")
+      if (/^sub_[a-zA-Z0-9]+$/.test(existingId)) {
+        try {
+          const cancelled = await razorpayRequest(`/subscriptions/${existingId}/cancel`, { cancel_at_cycle_end: 1 })
+          const periodEnd = Number(cancelled.current_end)
+          await db
+            .from("subscriptions")
+            .update({
+              status: cancelled.status || "active",
+              cancel_at_period_end: true,
+              current_period_end: Number.isFinite(periodEnd) && periodEnd > 0
+                ? new Date(periodEnd * 1000).toISOString()
+                : null,
+              updated_at: new Date().toISOString(),
+            })
+            .eq("id", existingSubscription.id)
+        } catch (changeError) {
+          console.error("Could not end the previous subscription at cycle end", changeError)
+          throw new Error("Unable to change your current plan. Please cancel it first and try again.")
+        }
+      }
     }
 
     const discountPercent = coupon?.discountPercent || 0

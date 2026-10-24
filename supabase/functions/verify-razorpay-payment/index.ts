@@ -206,7 +206,14 @@ Deno.serve(async (req: Request) => {
         if (isValid && orderData?.plan_name?.startsWith("premium_")) {
             const planType = orderData.plan_name.replace("premium_", "") as "monthly" | "yearly" | "lifetime";
             const expiry = new Date();
-            expiry.setFullYear(expiry.getFullYear() + lifetimePeriodYears());
+            if (planType === "yearly") {
+                expiry.setFullYear(expiry.getFullYear() + 1);
+            } else if (planType === "monthly") {
+                expiry.setMonth(expiry.getMonth() + 1);
+            } else {
+                // The lifetime plan keeps premium active for 50 years.
+                expiry.setFullYear(expiry.getFullYear() + lifetimePeriodYears());
+            }
 
             const { error: premiumError } = await supabase
                 .from("profiles")
@@ -222,6 +229,38 @@ Deno.serve(async (req: Request) => {
                 console.error("Could not activate premium:", premiumError.message);
             } else {
                 premiumActivated = true;
+
+                // A lifetime purchase replaces any recurring subscription so the
+                // customer is not charged twice. Existing plans are ended at
+                // their cycle end so access is kept through the paid period.
+                if (planType === "lifetime") {
+                    const { data: activeSubs } = await supabase
+                        .from("subscriptions")
+                        .select("id, razorpay_subscription_id")
+                        .eq("user_id", callerUser.id)
+                        .in("status", ["authenticated", "active"]);
+                    for (const sub of activeSubs || []) {
+                        const subId = String(sub.razorpay_subscription_id || "");
+                        if (!/^sub_[a-zA-Z0-9]+$/.test(subId)) continue;
+                        try {
+                            const cancelled = await razorpayRequest(`/subscriptions/${subId}/cancel`, { cancel_at_cycle_end: 1 });
+                            const periodEnd = Number(cancelled.current_end);
+                            await supabase
+                                .from("subscriptions")
+                                .update({
+                                    status: cancelled.status || "active",
+                                    cancel_at_period_end: true,
+                                    current_period_end: Number.isFinite(periodEnd) && periodEnd > 0
+                                        ? new Date(periodEnd * 1000).toISOString()
+                                        : null,
+                                    updated_at: new Date().toISOString(),
+                                })
+                                .eq("id", sub.id);
+                        } catch (cancelError) {
+                            console.error("Could not end the previous subscription at cycle end", cancelError);
+                        }
+                    }
+                }
 
                 const { error: seatError } = await supabase
                     .from("subscription_seats")

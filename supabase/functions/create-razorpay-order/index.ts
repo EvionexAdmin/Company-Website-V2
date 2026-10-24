@@ -6,6 +6,7 @@ import {
     isCurrency,
     isPlanType,
     normalizeSeatCount,
+    normalizeSeatEmails,
     resolvePlanAmount,
 } from "../_shared/pricing.ts";
 import { resolveCouponPercent } from "../_shared/subscription.ts";
@@ -122,7 +123,10 @@ Deno.serve(async (req: Request) => {
                     { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
                 )
             }
-            extraSeats = normalizeSeatCount(seats)
+            invitedEmails.push(...normalizeSeatEmails(seatEmails, callerUser.email))
+            // The number of seats comes from the validated emails, never from
+            // the client, so the price always matches the invited accounts.
+            extraSeats = normalizeSeatCount(Math.max(normalizeSeatCount(seats), invitedEmails.length))
             orderAmount = resolvePlanAmount(currency, planType, extraSeats)
             orderCurrency = currency
             resolvedPlanName = `premium_${planType}`
@@ -141,15 +145,6 @@ Deno.serve(async (req: Request) => {
                     couponPercent = coupon.discountPercent
                     orderAmount = Math.round(orderAmount * (1 - couponPercent / 100))
                 }
-            }
-
-            for (const entry of Array.isArray(seatEmails) ? seatEmails : []) {
-                const email = String(entry || "").trim().toLowerCase()
-                if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) continue
-                if (email === String(callerUser.email || "").trim().toLowerCase()) continue
-                if (invitedEmails.includes(email)) continue
-                invitedEmails.push(email)
-                if (invitedEmails.length >= 6) break
             }
         }
 
