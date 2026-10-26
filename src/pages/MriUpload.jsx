@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { supabaseEviolife } from '../lib/supabaseEviolife'
@@ -34,10 +34,53 @@ async function readMagic(file) {
 
 export default function MriUpload() {
   const { user } = useAuth()
-  const [file, setFile] = useState(null)
   const [status, setStatus] = useState('idle') // idle | validating | uploading | done | error
   const [message, setMessage] = useState('')
+  const [gate, setGate] = useState('checking') // checking | signed-out | free | premium
+  const [file, setFile] = useState(null)
   const inputRef = useRef(null)
+
+  // MRI uploads are a premium feature. A paid Razorpay subscription row or an
+  // active premium profile (trial or grant) unlocks the uploader.
+  useEffect(() => {
+    let isMounted = true
+    if (!user) {
+      setGate('signed-out')
+      return
+    }
+    ;(async () => {
+      try {
+        const { data: subscription } = await supabaseEviolife
+          .from('subscriptions')
+          .select('id')
+          .eq('user_id', user.id)
+          .in('status', ['authenticated', 'active'])
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle()
+        if (subscription) {
+          if (isMounted) setGate('premium')
+          return
+        }
+        const { data: profileData } = await supabaseEviolife
+          .from('profiles')
+          .select('is_premium, subscription_tier')
+          .eq('id', user.id)
+          .maybeSingle()
+        if (isMounted) {
+          setGate(
+            profileData?.is_premium && profileData?.subscription_tier === 'premium'
+              ? 'premium'
+              : 'free'
+          )
+        }
+      } catch {
+        // Fail closed: if premium cannot be verified, treat as free.
+        if (isMounted) setGate('free')
+      }
+    })()
+    return () => { isMounted = false }
+  }, [user])
 
   const handleSelect = async (e) => {
     const chosen = e.target.files && e.target.files[0]
@@ -65,12 +108,11 @@ export default function MriUpload() {
   }
 
   const handleUpload = async () => {
-    if (!file) return
+    if (!file || !user) return
     setStatus('uploading')
     try {
       const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
-      const folder = user?.id || 'anonymous'
-      const path = `${folder}/${Date.now()}_${safeName}`
+      const path = `${user.id}/${Date.now()}_${safeName}`
       const { error } = await supabaseEviolife.storage
         .from('mri-scans')
         .upload(path, file, {
@@ -95,64 +137,97 @@ export default function MriUpload() {
         <div className="evx-auth__frame evx-mri__frame animate-fade-in-up">
           <section className="evx-auth__panel" aria-label="Upload MRI data">
             <span className="evx-auth__kicker">Evio Life · MRI Insights</span>
-            <h1 id="mri-upload-title" className="evx-auth__title">
-              Upload MRI scan data
-            </h1>
-            <p className="evx-auth__subtitle">
-              Send your MRI results in DICOM (.dcm) or raw format. Photos, screenshots and PDF
-              reports are not accepted, only the original scan data.
-            </p>
 
-            <div className="evx-auth__field" style={{ marginTop: '0.4rem' }}>
-              <span className="evx-mri__label">Select file</span>
-              <input
-                ref={inputRef}
-                type="file"
-                accept=".dcm,.dicom,application/dicom,application/octet-stream"
-                onChange={handleSelect}
-                className="evx-mri__file-input"
-                aria-label="Select a DICOM or raw MRI file to upload"
-              />
-              <p className="evx-mri__hint">
-                Accepted: DICOM (.dcm, .dicom) and raw MRI datasets. Rejected: JPG, PNG, HEIC, PDF
-                and other image or document formats.
-              </p>
-            </div>
-
-            {message && (
-              <div
-                role="status"
-                className={`evx-auth__alert ${
-                  status === 'error' ? 'evx-auth__alert--error' : 'evx-auth__alert--success'
-                }`}
-                style={{ marginTop: '0.9rem' }}
-              >
-                {message}
-              </div>
+            {gate === 'checking' && (
+              <>
+                <h1 id="mri-upload-title" className="evx-auth__title">Checking your access…</h1>
+                <p className="evx-auth__subtitle">Hold on while we confirm your plan.</p>
+              </>
             )}
 
-            <button
-              type="button"
-              className="evx-auth__submit"
-              onClick={handleUpload}
-              disabled={!file || status === 'uploading' || status === 'validating'}
-            >
-              {status === 'validating'
-                ? 'Validating file...'
-                : status === 'uploading'
-                ? 'Uploading...'
-                : 'Upload to secure storage'}
-            </button>
+            {gate === 'signed-out' && (
+              <>
+                <h1 id="mri-upload-title" className="evx-auth__title">Sign in to upload</h1>
+                <p className="evx-auth__subtitle">
+                  MRI uploads are part of Evio Life Premium. Sign in with your Evio Life account
+                  to continue.
+                </p>
+                <Link to="/portal/login" className="evx-auth__submit evx-mri__cta">Sign in</Link>
+                <p className="evx-mri__note">
+                  No account yet? <Link to="/portal/signup" className="evx-mri__link">Create one</Link>.
+                </p>
+              </>
+            )}
 
-            <p className="evx-mri__note">
-              {user
-                ? 'Signed in, so this upload is linked to your Evio Life account.'
-                : 'You are not signed in. The file will be stored under an anonymous folder on our servers.'}{' '}
-              <Link to="/contact" className="evx-mri__link">
-                Contact us
-              </Link>{' '}
-              if you need help preparing your scan for upload.
-            </p>
+            {gate === 'free' && (
+              <>
+                <h1 id="mri-upload-title" className="evx-auth__title">Premium required</h1>
+                <p className="evx-auth__subtitle">
+                  Uploading your own MRI scans is a Premium feature. Start a plan to unlock MRI
+                  Insights, secure scan storage and analyst review.
+                </p>
+                <Link to="/subscribe/eviolife" className="evx-auth__submit evx-mri__cta">See Premium plans</Link>
+                <p className="evx-mri__note">
+                  Every new account also gets a 14 day free Premium trial once you sign in.
+                </p>
+              </>
+            )}
+
+            {gate === 'premium' && (
+              <>
+                <h1 id="mri-upload-title" className="evx-auth__title">Upload MRI scan data</h1>
+                <p className="evx-auth__subtitle">
+                  Send your MRI results in DICOM (.dcm) or raw format. Photos, screenshots and PDF
+                  reports are not accepted, only the original scan data.
+                </p>
+
+                <div className="evx-auth__field" style={{ marginTop: '0.4rem' }}>
+                  <span className="evx-mri__label">Select file</span>
+                  <input
+                    ref={inputRef}
+                    type="file"
+                    accept=".dcm,.dicom,application/dicom,application/octet-stream"
+                    onChange={handleSelect}
+                    className="evx-mri__file-input"
+                    aria-label="Select a DICOM or raw MRI file to upload"
+                  />
+                  <p className="evx-mri__hint">
+                    Accepted: DICOM (.dcm, .dicom) and raw MRI datasets. Rejected: JPG, PNG, HEIC,
+                    PDF and other image or document formats.
+                  </p>
+                </div>
+
+                {message && (
+                  <div
+                    role="status"
+                    className={`evx-auth__alert ${
+                      status === 'error' ? 'evx-auth__alert--error' : 'evx-auth__alert--success'
+                    }`}
+                    style={{ marginTop: '0.9rem' }}
+                  >
+                    {message}
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  className="evx-auth__submit"
+                  onClick={handleUpload}
+                  disabled={!file || status === 'uploading' || status === 'validating'}
+                >
+                  {status === 'validating'
+                    ? 'Validating file...'
+                    : status === 'uploading'
+                    ? 'Uploading...'
+                    : 'Upload to secure storage'}
+                </button>
+
+                <p className="evx-mri__note">
+                  Uploaded to your own private folder. <Link to="/contact" className="evx-mri__link">Contact us</Link>{' '}
+                  if you need help preparing your scan.
+                </p>
+              </>
+            )}
           </section>
 
           <aside className="evx-auth__showcase" style={{ backgroundImage: 'none' }} aria-hidden="true">
@@ -169,6 +244,9 @@ export default function MriUpload() {
                 <li>Reviewed by trained analysts</li>
                 <li>Results delivered in the app</li>
               </ul>
+              {gate === 'free' && (
+                <p className="evx-mri__showcase-note">Premium unlocks MRI uploads and the rest of the analysis suite.</p>
+              )}
             </div>
           </aside>
         </div>
