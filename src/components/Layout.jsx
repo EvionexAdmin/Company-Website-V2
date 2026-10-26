@@ -49,7 +49,7 @@ export default function Layout() {
 
     return (
         <div className={`app-layout ${isShopPage ? 'app-layout--shop' : ''} ${isSubscriptionPage ? 'app-layout--subscription' : ''}`}>
-            {showMinimalHeader ? <DashboardHeader /> : <Navbar />}
+            {showMinimalHeader ? <><Navbar /><DashboardHeader /></> : <Navbar />}
             <main className="main-content">
                 <Outlet />
             </main>
