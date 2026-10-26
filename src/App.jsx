@@ -29,6 +29,7 @@ const TermsOfUse = lazy(() => import('./pages/TermsOfUse'))
 const Subscription = lazy(() => import('./pages/Subscription'))
 const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 const MriUpload = lazy(() => import('./pages/MriUpload'))
+const MriAdmin = lazy(() => import('./pages/MriAdmin'))
 
 export default function App() {
     const navigate = useNavigate()
@@ -94,6 +95,7 @@ export default function App() {
                         <Route path="portal/reset-password" element={<ResetPassword />} />
                         <Route path="reset-password" element={<ResetPassword />} />
                         <Route path="mri-upload" element={<MriUpload />} />
+                        <Route path="mri-admin" element={<MriAdmin />} />
                         <Route path="portal/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                         <Route path="privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="privacy" element={<PrivacyPolicy />} />
