@@ -2,7 +2,6 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
 import Lenis from 'lenis'
 import Navbar from './Navbar'
-import DashboardHeader from './DashboardHeader'
 import Footer from './Footer'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -14,7 +13,6 @@ export default function Layout() {
     const isDashboard = pathname.startsWith('/portal/dashboard')
     const isShopPage = pathname === '/shop'
     const isSubscriptionPage = pathname.startsWith('/subscribe')
-    const showMinimalHeader = isDashboard && !!user
 
     // Initialize Lenis smooth scrolling
     useEffect(() => {
@@ -49,7 +47,7 @@ export default function Layout() {
 
     return (
         <div className={`app-layout ${isShopPage ? 'app-layout--shop' : ''} ${isSubscriptionPage ? 'app-layout--subscription' : ''}`}>
-            {showMinimalHeader ? <><Navbar /><DashboardHeader /></> : <Navbar />}
+            <Navbar />
             <main className="main-content">
                 <Outlet />
             </main>
