@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import eviolifeMockup from '../assets/images/products/eviolife-mockup.png'
+import eviolifeHeroBackground from '../assets/images/products/eviolife-hero-background.webp'
 import defaultBg from '../assets/images/auth/login-background.webp'
 import ehrRepositoryImage from '../assets/images/products/ehr-repository.jpeg'
 import usePageMetadata from '../lib/usePageMetadata'
@@ -404,7 +404,7 @@ export default function EviolifeDetail() {
         <div className="product-detail">
             {/* Hero */}
             <section className="product-detail__hero">
-                <div className="product-detail__hero-bg" style={{ backgroundImage: `url(${eviolifeMockup})` }}></div>
+                <div className="product-detail__hero-bg" style={{ backgroundImage: `url(${eviolifeHeroBackground})` }}></div>
                 <div className="product-detail__hero-overlay"></div>
                 <div className="container" style={{ textAlign: 'center' }}>
                     <h1 className="product-detail__hero-title">Eviolife</h1>
