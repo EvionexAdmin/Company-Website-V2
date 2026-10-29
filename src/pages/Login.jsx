@@ -16,6 +16,8 @@ export default function Login() {
     const [turnstileKey, setTurnstileKey] = useState(0) // key to force remount & reset widget
     const [forgotMode, setForgotMode] = useState(false)
     const [forgotSent, setForgotSent] = useState(false)
+    const [forgotCaptchaToken, setForgotCaptchaToken] = useState(null)
+    const [forgotTurnstileKey, setForgotTurnstileKey] = useState(0)
     const { signIn, signInWithGoogle } = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
@@ -24,6 +26,9 @@ export default function Login() {
     const redirectParam = new URLSearchParams(location.search).get('redirect')
 
     // Sends the password reset link. The link comes back to the reset page.
+    // The Turnstile token goes to Supabase itself, where the "Protect password
+    // reset" protector validates it — that is what blocks the spray of reset
+    // emails that hit the recover endpoint by script.
     async function handleForgotPassword(e) {
         e.preventDefault()
         setError('')
@@ -33,20 +38,39 @@ export default function Login() {
             return
         }
 
+        if (!forgotCaptchaToken) {
+            setError('Please complete the CAPTCHA verification.')
+            return
+        }
+
         setLoading(true)
         try {
             const { error: resetError } = await supabaseEviolife.auth.resetPasswordForEmail(
                 identifier.trim().toLowerCase(),
-                { redirectTo: `${window.location.origin}/#/portal/reset-password` },
+                {
+                    redirectTo: `${window.location.origin}/#/portal/reset-password`,
+                    captchaToken: forgotCaptchaToken,
+                },
             )
             if (resetError) throw resetError
             setForgotSent(true)
         } catch (resetError) {
             setError(resetError?.message || 'Could not send the reset link. Please try again.')
+            // Tokens are single-use: new challenge for the next attempt.
+            setForgotCaptchaToken(null)
+            setForgotTurnstileKey((k) => k + 1)
         } finally {
             setLoading(false)
         }
     }
+
+    const handleForgotVerify = useCallback((token) => {
+        setForgotCaptchaToken(token)
+    }, [])
+
+    const handleForgotExpire = useCallback(() => {
+        setForgotCaptchaToken(null)
+    }, [])
 
     const handleTurnstileVerify = useCallback((token) => {
         setTurnstileToken(token)
@@ -173,10 +197,18 @@ export default function Login() {
                                     </label>
                                 )}
 
+                                {!forgotSent && (
+                                    <TurnstileWidget
+                                        key={forgotTurnstileKey}
+                                        onVerify={handleForgotVerify}
+                                        onExpire={handleForgotExpire}
+                                    />
+                                )}
+
                                 <button
                                     type="submit"
                                     className="evx-auth__submit"
-                                    disabled={loading || forgotSent}
+                                    disabled={loading || forgotSent || !forgotCaptchaToken}
                                 >
                                     {loading ? 'Sending...' : forgotSent ? 'Link sent' : 'Send reset link'}
                                 </button>

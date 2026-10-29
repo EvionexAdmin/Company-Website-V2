@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { supabaseEviolife } from '../lib/supabaseEviolife'
 import { safeRedirectPath } from '../lib/safeRedirect'
 import TurnstileWidget from '../components/TurnstileWidget'
 import loginBackground from '../assets/images/auth/login-background.webp'
@@ -94,27 +93,16 @@ export default function Signup() {
         setLoading(true)
 
         try {
-            // ── Server-side Turnstile token validation ──
-            const { data: verifyData, error: verifyError } =
-                await supabaseEviolife.functions.invoke('verify-turnstile', {
-                    body: { token: turnstileToken },
-                })
-
-            if (verifyError || !verifyData?.success) {
-                setError('CAPTCHA verification failed. Please try again.')
-                setTurnstileToken(null)
-                setTurnstileKey((k) => k + 1)
-                setLoading(false)
-                return
-            }
-
-            // ── Proceed with signup ──
+            // The Turnstile token goes straight to Supabase: the "Protect
+            // sign-up" protector validates it server-side. (It must NOT be
+            // verified twice — a Turnstile token proves out only once.)
             const { data: signUpData, error: signUpError } = await signUp({
                 email: formData.email,
                 password: formData.password,
                 role: formData.role,
                 subRole: formData.subRole || undefined,
                 fullName: formData.fullName,
+                captchaToken: turnstileToken,
             })
 
             if (signUpError) {

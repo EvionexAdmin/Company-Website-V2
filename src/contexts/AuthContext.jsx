@@ -91,7 +91,7 @@ export function AuthProvider({ children }) {
         }
     }, [user?.id, fetchProfile])
 
-    async function signUp({ email, password, role, subRole, fullName }) {
+    async function signUp({ email, password, role, subRole, fullName, captchaToken }) {
         const metadata = {
             evionex_role: role,
             full_name: fullName,
@@ -101,6 +101,11 @@ export function AuthProvider({ children }) {
         const { data, error } = await supabaseEviolife.auth.signUp({
             email,
             password,
+            // Consumed by the "Protect sign-up" protector once it is on. A
+            // captcha must be the only validation for the token; the
+            // verify-turnstile edge function is not used here because Turnstile
+            // tokens pass site verification exactly once.
+            ...(captchaToken ? { captchaToken } : {}),
             options: {
                 data: metadata,
                 emailRedirectTo: 'https://www.evionex.com/#/portal/verify-email',
