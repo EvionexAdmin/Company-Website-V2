@@ -101,23 +101,27 @@ export function AuthProvider({ children }) {
         const { data, error } = await supabaseEviolife.auth.signUp({
             email,
             password,
-            // Consumed by the "Protect sign-up" protector once it is on. A
-            // captcha must be the only validation for the token; the
-            // verify-turnstile edge function is not used here because Turnstile
-            // tokens pass site verification exactly once.
-            ...(captchaToken ? { captchaToken } : {}),
             options: {
                 data: metadata,
                 emailRedirectTo: 'https://www.evionex.com/#/portal/verify-email',
+                // Consumed by the "Protect sign-up" protector once it is on. A
+                // captcha must be the only validation for the token; the
+                // verify-turnstile edge function is not used here because
+                // Turnstile tokens pass site verification exactly once.
+                captchaToken,
             },
         })
         return { data, error }
     }
 
-    async function signIn({ email, password }) {
+    async function signIn({ email, password, captchaToken }) {
         const { data, error } = await supabaseEviolife.auth.signInWithPassword({
             email,
             password,
+            options: {
+                // Consumed by the "Protect sign-in" protector once it is on.
+                captchaToken,
+            },
         })
         if (!error && data?.user) {
             // Fetch profile to check account status before granting access

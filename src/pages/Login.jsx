@@ -97,26 +97,15 @@ export default function Login() {
         setLoading(true)
 
         try {
-            // ── Server-side Turnstile token validation ──
-            const { data: verifyData, error: verifyError } =
-                await supabaseEviolife.functions.invoke('verify-turnstile', {
-                    body: { token: turnstileToken },
-                })
-
-            if (verifyError || !verifyData?.success) {
-                setError('CAPTCHA verification failed. Please try again.')
-                setTurnstileToken(null)
-                setTurnstileKey((k) => k + 1) // reset widget
-                setLoading(false)
-                return
-            }
-
-            // ── Proceed with login ──
+            // The token goes straight to Supabase: the "Protect sign-in"
+            // protector validates it server-side when it is on. (It must NOT
+            // also be verified on the edge — a Turnstile token proves out
+            // exactly once, so double verification always fails.)
             const email = identifier.includes('@')
                 ? identifier.trim()
                 : `${identifier.trim().toLowerCase()}@inst.evionex.internal`
 
-            const { error: signInError } = await signIn({ email, password })
+            const { error: signInError } = await signIn({ email, password, captchaToken: turnstileToken })
 
             if (signInError) {
                 const msg = signInError.message || ''
